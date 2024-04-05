@@ -29,41 +29,7 @@ To deploy `secator` on AWS EC2 on a single machine, we will install RabbitMQ, Re
 
 <details>
 
-<summary>Step 2: Install Go, Ruby, pip3, secator and commands supported by secator</summary>
-
-```bash
-sudo apt update
-
-# Install Go
-sudo rm -rf /usr/local/go
-wget https://golang.org/dl/go1.20.2.linux-amd64.tar.gz
-tar -xvf go1.20.2.linux-amd64.tar.gz
-rm go1.20.2.linux-amd64.tar.gz || true
-sudo mv go /usr/local
-sudo rm /usr/bin/go
-sudo ln -s /usr/local/go/bin/go /usr/bin/go
-
-# Install Ruby
-sudo apt update -y
-sudo apt install -y ruby-full
-sudo apt install -y rubygems
-
-# Install pip3
-sudo apt install python3-pip
-
-# Install secator
-pip3 install git+https://github.com/freelabz/secator.git
-export PATH=$PATH:/home/ubuntu/.local/bin:/home/ubuntu/go/bin  # add to ~/.bashrc
-
-# Install secator-supported commands
-secator utils install
-```
-
-</details>
-
-<details>
-
-<summary>Step 3: Install RabbitMQ as a task broker</summary>
+<summary>Step 2: Install RabbitMQ as a task broker</summary>
 
 ```bash
 sudo apt-get install curl gnupg apt-transport-https -y
@@ -89,7 +55,7 @@ sudo rabbitmqctl set_permissions -p / secator ".*" ".*" ".*"
 
 <details>
 
-<summary>Step 4: Install Redis as a storage backend</summary>
+<summary>Step 3: Install Redis as a storage backend</summary>
 
 Celery needs a storage backend to store results. `secator` uses the storage backend to print results in real-time.
 
@@ -109,9 +75,15 @@ sudo /etc/init.d/redis-server restart
 
 <details>
 
-<summary>Step 5: Run a worker</summary>
+<summary>Step 4: Deploy a secator worker</summary>
 
-Let's configure the worker `.env` with RabbitMQ and Redis connection details:
+First, setup `secator`using the all-in-one bash setup script:
+
+```
+wget -O - https://raw.githubusercontent.com/freelabz/secator/main/scripts/install.sh | sh
+```
+
+Now, let's configure the worker `.env` with RabbitMQ and Redis connection details:
 
 {% code title=".env" %}
 ```bash
@@ -130,7 +102,7 @@ nohup secator worker > worker.log 2>&1 &  # start in background and save logs
 
 <details>
 
-<summary>Step 6: Run a task from your local machine</summary>
+<summary>Step 5: Run a task from your local machine</summary>
 
 Let's configure the worker `.env` with RabbitMQ and Redis connection details:
 
@@ -180,11 +152,9 @@ Celery worker is alive !
 
 If you want a more scaleable architecture, we recommend deploying RabbitMQ, Redis, and Celery workers on different machines.
 
-The steps are exactly the same as for [#deploy-on-a-single-ec2-instance](deployment.md#deploy-on-a-single-ec2-instance "mention"), expect that **Step 2**, **3**, and **4** will each be run on a separate EC2 instance.
+The steps are exactly the same as for [#deploy-on-a-single-ec2-instance](deployment.md#deploy-on-a-single-ec2-instance "mention"), expect that steps 2, 3, and **4** will each be run on **separate EC2 instance**.&#x20;
 
-Make sure to have the correct details in your `.env` and you should be good to go.
-
-If you need a more scaleable architecture, deploy more Celery workers.
+You can repeat step 4 on more instances to increase the number of workers.
 
 ***
 

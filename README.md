@@ -6,7 +6,7 @@
 
 ## Features
 
-* [**Curated list of commands**](in-depth/philosophy-and-design.md#curated-list-of-commands)
+* [**Curated list of tools**](in-depth/philosophy-and-design.md#curated-list-of-commands)
 * [**Unified input options**](in-depth/philosophy-and-design.md#unified-input-options)
 * [**Unified output schema**](in-depth/philosophy-and-design.md#unified-output-schema)
 * [**CLI and library usage**](in-depth/philosophy-and-design.md#cli-and-library-usage)
@@ -14,9 +14,9 @@
 * [**From simple tasks to complex workflows**](in-depth/philosophy-and-design.md#from-simple-tasks-to-complex-workflows)
 * [**Customizable**](in-depth/philosophy-and-design.md#customizable)
 
-#### Supported commands
+#### Supported tools
 
-`secator` integrates the following commands:
+`secator` integrates the following tools:
 
 | Name                                                          | Description                                                                            | Category       |
 | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- | -------------- |
@@ -45,5 +45,5 @@
 | [nuclei](https://github.com/projectdiscovery/nuclei)          | Fast and customisable vulnerability scanner based on simple YAML based DSL.            | `vuln/multi`   |
 
 {% hint style="info" %}
-Feel free to request new tasks by opening an issue on the repo, but please check that the command complies with our selection criterias before doing so (read [philosophy-and-design.md](in-depth/philosophy-and-design.md "mention")). If it doesn't but you still want to integrate it into `secator`, you can plug it in (read [writing-tasks](for-developers/writing-tasks/ "mention")).
+Feel free to request new tools integrations by opening an issue on the repo, but please check that the tool complies with our selection criterias before doing so (read [philosophy-and-design.md](in-depth/philosophy-and-design.md "mention")). If it doesn't but you still want to integrate it into `secator`, you can plug it in (read [writing-tasks](for-developers/writing-tasks/ "mention")).
 {% endhint %}

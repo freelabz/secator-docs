@@ -28,6 +28,7 @@
 
 ## For developers
 
+* [Development setup](for-developers/development-setup.md)
 * [Writing tasks](for-developers/writing-tasks/README.md)
   * [Example: cat hunters](for-developers/writing-tasks/example-cat-hunters.md)
   * [Advanced options](for-developers/writing-tasks/advanced-options.md)

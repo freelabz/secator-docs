@@ -1,4 +1,12 @@
+---
+description: Instructions for running tests.
+---
+
 # Running tests
+
+{% hint style="info" %}
+You need to [#install-a-development-build](development-setup.md#install-a-development-build "mention") in order to run tests.
+{% endhint %}
 
 ***
 
@@ -7,9 +15,11 @@
 <pre class="language-bash"><code class="lang-bash"><strong>secator test unit
 </strong></code></pre>
 
-{% hint style="info" %}
-Run `secator test unit --help` for more options.
-{% endhint %}
+If you want to run unit tests to test a specific task only:
+
+```sh
+secator test unit --test test_task --task <TASK_NAME>
+```
 
 ***
 
@@ -19,9 +29,11 @@ Run `secator test unit --help` for more options.
 secator test integration
 ```
 
-{% hint style="info" %}
-Run `secator test integration --help` for more options.
-{% endhint %}
+If you want to run integration tests to test a specific task only:
+
+```sh
+secator test integration --test test_tasks --tasks <TASK_NAME>
+```
 
 ***
 

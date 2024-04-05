@@ -7,21 +7,23 @@
 ## Usage
 
 ```bash
-secator --help
+secator --help        # General help
 
-secator x --help      # Tasks
-secator w --help      # Workflows
-secator s --help      # Scans
-secator u --help      # Utils
-secator worker --help # Worker
-secator test --help   # Tests
+secator x      # List available tasks
+secator w      # List available workflows
+secator s      # List available scans
+secator i      # Installations
+secator r      # Reports
+secator a      # Aliases
+secator u      # Utils
+secator test   # Tests
 ```
 
 ***
 
 ## Worker \[optional]
 
-You can enable enable distributed runs by starting a `secator worker`.  All tasks / workflows / scans will be sent to the worker for execution.
+You can enable enable distributed runs by starting `secator` workers.  All tasks / workflows / scans will be sent to the workers for execution.
 
 {% hint style="info" %}
 Learn more about [distributed-runs-with-celery.md](in-depth/distributed-runs-with-celery.md "mention").
@@ -196,16 +198,8 @@ Use **`secator s <NAME> --help`** to list scan options.
 You can get a random proxy:
 
 ```bash
-secator utils get-proxy                  # print a random proxy
-secator utils get-proxy -n 5 --timeout 1 # print 5 proxies with 1s max timeout
-```
-
-**Offline CVEs**
-
-You can get download CVEs information locally to avoid remote CVE lookups:
-
-```bash
-secator utils download-cves
+secator utils proxy                  # print a random proxy
+secator utils proxy -n 5 --timeout 1 # print 5 proxies with 1s max timeout
 ```
 
 **Reverse shells**
@@ -213,10 +207,18 @@ secator utils download-cves
 You can spawn reverse shells in any language, and optional netcat listener:
 
 ```bash
-secator utils revshells                                     # list all reverse shells
-secator utils revshells bash                                # show a Bash reverse shell
-secator utils revshells javascript -h <LHOST> -p <LPORT>    # show a Javascript reverse shell to connect to LHOST / LPORT
-secator utils revshells javascript -h <LHOST> -p <LPORT> -l # ... also spawn a netcat listener
+secator utils revshell                                     # list all reverse shells
+secator utils revshell bash                                # show a Bash reverse shell
+secator utils revshell javascript -h <LHOST> -p <LPORT>    # show a Javascript reverse shell to connect to LHOST / LPORT
+secator utils revshell javascript -h <LHOST> -p <LPORT> -l # ... also spawn a netcat listener
+```
+
+#### Serve
+
+You can run an HTTP server to serve payloads:
+
+```sh
+secator serve
 ```
 
 **Recording**

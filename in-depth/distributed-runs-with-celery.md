@@ -7,12 +7,19 @@ By default, `secator` runs all tasks synchronously. This guide shows how to enab
 ## Step 1: Configure a broker \[optional]
 
 {% hint style="info" %}
-This step is optional. If you do not configure a broker, the file system will be used as a broker and result backend.
+This step is _optional_. If you do not configure a broker, the **file system** will be used as a broker and result backend. Note that this works only if the client and worker run on the same VM.
 {% endhint %}
 
 You can set up a task queue using Celery with the broker and a results backend of your choice, and run Celery workers to execute tasks from the broker queue.
 
 The following is an example using `redis`, but you can use any [supported Celery broker and backend](https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html).
+
+**Install `redis` and `worker`  addons:**
+
+```
+secator install addons redis
+secator install addons worker
+```
 
 \
 **Install `redis`:**
@@ -30,13 +37,17 @@ sudo systemctl start redis
 ```
 
 \
-**Configure `secator` to use Redis \[optional]:**
+**Configure `secator` to use Redis:**
 
 Create a `.env` file in the directory where you run `secator`, and fill it like so:
 
-<pre class="language-sh"><code class="lang-sh"><strong>CELERY_BROKER_URL=redis://localhost:6379/0
-</strong>CELERY_RESULT_BACKEND=redis://localhost:6379/0
+<pre class="language-sh"><code class="lang-sh"><strong>CELERY_BROKER_URL=redis://&#x3C;REDIS_IP>:6379/0
+</strong>CELERY_RESULT_BACKEND=redis://&#x3C;REDIS_IP>:6379/0
 </code></pre>
+
+{% hint style="info" %}
+Make sure you replace `<REDIS_IP>` in the variables above with the IP of your Redis server.
+{% endhint %}
 
 ***
 

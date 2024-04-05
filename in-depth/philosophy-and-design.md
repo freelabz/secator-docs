@@ -56,9 +56,9 @@ Feel free to reach out to us if you want to use `secator` in a commercial tool, 
 
 ## Design principles
 
-### **Curated list of commands**
+### **Curated list of tools**
 
-Commands integrated to `secator` <mark style="color:red;">**MUST**</mark> be <mark style="color:orange;">**fast**</mark>, <mark style="color:orange;">**efficient**</mark>, <mark style="color:orange;">**well-maintained**</mark>, and have <mark style="color:orange;">**structured output**</mark> (either `JSON`, `JSON lines`, `CSV`, or `XML`).
+Tools integrated to `secator` <mark style="color:red;">**MUST**</mark> be <mark style="color:orange;">**fast**</mark>, <mark style="color:orange;">**efficient**</mark>, <mark style="color:orange;">**well-maintained**</mark>, and have <mark style="color:orange;">**structured output**</mark> (either `JSON`, `JSON lines`, `CSV`, or `XML`).
 
 {% hint style="info" %}
 We do make exceptions for really awesome tools and write custom parsers (e.g: `nmap`).
@@ -66,11 +66,11 @@ We do make exceptions for really awesome tools and write custom parsers (e.g: `n
 
 ### **Unified input options**
 
-`secator` commands belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](../more-options/input-formats.md), while still retaining the capability to use unique options for each command.
+`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](../more-options/input-formats.md), while still retaining the capability to use unique options for each command.
 
 ### **Unified output schema**
 
-Commands belonging to the same category <mark style="color:red;">**MUST**</mark> have <mark style="color:orange;">**unified**</mark> [<mark style="color:orange;">**output types**</mark>](concepts/output-types.md), allowing you to run multiple commands and aggregate results quickly.
+Tools belonging to the same category <mark style="color:red;">**MUST**</mark> have <mark style="color:orange;">**unified**</mark> [<mark style="color:orange;">**output types**</mark>](concepts/output-types.md), allowing you to run multiple commands and aggregate results quickly.
 
 ### **CLI and library usage**
 
