@@ -14,11 +14,11 @@ You can set up a task queue using Celery with the broker and a results backend o
 
 The following is an example using `redis`, but you can use any [supported Celery broker and backend](https://docs.celeryq.dev/en/stable/getting-started/backends-and-brokers/index.html).
 
-**Install `redis` and `worker`  addons:**
+**Install `worker`  and `redis`   addons:**
 
 ```
-secator install addons redis
 secator install addons worker
+secator install addons redis
 ```
 
 \

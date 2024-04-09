@@ -7,27 +7,12 @@
 ## Usage
 
 ```bash
-secator --help        # General help
-
+secator --help # General help
 secator x      # List available tasks
 secator w      # List available workflows
 secator s      # List available scans
-secator i      # Installations
-secator r      # Reports
-secator a      # Aliases
-secator u      # Utils
-secator test   # Tests
+secator u      # List available utilities
 ```
-
-***
-
-## Worker \[optional]
-
-You can enable enable distributed runs by starting `secator` workers.  All tasks / workflows / scans will be sent to the workers for execution.
-
-{% hint style="info" %}
-Learn more about [distributed-runs-with-celery.md](in-depth/distributed-runs-with-celery.md "mention").
-{% endhint %}
 
 ***
 
@@ -78,9 +63,9 @@ secator x maigret elonmusk
 {% endtabs %}
 
 {% hint style="info" %}
-Use **`secator x --help`** to list all available tasks.
+Use **`secator x`** to list all available tasks.
 
-Use **`secator x <NAME> --help`** to list task options.
+Use **`secator x <NAME> --help`** to list options for a specific task.
 {% endhint %}
 
 ***
@@ -142,9 +127,9 @@ secator w user_hunt elonmusk
 {% endtabs %}
 
 {% hint style="info" %}
-Use **`secator w --help`** to list all available workflows.
+Use **`secator w`** to list all available workflows.
 
-Use **`secator w <NAME> --help`** to list workflow options.
+Use **`secator w <NAME> --help`** to list options for a specific workflow.
 {% endhint %}
 
 ***
@@ -182,9 +167,9 @@ secator s url http://testphp.vulnweb.com
 {% endtabs %}
 
 {% hint style="info" %}
-Use **`secator s --help`** to list all available scans.
+Use **`secator s`** to list all available scans.
 
-Use **`secator s <NAME> --help`** to list scan options.
+Use **`secator s <NAME> --help`** to list a options for a specific scan.
 {% endhint %}
 
 ***
@@ -198,8 +183,8 @@ Use **`secator s <NAME> --help`** to list scan options.
 You can get a random proxy:
 
 ```bash
-secator utils proxy                  # print a random proxy
-secator utils proxy -n 5 --timeout 1 # print 5 proxies with 1s max timeout
+secator u proxy                  # print a random proxy
+secator u proxy -n 5 --timeout 1 # print 5 proxies with 1s max timeout
 ```
 
 **Reverse shells**
@@ -207,10 +192,10 @@ secator utils proxy -n 5 --timeout 1 # print 5 proxies with 1s max timeout
 You can spawn reverse shells in any language, and optional netcat listener:
 
 ```bash
-secator utils revshell                                     # list all reverse shells
-secator utils revshell bash                                # show a Bash reverse shell
-secator utils revshell javascript -h <LHOST> -p <LPORT>    # show a Javascript reverse shell to connect to LHOST / LPORT
-secator utils revshell javascript -h <LHOST> -p <LPORT> -l # ... also spawn a netcat listener
+secator u revshell                                     # list all reverse shells
+secator u revshell bash                                # show a Bash reverse shell
+secator u revshell javascript -h <LHOST> -p <LPORT>    # show a Javascript reverse shell to connect to LHOST / LPORT
+secator u revshell javascript -h <LHOST> -p <LPORT> -l # ... also spawn a netcat listener
 ```
 
 #### Serve
@@ -218,7 +203,7 @@ secator utils revshell javascript -h <LHOST> -p <LPORT> -l # ... also spawn a ne
 You can run an HTTP server to serve payloads:
 
 ```sh
-secator serve
+secator u serve
 ```
 
 **Recording**
@@ -226,8 +211,18 @@ secator serve
 You can record pentesting sessions as a GIF:
 
 ```bash
-secator utils record -i <RECORD_NAME>                # record an interactive session
-secator utils record --script test.sh <RECORD_NAME>  # put your commands in a script and record the execution
+secator u record -i <RECORD_NAME>                # record an interactive session
+secator u record --script test.sh <RECORD_NAME>  # put your commands in a script and record the execution
 ```
+
+***
+
+## Worker \[optional]
+
+You can enable enable distributed runs by starting `secator` workers.  All tasks / workflows / scans will be sent to the workers for execution.
+
+{% hint style="info" %}
+Learn more about [distributed-runs-with-celery.md](in-depth/distributed-runs-with-celery.md "mention").
+{% endhint %}
 
 ***
