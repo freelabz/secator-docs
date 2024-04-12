@@ -10,8 +10,9 @@ description: Steps to install secator on a fresh environment
 
 {% tabs %}
 {% tab title="Pipx" %}
-<pre class="language-bash"><code class="lang-bash"><strong>pipx install secator
-</strong></code></pre>
+```
+pipx install secator
+```
 {% endtab %}
 
 {% tab title="Pip" %}
