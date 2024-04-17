@@ -63,8 +63,6 @@ secator x maigret elonmusk
 {% endtabs %}
 
 {% hint style="info" %}
-Use **`secator x`** to list all available tasks.
-
 Use **`secator x <NAME> --help`** to list options for a specific task.
 {% endhint %}
 
@@ -127,8 +125,6 @@ secator w user_hunt elonmusk
 {% endtabs %}
 
 {% hint style="info" %}
-Use **`secator w`** to list all available workflows.
-
 Use **`secator w <NAME> --help`** to list options for a specific workflow.
 {% endhint %}
 
@@ -167,8 +163,6 @@ secator s url http://testphp.vulnweb.com
 {% endtabs %}
 
 {% hint style="info" %}
-Use **`secator s`** to list all available scans.
-
 Use **`secator s <NAME> --help`** to list a options for a specific scan.
 {% endhint %}
 
