@@ -160,7 +160,7 @@ You can repeat step 4 on more instances to increase the number of workers.
 
 ***
 
-## Google Cloud Platform (GCP) \[WIP]
+## Google Cloud Platform (GCP)
 
 The _Google Cloud Platform_ (GCP) is a suite of cloud services that offers server space on virtual machines, internal networks, VPN connections, disk storage, ...
 
