@@ -28,8 +28,24 @@ wget -O - https://raw.githubusercontent.com/freelabz/secator/main/scripts/instal
 {% endtab %}
 
 {% tab title="Docker" %}
-```bash
-docker run -it --rm --net=host -v ~/.secator:/root/.secator freelabz/secator
+```
+docker run -it --rm --net=host -v ~/.secator:/root/.secator freelabz/secator --help
+```
+
+{% hint style="info" %}
+The volume mount `-v` is necessary to save all `secator` reports to your host machine, and`--net=host` is recommended to grant full access to the host network.
+{% endhint %}
+
+You can alias this command to run it easier:
+
+```
+alias secator="docker run -it --rm --net=host -v ~/.secator:/root/.secator freelabz/secator"
+```
+
+Now you can run `secator` like if it was installed on baremetal:
+
+```
+secator --help
 ```
 {% endtab %}
 
