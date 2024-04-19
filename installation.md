@@ -59,7 +59,7 @@ cd secator
 {% endtabs %}
 
 {% hint style="info" %}
-If you chose the Bash, Docker, or Docker Compose installation methods, you go straight to [cli-usage.md](cli-usage.md "mention").
+If you chose the Bash, Docker, or Docker Compose installation methods, you can jump straight to [cli-usage.md](cli-usage.md "mention").
 {% endhint %}
 
 ***
