@@ -29,7 +29,7 @@ wget -O - https://raw.githubusercontent.com/freelabz/secator/main/scripts/instal
 
 {% tab title="Docker" %}
 ```bash
-docker run -it freelabz/secator --help
+docker run -it --rm --net=host -v ~/.secator:/root/.secator freelabz/secator
 ```
 {% endtab %}
 
