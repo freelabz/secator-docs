@@ -1,3 +1,7 @@
+---
+description: ... or how to run secator anywhere.
+---
+
 # Deployment
 
 Once you have started using `secator` locally, you can deploy it on remote instances.
@@ -32,6 +36,8 @@ To deploy `secator` on AWS on a single EC2 instance, we will install RabbitMQ, R
 <details>
 
 <summary>Step 2: Install RabbitMQ as a task broker</summary>
+
+Celery needs a task broker to send tasks to remote workers.
 
 ```bash
 sudo apt-get install curl gnupg apt-transport-https -y
@@ -85,16 +91,14 @@ First, setup `secator`using the all-in-one bash setup script:
 wget -O - https://raw.githubusercontent.com/freelabz/secator/main/scripts/install.sh | sh
 ```
 
-Now, let's configure the worker `.env` with RabbitMQ and Redis connection details:
+Then, set the RabbitMQ and Redis connection details in `secator`'s config:
 
-{% code title=".env" %}
 ```bash
-CELERY_BROKER_URL=amqp://secator:<RABBITMQ_PASSWORD>@localhost:5672/
-CELERY_RESULT_BACKEND=redis://default:<REDIS_PASSWORD>@localhost:6379/0
+secator config set celery.broker_url amqp://secator:<RABBITMQ_PASSWORD>@localhost:5672/
+secator config set celery.result_backend redis://default:<REDIS_PASSWORD>@localhost:6379/0
 ```
-{% endcode %}
 
-Now we can run a `secator worker`:
+Finally, run a `secator worker`:
 
 ```
 nohup secator worker > worker.log 2>&1 &  # start in background and save logs
@@ -106,14 +110,12 @@ nohup secator worker > worker.log 2>&1 &  # start in background and save logs
 
 <summary>Step 5: Run a task from your local machine</summary>
 
-Let's configure the worker `.env` with RabbitMQ and Redis connection details:
+Let's configure the worker with RabbitMQ and Redis connection details:
 
-{% code title=".env" %}
 ```bash
-CELERY_BROKER_URL=amqp://secator:<RABBITMQ_PASSWORD>@<EC2_PUBLIC_IP>:5672/
-CELERY_RESULT_BACKEND=redis://default:<REDIS_PASSWORD>@<EC2_PUBLIC_IP>:6379/0
+secator config set celery.broker_url amqp://secator:<RABBITMQ_PASSWORD>@<EC2_PUBLIC_IP>:5672/
+secator config set celery.result_backend redis://default:<REDIS_PASSWORD>@<EC2_PUBLIC_IP>:6379/0
 ```
-{% endcode %}
 
 Run a test task:
 
@@ -189,6 +191,8 @@ To deploy `secator` on a single GCE machine, we will install RabbitMQ, Redis and
 
 <summary>Step 2: Install RabbitMQ as a task broker</summary>
 
+Celery needs a task broker to send tasks to remote workers.
+
 ```bash
 sudo apt-get install curl gnupg apt-transport-https -y
 curl -1sLf "https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA" | sudo gpg --dearmor | sudo tee /usr/share/keyrings/com.rabbitmq.team.gpg > /dev/null
@@ -241,16 +245,14 @@ First, setup `secator`using the all-in-one bash setup script:
 wget -O - https://raw.githubusercontent.com/freelabz/secator/main/scripts/install.sh | sh
 ```
 
-Now, let's configure the worker `.env` with RabbitMQ and Redis connection details:
+Then, set the RabbitMQ and Redis connection details in `secator`'s config:
 
-{% code title=".env" %}
 ```bash
-CELERY_BROKER_URL=amqp://secator:<RABBITMQ_PASSWORD>@localhost:5672/
-CELERY_RESULT_BACKEND=redis://default:<REDIS_PASSWORD>@localhost:6379/0
+secator config set celery.broker_url amqp://secator:<RABBITMQ_PASSWORD>@localhost:5672/
+secator config set celery.result_backend redis://default:<REDIS_PASSWORD>@localhost:6379/0
 ```
-{% endcode %}
 
-Now we can run a `secator worker`:
+Finally, run a `secator worker`:
 
 ```
 nohup secator worker > worker.log 2>&1 &  # start in background and save logs
@@ -262,14 +264,12 @@ nohup secator worker > worker.log 2>&1 &  # start in background and save logs
 
 <summary>Step 5: Run a task from your local machine</summary>
 
-Let's configure the worker `.env` with RabbitMQ and Redis connection details:
+First, set the RabbitMQ and Redis connection details in `secator`'s config:
 
-{% code title=".env" %}
 ```bash
-CELERY_BROKER_URL=amqp://secator:<RABBITMQ_PASSWORD>@<GCE_PUBLIC_IP>:5672/
-CELERY_RESULT_BACKEND=redis://default:<REDIS_PASSWORD>@<GCE_PUBLIC_IP>:6379/0
+secator config set celery.broker_url amqp://secator:<RABBITMQ_PASSWORD>@<GCE_PUBLIC_IP>:5672/
+secator config set celery.result_backend redis://default:<REDIS_PASSWORD>@<GCE_PUBLIC_IP>:6379/0
 ```
-{% endcode %}
 
 Run a test task:
 

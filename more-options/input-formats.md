@@ -1,3 +1,7 @@
+---
+description: ... or how to pass targets to secator.
+---
+
 # Input formats
 
 `secator` is built to be flexible in terms of input formats.
@@ -33,7 +37,7 @@ Input can also be passed directly from `stdin`:
 cat urls.txt | secator x httpx
 ```
 
-This also means you can build basic workflow using UNIX pipes and the [`-raw`](output-options.md#raw) output format:
+This also means you can build basic workflow using UNIX pipes and the [`-raw`](broken-reference) output format:
 
 <figure><img src="../.gitbook/assets/pipe.gif" alt=""><figcaption><p>Example of a piped workflow</p></figcaption></figure>
 

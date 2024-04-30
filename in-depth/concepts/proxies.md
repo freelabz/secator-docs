@@ -1,3 +1,7 @@
+---
+description: ... or how to control how secator connects to targets.
+---
+
 # Proxies
 
 `secator` provides a range of proxy options to choose from, by passing the `-proxy` option to any runner (task, workflow, scan).

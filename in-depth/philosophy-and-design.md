@@ -1,3 +1,7 @@
+---
+description: ... or the core concepts behind the pillars of secator.
+---
+
 # Philosophy & design
 
 ***
@@ -46,9 +50,9 @@ With `secator` the goal is to unify all these awesome tools by creating an abstr
 
 We believe in open-source 100%.&#x20;
 
-Freelabz founders have written code for open-source for as long as they started working in the tech industry. `secator` is and will remain free-to-use, forkable and open to community contributions forever, and we believe in the collective to make it one of the de-facto tools in the security world.
+**Freelabz** founders have written code for open-source for as long as they started working in the tech industry. `secator` is and will remain free-to-use, forkable and open to community contributions forever, and we believe in the collective to make it one of the de-facto tools in the security world.
 
-However, Freelabz is a young company that is seeking to make a living and pay its workers correctly. We are working on a paid product derived from `secator` and BSL allows us to restrict commercial uses of `secator` by big tech actors who could profit from its success.  All standard OSS rules still apply, which means you can still read / fork / modify it and even use it in production **as long as you don't sell a service based on it**.&#x20;
+However, **Freelabz** is a young company that is seeking to make a living and pay its workers correctly. We are working on a paid product derived from `secator` and BSL allows us to restrict commercial uses of `secator` by big tech actors who could profit from its success.  All standard OSS rules still apply, which means you can still read / fork / modify it, use it in other OSS projects, and even use it in production **as long as you don't sell a service based on it**.&#x20;
 
 Feel free to reach out to us if you want to use `secator` in a commercial tool, and we will review your request on a case-by-case basis.
 
@@ -66,23 +70,23 @@ We do make exceptions for really awesome tools and write custom parsers (e.g: `n
 
 ### **Unified input options**
 
-`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](../more-options/input-formats.md), while still retaining the capability to use unique options for each command.
+`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](broken-reference), while still retaining the capability to use unique options for each command.
 
 ### **Unified output schema**
 
-Tools belonging to the same category <mark style="color:red;">**MUST**</mark> have <mark style="color:orange;">**unified**</mark> [<mark style="color:orange;">**output types**</mark>](concepts/output-types.md), allowing you to run multiple commands and aggregate results quickly.
+Tools belonging to the same category <mark style="color:red;">**MUST**</mark> have <mark style="color:orange;">**unified**</mark> [<mark style="color:orange;">**output types**</mark>](broken-reference), allowing you to run multiple commands and aggregate results quickly.
 
 ### **CLI and library usage**
 
 When `secator` is called as a library from other Python code, the output <mark style="color:red;">**MUST**</mark> be <mark style="color:orange;">**structured**</mark> (list of dicts). Results <mark style="color:red;">**MUST**</mark> also be yielded in <mark style="color:orange;">**realtime**</mark>.
 
-When `secator` is called as a CLI, various [output formats](../more-options/output-options.md) <mark style="color:red;">**MUST**</mark> be available, such as <mark style="color:orange;">**csv**</mark>, <mark style="color:orange;">**json**</mark>, <mark style="color:orange;">**txt**</mark>, or <mark style="color:orange;">**table**</mark>.
+When `secator` is called as a CLI, various [output formats](broken-reference) <mark style="color:red;">**MUST**</mark> be available, such as <mark style="color:orange;">**csv**</mark>, <mark style="color:orange;">**json**</mark>, <mark style="color:orange;">**txt**</mark>, or <mark style="color:orange;">**table**</mark>.
 
 ### **Distributed options**
 
-`secator` <mark style="color:red;">**MUST**</mark> work in both <mark style="color:orange;">**synchronous**</mark> mode (default) and [<mark style="color:orange;">**distributed**</mark> ](distributed-runs-with-celery.md)mode.
+`secator` <mark style="color:red;">**MUST**</mark> work in both <mark style="color:orange;">**synchronous**</mark> mode (default) and [<mark style="color:orange;">**distributed**</mark> ](broken-reference)mode.
 
-Switch from synchronous to distributed when you want to increase the scanning speed <mark style="color:red;">**MUST**</mark> be easy, by simply [configuring Celery worker with your broker and results backend of choice](distributed-runs-with-celery.md#step-1-configure-a-broker-optional).
+Switch from synchronous to distributed when you want to increase the scanning speed <mark style="color:red;">**MUST**</mark> be easy, by simply [configuring Celery worker with your broker and results backend of choice](broken-reference).
 
 ### **From simple tasks to complex workflows**
 

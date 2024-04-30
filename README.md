@@ -1,20 +1,26 @@
-# Overview
+---
+description: ... or what secator is all about.
+---
+
+# Introduction
 
 `secator` is a task and workflow runner used for security assessments. It supports dozens of well-known security tools and is designed to improve productivity for pentesters and security researchers.
 
-<figure><img src=".gitbook/assets/short_demo (2) (1).gif" alt=""><figcaption><p>Example of running secator tasks and workflows</p></figcaption></figure>
+## Quick demo
+
+<figure><img src=".gitbook/assets/demo.gif" alt=""><figcaption><p>Example of running secator tasks and workflows</p></figcaption></figure>
 
 ## Features
 
-* [**Curated list of tools**](in-depth/philosophy-and-design.md#curated-list-of-commands)
-* [**Unified input options**](in-depth/philosophy-and-design.md#unified-input-options)
-* [**Unified output schema**](in-depth/philosophy-and-design.md#unified-output-schema)
-* [**CLI and library usage**](in-depth/philosophy-and-design.md#cli-and-library-usage)
-* [**Distributed options**](in-depth/philosophy-and-design.md#distributed-options)
-* [**From simple tasks to complex workflows**](in-depth/philosophy-and-design.md#from-simple-tasks-to-complex-workflows)
-* [**Customizable**](in-depth/philosophy-and-design.md#customizable)
+* [#curated-list-of-tools](in-depth/philosophy-and-design.md#curated-list-of-tools "mention")
+* [#unified-input-options](in-depth/philosophy-and-design.md#unified-input-options "mention")
+* [#unified-output-schema](in-depth/philosophy-and-design.md#unified-output-schema "mention")
+* [#cli-and-library-usage](in-depth/philosophy-and-design.md#cli-and-library-usage "mention")
+* [#distributed-options](in-depth/philosophy-and-design.md#distributed-options "mention")
+* [#from-simple-tasks-to-complex-workflows](in-depth/philosophy-and-design.md#from-simple-tasks-to-complex-workflows "mention")
+* [#customizable](in-depth/philosophy-and-design.md#customizable "mention")
 
-#### Supported tools
+## Supported tools
 
 `secator` integrates the following tools:
 
@@ -45,5 +51,5 @@
 | [nuclei](https://github.com/projectdiscovery/nuclei)          | Fast and customisable vulnerability scanner based on simple YAML based DSL.            | `vuln/multi`   |
 
 {% hint style="info" %}
-Feel free to request new tools integrations by opening an issue on the repo, but please check that the tool complies with our selection criterias before doing so (read [philosophy-and-design.md](in-depth/philosophy-and-design.md "mention")). If it doesn't but you still want to integrate it into `secator`, you can plug it in (read [writing-tasks](for-developers/writing-tasks/ "mention")).
+Feel free to request new tools integrations by opening an issue on the repo, but please check that the tool complies with our selection criterias before doing so (read [#curated-list-of-tools](in-depth/philosophy-and-design.md#curated-list-of-tools "mention")). If it doesn't but you still want to integrate it into `secator`, you can plug it in (read [writing-tasks](for-developers/writing-tasks/ "mention")).
 {% endhint %}

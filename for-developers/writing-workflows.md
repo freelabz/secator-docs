@@ -1,3 +1,7 @@
+---
+description: ... or how to integrate new workflows with secator.
+---
+
 # Writing workflows
 
 New `secator` workflows should be easy to write to promote contributions from the community.&#x20;
@@ -51,7 +55,7 @@ tasks:
 {% hint style="info" %}
 The dynamic format keys are:
 
-* `type` is the output type, lower-case (see [output-types.md](../in-depth/concepts/output-types.md "mention") for the whole list)
+* `type` is the output type, lower-case (see [Broken link](broken-reference "mention") for the whole list)
 * `field` is the JSON field to use as target
 * `condition` is the filtering condition.
 {% endhint %}
@@ -76,7 +80,7 @@ tasks:
 In this configuration, the `katana`task will begin the run, followed by a grouped execution of `gf` and `another_task`.
 
 {% hint style="info" %}
-Parallel tasks specified with the `_group` key will run in parallel only when `secator` is in worker mode (see [distributed-runs-with-celery.md](../in-depth/distributed-runs-with-celery.md "mention")).
+Concurrent tasks require`secator` to be setup in worker mode (see [distributed-runs-with-celery.md](../in-depth/distributed-runs-with-celery.md "mention")).
 {% endhint %}
 
 ***
@@ -94,7 +98,7 @@ You can customize which results you want to keep for workflows and scans by addi
 </code></pre>
 
 {% hint style="info" %}
-Filters apply to final run results sent to [exporters.md](../in-depth/concepts/exporters.md "mention"), but do not apply to real-time results sent to [hooks-and-drivers.md](../in-depth/concepts/hooks-and-drivers.md "mention").
+Filters apply to final run results sent to [exporters.md](../in-depth/concepts/exporters.md "mention"), but do not apply to real-time results sent to [drivers.md](../in-depth/concepts/drivers.md "mention").
 {% endhint %}
 
 ***

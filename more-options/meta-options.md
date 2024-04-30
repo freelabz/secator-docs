@@ -1,30 +1,56 @@
+---
+description: >-
+  ... or options that are mutualized among task categories for efficiency,
+  speed, and user-friendliness.
+---
+
 # Meta Options
 
-**Meta options** are options that apply to tasks of the same category. Meta options can passed to tasks, workflows, or scans.
-
-When passed to workflows or scans, they will be passed to each task contained in the runner.
-
-***
-
-## Network options
-
-The following options will apply to all tasks making network (TCP / UDP / HTTP) requests:
+**Meta options** apply to **tasks**, **workflows**, or **scans**. When passed to **workflows** or **scans**, they will be passed to each task contained in the runner.
 
 {% hint style="info" %}
-Some tasks making HTTP requests do not support some of the options mentioned below. Run**`secator x <task> --help`** for the complete list of supported options.
+Some tasks, workflows, or scans do not support some of the options mentioned below. Run**`secator x/w/s <name> --help`** to get the complete list of supported options.
 {% endhint %}
 
 ***
 
+## Execution Options
+
+### Threads (`-threads`)
+
+Number of threads to use. Applies to all tasks supporting threads (or concurrency).
+
+<details>
+
+<summary>Example: set 50 threads</summary>
+
+```bash
+secator w host_recon mydomain.com -threads 50
+```
+
+</details>
+
+***
+
+## Requests Options
+
+The following options will apply to tasks making network requests (if they implement it), no matter the protocol used (HTTP, TCP, UDP, DNS, FTP, ...).
+
 ### Proxy (`-proxy`)
 
-You can use an automatic proxy to use for each task:
+Proxy (HTTP, Socks5, ...) to use when communicating with the targets.
 
+<details>
+
+<summary>Example: set proxies in config and <code>-proxy</code> to <code>auto</code></summary>
+
+```bash
+secator config set http.http_proxy http://localhost:8080
+secator config set http.socks5_proxy socks5://localhost:9050
+secator w host_recon mydomain.com -proxy auto  # auto choose the right proxy
 ```
-secator x httpx mydomain.com -proxy auto
-secator w host_recon mydomain.com -proxy auto
-secator s host mydomain.com -proxy auto
-```
+
+</details>
 
 {% hint style="info" %}
 Learn more about [proxies.md](../in-depth/concepts/proxies.md "mention").
@@ -34,177 +60,260 @@ Learn more about [proxies.md](../in-depth/concepts/proxies.md "mention").
 
 ### Rate limit (`-rl`)
 
-You can use a rate limit of 50 requests/second to use for each task:
+Rate limit is an upper limit on the number of requests per second.
 
-```
-secator x httpx mydomain.com -rl 50
+<details>
+
+<summary>Example: set a rate limit of <code>50</code> requests/second</summary>
+
+```bash
 secator w host_recon mydomain.com -rl 50
-secator s host mydomain.com -rl 50
 ```
+
+</details>
 
 ***
 
 ### Timeout (`-timeout`)
 
-You can use a request timeout of 10 seconds to use for each task:
+Timeout is the time to wait (in seconds) before giving up on the request.
 
-<pre><code><strong>secator x httpx mydomain.com -timeout 10
-</strong></code></pre>
+<details>
+
+<summary>Example: set a request timeout of <code>10</code> seconds</summary>
+
+```bash
+secator w host_recon mydomain.com -timeout 10
+```
+
+</details>
 
 ***
 
 ### Retries (`-retries`)
 
-Retries is the number of retries for the port scan \[default: 3 ]
+Retries is the number of retries for the port scan.
+
+<details>
+
+<summary>Example: set <code>5</code> retries for all requests</summary>
 
 ```bash
-secator x naabu mydomain.com -retries [INT]
+secator w port_scan mydomain.com -retries 5
 ```
 
-***
+</details>
 
 ***
 
 ## HTTP Options
 
-The following options will apply to all tasks making HTTP requests.
-
-{% hint style="info" %}
-Some tasks making HTTP requests do not support some of the options mentioned below. Run**`secator x <task> --help`** for the complete list of supported options.
-{% endhint %}
-
-***
+The following options will apply to tasks making HTTP requests (if they implement it).
 
 ### Header (`-header`)
 
-Custom header to add to each request in the form "KEY1:VALUE1; KEY2:VALUE2"
+Custom header to add to each request in the form "KEY1:VALUE1; KEY2:VALUE2".
+
+<details>
+
+<summary>Example: set an <code>Authorization</code> and an <code>Accept</code> header</summary>
 
 ```bash
-secator x cariddi mydomain.com -header [TEXT]
+secator x cariddi mydomain.com -header "Authorization: Basic <TOKEN>; Accept: application/json"
 ```
+
+</details>
 
 ***
 
 ### Method (`-method`)
 
-HTTP method to use for request \[GET POST PUT DELETE]
+HTTP method to use for request GET, POST, PUT, DELETE, etc...
+
+<details>
+
+<summary>Example: use <code>POST</code> method for fuzzing</summary>
 
 ```bash
-secator x ffuf mydomain.com -method [METHOD]
+secator x ffuf mydomain.com -method POST
 ```
+
+</details>
 
 ***
 
 ### User-agent (`-ua`)
 
-You can specific a custom user-agent on request \[Mozilla Firefox 1.0 ]
+Custom user-agent to use for request.
+
+<details>
+
+<summary>Example: use <code>secator</code> as a user agent value</summary>
 
 ```bash
-secator x dalfox mydomain.com -ua Mozilla Firefox 1.0
+secator x dalfox mydomain.com -ua secator
 ```
+
+</details>
 
 ***
 
 ### **Match regex (`-mr)`**
 
-Keep responses which body content match the regex input as argument:
+Keep responses which body content match the input.
 
-```
+<details>
+
+<summary>Example: keep responses which match the regex<code>MySQLError.*</code></summary>
+
+```bash
 secator x ffuf mydomain.com -mr MySQLError.*
 ```
+
+</details>
 
 ***
 
 ### Match size (`-ms`)
 
-Keep responses which body size match the size input as argument:
+Keep responses which body size (in bytes) match the input.
+
+<details>
+
+<summary>Example: keep responses with <code>1025</code> bytes</summary>
 
 ```bash
 secator x katana mydomain.com -ms 1026  # bytes
 ```
 
+</details>
+
 ***
 
 ### Match-words (`-mw)`
 
-Keep responses which size match the word count input as argument:
+Keep responses which body word count match the input.
+
+<details>
+
+<summary>Example: keep responses with <code>10</code> words</summary>
 
 ```bash
 secator x katana mydomain.com -mw 10
 ```
 
+</details>
+
 ***
 
 ### Match code (`-mc`)
 
-Keep responses which status codes match the codes input as argument:
+Keep responses which HTTP status codes match the input.
+
+<details>
+
+<summary>Example: keep responses matching HTTP statuses <code>200</code>,<code>400</code>,<code>501</code></summary>
 
 ```bash
 secator x katana mydomain.com -mc 200,400,501
 ```
 
+</details>
+
 ***
 
 ### Filter regex (`-fr`)
 
-Test the body of the request and filter out responses with regular expression
+Filter out responses which body content match the input.
+
+<details>
+
+<summary>Example: filter out responses containing the string <code>LoginPage</code></summary>
 
 ```bash
-secator x katana mydomain.com -fr 
+secator x ffuf mydomain.com -fr LoginPage.*
 ```
+
+</details>
 
 ***
 
 ### Filter codes (`-fc`)
 
-Test the body of the request and filter out responses with HTTP codes.
+Filter out responses which HTTP status codes match the input.
+
+<details>
+
+<summary>Example: filter out responses matching HTTP status <code>500</code></summary>
 
 ```bash
-secator x katana mydomain.com -fc [TEXT]
+secator x ffuf mydomain.com -fc 500
 ```
+
+</details>
 
 ***
 
-#### Filter size (`-fs)`
+### Filter size (`-fs)`
 
-Test the body of the request and filter out responses with size
+Filter out responses which body size (in bytes) match the input.
+
+<details>
+
+<summary>Example: filter out responses with <code>1025</code> bytes</summary>
 
 ```bash
-secator x katana mydomain.com -fs [NUMBER]
+secator x ffuf mydomain.com -fs 1025
 ```
+
+</details>
 
 ***
 
 ### Filter words (`-fw`)
 
-Test the body request and filter out responses with word count
+Filter out responses which body word count match the input.
+
+<details>
+
+<summary>Example: filter out responses with <code>10</code> words</summary>
 
 ```bash
-secator x katana mydomain.com -fw [NUMBER]
+secator x ffuf mydomain.com -fw 10
 ```
+
+</details>
 
 ***
 
 ### Follow redirect (`-frd`)
 
-This option follow all http redirect
+Follow all http redirects.
+
+<details>
+
+<summary>Example: follow HTTP redirects</summary>
 
 ```bash
 secator x katana mydomain.com -frd
 ```
 
+</details>
+
 ***
 
 ### Wordlist (`-w`)
 
-To use a wordlist the default path is write like this : /usr/share/seclists/Fuzzing/fuzz-Bo0oM.txt
+Custom wordlist to use.
 
-```bash
+<details>
+
+<summary>Example: use fuzz-Bo0oM wordlist</summary>
+
+```
 secator x ffuf mydomain.com/FFUF/ -w /usr/share/seclists/Fuzzing/fuzz-Bo0oM.txt
 ```
 
-{% hint style="info" %}
-This option only applies to HTTP Fuzzers.
-{% endhint %}
+</details>
 
 ***

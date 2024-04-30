@@ -1,3 +1,7 @@
+---
+description: ... or how to integrate new tasks with secator.
+---
+
 # Writing tasks
 
 If you wish to integrate a new command with `secator`, you can define a new class inherited from `secator.runners.Command`.
@@ -58,7 +62,7 @@ class mytask(Command):
 
 ## Mapping output types
 
-The next step is to map the output format of the command you integrate with standard `secator` [output-types.md](../../in-depth/concepts/output-types.md "mention").
+The next step is to map the output format of the command you integrate with standard `secator` [Broken link](broken-reference "mention").
 
 \
 If our task is outputting URLs in the format `{'url': 'http://mydomain.com', 'code': 200, 'length': 100}`, then we will need to convert this dict to the `Url` output type format:

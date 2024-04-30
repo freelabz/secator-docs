@@ -1,9 +1,13 @@
+---
+description: ... or how to export reports to different destinations.
+---
+
 # Exporters
 
-`secator` exporters allow exporting runner results **at the end of the run**.
+`secator` exporters allow exporting **reports** at the end of the run.
 
 {% hint style="info" %}
-To export results in **real-time**, see [hooks-and-drivers.md](hooks-and-drivers.md "mention") instead.
+To export **results** in **real-time**, see [Broken link](broken-reference "mention") instead.
 {% endhint %}
 
 Available exporters out-of-the-box are:
@@ -32,12 +36,13 @@ secator s url http://testphp.vulnweb.com -o csv,json
 To use exporters from the library, you can pass the `exporters` kwarg to any runner:
 
 ```python
-from secator.exporters import GdriveExporter,CSVExporter,JSONExporter
 from secator.runners import Workflow
+from secator.template import TemplateLoader
 
-config = ConfigLoader(name='workflows/host_recon')
-workflow = Workflow(config, exporters=[CSVExporter, JSONExporter])
+config = TemplateLoader(name='workflows/host_recon')
+workflow = Workflow(config, exporters=['csv', 'json'])
 workflow.run()
 ```
 {% endtab %}
 {% endtabs %}
+

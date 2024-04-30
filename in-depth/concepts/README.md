@@ -1,3 +1,7 @@
+---
+description: ... or foundational blocks that you must understand in order to go deeper.
+---
+
 # Concepts
 
 This page presents various `secator` concepts:
@@ -5,5 +9,6 @@ This page presents various `secator` concepts:
 * [output-types.md](output-types.md "mention")
 * [proxies.md](proxies.md "mention")
 * [exporters.md](exporters.md "mention")
-* [hooks-and-drivers.md](hooks-and-drivers.md "mention")
+* [hooks.md](hooks.md "mention")
+* [drivers.md](drivers.md "mention")
 * [profiles-wip.md](profiles-wip.md "mention")

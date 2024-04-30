@@ -1,3 +1,7 @@
+---
+description: ... or how secator unifies all output into common schemas.
+---
+
 # Output types
 
 `secator` uses the notion of output types to uniformize tasks output. A task can output one or multiple output types.
