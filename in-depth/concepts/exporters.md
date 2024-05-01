@@ -7,7 +7,7 @@ description: ... or how to export reports to different destinations.
 `secator` exporters allow exporting **reports** at the end of the run.
 
 {% hint style="info" %}
-To export **results** in **real-time**, see [Broken link](broken-reference "mention") instead.
+To export **results** in **real-time**, see [drivers.md](drivers.md "mention") instead.
 {% endhint %}
 
 Available exporters out-of-the-box are:
