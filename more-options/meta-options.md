@@ -4,11 +4,11 @@ description: >-
   speed, and user-friendliness.
 ---
 
-# Meta Options
+# Meta options
 
 **Meta options** apply to **tasks**, **workflows**, or **scans**. When passed to **workflows** or **scans**, they will be passed to each task contained in the runner.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Some tasks, workflows, or scans do not support some of the options mentioned below. Run**`secator x/w/s <name> --help`** to get the complete list of supported options.
 {% endhint %}
 

@@ -58,7 +58,7 @@ cd secator
 {% endtab %}
 {% endtabs %}
 
-{% hint style="info" %}
+{% hint style="success" %}
 If you chose the Bash, Docker, or Docker Compose installation methods, you can jump straight to [cli-usage.md](cli-usage.md "mention").
 {% endhint %}
 
@@ -156,6 +156,10 @@ We provide a subcommand to download all known CVEs locally so that future lookup
 ```bash
 secator install cves
 ```
+
+{% hint style="danger" %}
+This step can take a while as all CVEs will be download and extracted to disk.
+{% endhint %}
 
 ***
 

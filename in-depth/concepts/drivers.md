@@ -15,7 +15,7 @@ You can use a driver from the CLI by using the `-driver` option.
 To export live results to MongoDB database:
 
 <pre class="language-bash"><code class="lang-bash"><strong>secator install addons mongodb
-</strong>secator config set addons.mongodb.url mongodb://localhost 
+</strong>secator config set addons.mongodb.url mongodb://localhost
 secator w host_recon example.com -driver mongodb
 </code></pre>
 

@@ -38,7 +38,7 @@ tasks:
 
 ## Dynamic targets
 
-You can specify dynamic targets for tasks using based on the current run results, by using the `targets_` key in your template like:
+You can specify dynamic targets for tasks from current run results, by using the `targets_` key in your template like:
 
 ```yaml
 ...
@@ -70,6 +70,7 @@ You can specify tasks that run in parallel using the `_group` key:
 ...
 tasks:
   ...
+  katana:
   _group:
     gf:
       ...
@@ -97,7 +98,7 @@ You can customize which results you want to keep for workflows and scans by addi
   condition: item.status_code == 200
 </code></pre>
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Filters apply to final run results sent to [exporters.md](../in-depth/concepts/exporters.md "mention"), but do not apply to real-time results sent to [drivers.md](../in-depth/concepts/drivers.md "mention").
 {% endhint %}
 

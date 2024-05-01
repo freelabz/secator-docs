@@ -4,6 +4,10 @@ description: ... or how to run function on runner lifecycle events.
 
 # Hooks
 
+{% hint style="warning" %}
+Hooks are currently only useable when using `secator` as a library.
+{% endhint %}
+
 Hooks are methods that be plugged into any runner (`Task`, `Workflow`, `Scan`) lifecycle events:
 
 * `on_init`: executed when the runner initializes.
@@ -13,10 +17,6 @@ Hooks are methods that be plugged into any runner (`Task`, `Workflow`, `Scan`) l
 * `on_end` : executed when the runner has finished running.
 
 ### Using hooks to save results in db
-
-{% hint style="info" %}
-Hooks are currently only useable when using `secator` as a library.
-{% endhint %}
 
 You can use hooks to save results in a database. We give a default out-of-the-box hooks for MongoDB that you can use when using `secator` as a library.
 

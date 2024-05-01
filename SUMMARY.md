@@ -13,7 +13,7 @@
 ## MORE OPTIONS
 
 * [Global options](more-options/task-options.md)
-* [Meta Options](more-options/meta-options.md)
+* [Meta options](more-options/meta-options.md)
 * [Input formats](more-options/input-formats.md)
 * [Output options](more-options/output-options.md)
 

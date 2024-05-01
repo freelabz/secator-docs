@@ -12,13 +12,13 @@ description: ... or how to control how secator connects to targets.
 
 Using `-proxy auto` for a `secator` run will result in auto-detecting the right proxy to pass to each task. This is the recommended option for most runs.
 
-The defaults to use for proxies in `auto` mode are set through environment variables:
+The defaults to use for proxies in `auto` mode are set through config variables:
 
 * ```bash
-  export SOCKS5_PROXY=socks5://tor-privoxy:9050
+  secator config set http.socks5_proxy socks5://tor-privoxy:9050
   ```
 * ```bash
-  export HTTP_PROXY=http://tor-privoxy:8118
+  secator config set http.http_proxy http://tor-privoxy:8118
   ```
 
 #### **Example**

@@ -56,7 +56,7 @@ sudo systemctl start redis
 </strong>secator config set celery.result_backend redis://&#x3C;REDIS_IP>:6379/0
 </code></pre>
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Make sure you replace `<REDIS_IP>` in the variables above with the IP of your Redis server.
 {% endhint %}
 

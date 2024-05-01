@@ -101,7 +101,7 @@ offline_mode: false
 
 To get `secator`'s default configuration, run:
 
-```
+```bash
 secator config default
 ```
 
@@ -111,25 +111,32 @@ It is possible to override `secator`'s default configuration using a **user conf
 
 The default user configuration is empty.
 
-### Get user config
+### Get config
 
 To get `secator`'s user config, run:
 
+```bash
+secator config get
+```
 
+### Edit config
 
-#### Editing config as YAML
+#### Editing whole config
 
 To modify `secator`'s user config, run:
 
-```
-secator config edit  # edits user YAML directly
+```bash
+secator config edit
 ```
 
 This will open the YAML config in your default editor (using the`$EDITOR` env variable).
 
-Upon saving your changes, the config will be validated by `pydantic`. If validation errors occur (for instance a wrong key, or wrong value type), you will get an error message such as:
+Upon saving your changes, the config will be validated by `pydantic` and saved to disk if it's valid.&#x20;
 
-```
+{% hint style="warning" %}
+If validation errors occur (for instance a wrong key, or wrong value type), you will get an error message such as:
+
+```bash
 ❌ 1 validation error for SecatorConfig
   offline_test
     Extra inputs are not permitted 
@@ -137,14 +144,19 @@ Upon saving your changes, the config will be validated by `pydantic`. If validat
 Hint: Run "secator config edit --resume" to edit your patch and fix issues.
 ```
 
-You can run `secator config edit --resume` to resume to fix the issues, or skip the `--resume` flag to start over.
+The invalid patch will not be saved in the user config. This ensures the actual user config is always valid. Run `secator config edit --resume` to resume the edit to fix the issues, or skip the `--resume` flag to start over.
+{% endhint %}
 
-### Editing specific keys in the YAML config
+#### Editing specific config keys
 
 To edit specific keys, use:
 
-```
-secator config set <PATH.TO.KEY> <VALUE>
+```bash
+secator config set <path.to.config.key> <VALUE>
 ```
 
-For instance, to set&#x20;
+For instance, to set the debug level to 3:
+
+```bash
+secator config set debug.level 3
+```

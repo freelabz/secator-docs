@@ -70,23 +70,23 @@ We do make exceptions for really awesome tools and write custom parsers (e.g: `n
 
 ### **Unified input options**
 
-`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](broken-reference), while still retaining the capability to use unique options for each command.
+`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](../more-options/meta-options.md), while still retaining the capability to use unique options for each command.
 
 ### **Unified output schema**
 
-Tools belonging to the same category <mark style="color:red;">**MUST**</mark> have <mark style="color:orange;">**unified**</mark> [<mark style="color:orange;">**output types**</mark>](broken-reference), allowing you to run multiple commands and aggregate results quickly.
+Tools belonging to the same category <mark style="color:red;">**MUST**</mark> have <mark style="color:orange;">**unified**</mark> [<mark style="color:orange;">**output types**</mark>](concepts/output-types.md), allowing you to run multiple commands and aggregate results quickly.
 
 ### **CLI and library usage**
 
 When `secator` is called as a library from other Python code, the output <mark style="color:red;">**MUST**</mark> be <mark style="color:orange;">**structured**</mark> (list of dicts). Results <mark style="color:red;">**MUST**</mark> also be yielded in <mark style="color:orange;">**realtime**</mark>.
 
-When `secator` is called as a CLI, various [output formats](broken-reference) <mark style="color:red;">**MUST**</mark> be available, such as <mark style="color:orange;">**csv**</mark>, <mark style="color:orange;">**json**</mark>, <mark style="color:orange;">**txt**</mark>, or <mark style="color:orange;">**table**</mark>.
+When `secator` is called as a CLI, various [exporters.md](concepts/exporters.md "mention") <mark style="color:red;">**MUST**</mark> be available, such as <mark style="color:orange;">**csv**</mark>, <mark style="color:orange;">**json**</mark>, <mark style="color:orange;">**txt**</mark>, or <mark style="color:orange;">**table**</mark>.
 
 ### **Distributed options**
 
-`secator` <mark style="color:red;">**MUST**</mark> work in both <mark style="color:orange;">**synchronous**</mark> mode (default) and [<mark style="color:orange;">**distributed**</mark> ](broken-reference)mode.
+`secator` <mark style="color:red;">**MUST**</mark> work in both <mark style="color:orange;">**synchronous**</mark> mode (default) and <mark style="color:orange;">**distributed**</mark> mode.
 
-Switch from synchronous to distributed when you want to increase the scanning speed <mark style="color:red;">**MUST**</mark> be easy, by simply [configuring Celery worker with your broker and results backend of choice](broken-reference).
+Switch from synchronous to distributed when you want to increase the scanning speed <mark style="color:red;">**MUST**</mark> be easy, by simply configuring Celery worker with your broker and results backend of choice.
 
 ### **From simple tasks to complex workflows**
 

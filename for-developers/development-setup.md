@@ -18,7 +18,9 @@ source .venv/bin/activate                      # load the virtualenv
 pip install -e .[dev]                          # install secator and dev dependencies
 ```
 
-You can now run `secator health` to verify your installation. You can install addons / tools using the `secator install` command (choose what to install based on what you want to dev on).
+{% hint style="info" %}
+&#x20;Use`secator health` to verify your installation. You can install addons / tools using the `secator install` command (choose what to install based on what you want to dev on).
+{% endhint %}
 
 ***
 

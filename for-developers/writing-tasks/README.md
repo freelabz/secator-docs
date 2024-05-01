@@ -62,7 +62,7 @@ class mytask(Command):
 
 ## Mapping output types
 
-The next step is to map the output format of the command you integrate with standard `secator` [Broken link](broken-reference "mention").
+The next step is to map the output format of the command you integrate with standard `secator` [output-types.md](../../in-depth/concepts/output-types.md "mention").
 
 \
 If our task is outputting URLs in the format `{'url': 'http://mydomain.com', 'code': 200, 'length': 100}`, then we will need to convert this dict to the `Url` output type format:
