@@ -174,7 +174,7 @@ export SECATOR_DEBUG_LEVEL=2
 To override the default HTTP wordlist:
 
 ```bash
-export SECATOR_WORDLISTS_DEFAULT_HTTP=/path/to/wordlist.txt
+export SECATOR_WORDLISTS_DEFAULTS_HTTP=/path/to/wordlist.txt
 ```
 
 and so on.
