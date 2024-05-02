@@ -179,13 +179,15 @@ class ls(Command):
 
         # Output vulnerabilities
         permissions = data['permissions']
+        path = data['path']
+        full_path = f'{self.input}/{path}'
         if permissions[-2] == 'w':  # found a vulnerability !
             yield Vulnerability(
                 name='World-writeable path',
                 severity='high',
                 confidence='high',
                 provider='ls',
-                matched_at=data['path'],
+                matched_at=full_path,
                 extra_data={k: v for k, v in data.items() if k != 'path'}
             )
 ```
@@ -198,7 +200,7 @@ ls -al .
 total 16
 drwxr-xr-x 3 osboxes osboxes 4096 May  2 06:14 .
 drwxr-xr-x 4 osboxes osboxes 4096 May  2 04:49 ..
-🚨 [World-writeable path 🡕] [high] ls.py [permissions:-rw-rw-rw-, link_count:1, owner:osboxes, group:osboxes, size:1015, month:May, day:2, hour:06:14]
+🚨 [World-writeable path 🡕] [high] ./ls.py [permissions:-rw-rw-rw-, link_count:1, owner:osboxes, group:osboxes, size:1015, month:May, day:2, hour:06:14]
 drwxr-xr-x 2 osboxes osboxes 4096 May  2 06:14 __pycache__
 🗄 Saved JSON report to /home/osboxes/.secator/reports/default/tasks/140/report.json
 🗄 Saved CSV reports to 
