@@ -40,7 +40,9 @@ tasks
 
 Okay, this works !&#x20;
 
+{% hint style="warning" %}
 <mark style="color:red;">**YES**</mark><mark style="color:red;">, but we don't have enough details in the results !</mark>
+{% endhint %}
 
 ### Getting detailed output
 
@@ -71,7 +73,9 @@ drwxr-xr-x 2 osboxes osboxes 4096 May  2 04:51 __pycache__
 
 Okay, this gives more information already !
 
+{% hint style="warning" %}
 <mark style="color:red;">**YES**</mark><mark style="color:red;">, but we don't have any structured output ! I can't use -json and pipe the results to my super awesome CLI tool ...</mark>
+{% endhint %}
 
 ### Adding JSON output
 
@@ -140,7 +144,9 @@ total 16
 
 Ok, in a few lines of code we successfully managed to turn the `ls` output into structured JSON lines.
 
+{% hint style="warning" %}
 <mark style="color:red;">**YES**</mark><mark style="color:red;">, but we don't have anything in the JSON reports !</mark>
+{% endhint %}
 
 ### Mapping output types
 
