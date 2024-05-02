@@ -15,8 +15,7 @@ Available exporters out-of-the-box are:
 * **`txt`**: exports results as TXT file.
 * **`csv`**: exports results as CSV file.
 * **`json`**: exports results as JSON file.
-* **`gdrive`**: exports results to Google Drive.\
-  _You need to set `GOOGLE_CREDENTIALS_PATH` and `GOOGLE_DRIVE_PARENT_FOLDER_ID` for this exporter to work._
+* **`gdrive`**: exports results to Google Drive. Set `addons.google.credentials_path` and `addons.google.drive_parent_folder_id` in your config for this exporter to work.
 * **`table`**: prints results as a table in the terminal.
 
 ## Using exporters

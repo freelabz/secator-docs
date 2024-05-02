@@ -1,3 +1,7 @@
+---
+description: ... or how to integrate groups of tasks with similar options.
+---
+
 # Example: cat hunters
 
 This section will present a more complex use case where we have three commands: `bigdog`, `catkiller` and `eagle` which purpose is to find cats.&#x20;

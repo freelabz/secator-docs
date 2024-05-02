@@ -34,6 +34,7 @@
 
 * [Development setup](for-developers/development-setup.md)
 * [Writing tasks](for-developers/writing-tasks/README.md)
+  * [Example: ls](for-developers/writing-tasks/example-ls.md)
   * [Example: cat hunters](for-developers/writing-tasks/example-cat-hunters.md)
   * [Advanced options](for-developers/writing-tasks/advanced-options.md)
 * [Writing workflows](for-developers/writing-workflows.md)
