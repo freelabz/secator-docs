@@ -160,3 +160,21 @@ For instance, to set the debug level to 3:
 ```bash
 secator config set debug.level 3
 ```
+
+### Env overrides
+
+Values  in the `secator` config can be overriden using environment variables. Environment variables are prefixed with `SECATOR_`and use dotted path notation.
+
+For instance, to override `debug.level`, run:
+
+```bash
+export SECATOR_DEBUG_LEVEL=2
+```
+
+To override the default HTTP wordlist:
+
+```bash
+export SECATOR_WORDLISTS_DEFAULT_HTTP=/path/to/wordlist.txt
+```
+
+and so on.
