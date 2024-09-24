@@ -6,9 +6,13 @@ description: ... or what secator is all about.
 
 `secator` is a task and workflow runner used for security assessments. It supports dozens of well-known security tools and is designed to improve productivity for pentesters and security researchers.
 
+***
+
 ## Quick demo
 
 <figure><img src=".gitbook/assets/demo.gif" alt=""><figcaption><p>Example of running secator tasks and workflows</p></figcaption></figure>
+
+***
 
 ## Features
 
@@ -19,6 +23,8 @@ description: ... or what secator is all about.
 * [#distributed-options](in-depth/philosophy-and-design.md#distributed-options "mention")
 * [#from-simple-tasks-to-complex-workflows](in-depth/philosophy-and-design.md#from-simple-tasks-to-complex-workflows "mention")
 * [#customizable](in-depth/philosophy-and-design.md#customizable "mention")
+
+***
 
 ## Supported tools
 
@@ -51,5 +57,7 @@ description: ... or what secator is all about.
 | [nuclei](https://github.com/projectdiscovery/nuclei)          | Fast and customisable vulnerability scanner based on simple YAML based DSL.            | `vuln/multi`   |
 
 {% hint style="info" %}
-Feel free to request new tools integrations by opening an issue on the repo, but please check that the tool complies with our selection criterias before doing so (read [#curated-list-of-tools](in-depth/philosophy-and-design.md#curated-list-of-tools "mention")). If it doesn't but you still want to integrate it into `secator`, you can plug it in (read [writing-tasks](for-developers/writing-tasks/ "mention")).
+Feel free to request new tools integrations by [opening an issue](https://github.com/freelabz/secator/issues/new) on the repo, but please check that the tool complies with our selection criterias before doing so (read [#curated-list-of-tools](in-depth/philosophy-and-design.md#curated-list-of-tools "mention")). If it doesn't but you still want to integrate it into `secator`, you can plug it in (read [writing-tasks](for-developers/writing-tasks/ "mention")).
 {% endhint %}
+
+***

@@ -4,6 +4,8 @@ description: ... how to configure every aspect of how secator operates.
 
 # Configuration
 
+***
+
 ## Default configuration
 
 `secator` is configured using a YAML config file.
@@ -105,6 +107,8 @@ To get `secator`'s default configuration, run:
 secator config default
 ```
 
+***
+
 ## Custom configuration
 
 It is possible to override `secator`'s default configuration using a **user configuration file** located at `~/.secator/config.yml` .
@@ -178,3 +182,5 @@ export SECATOR_WORDLISTS_DEFAULTS_HTTP=/path/to/wordlist.txt
 ```
 
 and so on.
+
+***

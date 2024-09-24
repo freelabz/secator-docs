@@ -9,10 +9,12 @@ description: ... or how secator unifies all output into common schemas.
 The currently available output types are [#exploit](output-types.md#exploit "mention"), [#ip](output-types.md#ip "mention"), [#port](output-types.md#port "mention"), [#record](output-types.md#record "mention"),[#subdomain](output-types.md#subdomain "mention"), [#tag](output-types.md#tag "mention"), [#url](output-types.md#url "mention"), [#useraccount](output-types.md#useraccount "mention"), [#vulnerability](output-types.md#vulnerability "mention").
 
 {% hint style="info" %}
-Feel free to request more output types by opening an issue on the GitHub repo.
+Feel free to request more output types by [opening an issue](https://github.com/freelabz/secator/issues/new/choose) on the GitHub repo.
 {% endhint %}
 
-### ⍼ Exploit
+***
+
+## ⍼  Exploit
 
 <pre class="language-python"><code class="lang-python"><strong>@dataclass
 </strong>class Exploit(OutputType):
@@ -27,7 +29,9 @@ Feel free to request more output types by opening an issue on the GitHub repo.
     extra_data: dict = field(default_factory=dict, compare=False)
 </code></pre>
 
-### 💻 Ip
+***
+
+## 💻 Ip
 
 {% code title="secator/output_types/ip.py" %}
 ```python
@@ -39,7 +43,9 @@ class Ip(OutputType):
 ```
 {% endcode %}
 
-### 🔓 Port
+***
+
+## 🔓 Port
 
 {% code title="secator/output_types/port.py" %}
 ```python
@@ -51,11 +57,14 @@ class Port(OutputType):
     service_name: str = field(default='', compare=False)
     cpes: list = field(default_factory=list, compare=False)
     host: str = field(default='', repr=True, compare=False)
+    protocol: str = field(default='TCP', repr=True, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
 ```
 {% endcode %}
 
-### 🎤 Record
+***
+
+## 🎤 Record
 
 {% code title="secator/output_types/record.py" %}
 ```python
@@ -68,7 +77,9 @@ class Record(OutputType):
 ```
 {% endcode %}
 
-### 🏰 Subdomain
+***
+
+## 🏰 Subdomain
 
 {% code title="secator/output_types/subdomain.py" %}
 ```python
@@ -77,10 +88,13 @@ class Subdomain(OutputType):
     host: str
     domain: str
     sources: List[str] = field(default_factory=list, compare=False)
+    extra_data: dict = field(default_factory=dict, compare=False)
 ```
 {% endcode %}
 
-### 🏷️ Tag
+***
+
+## 🏷️ Tag
 
 {% code title="secator/output_types/tag.py" %}
 ```python
@@ -92,7 +106,9 @@ class Tag(OutputType):
 ```
 {% endcode %}
 
-### 🔗 Url
+***
+
+## 🔗 Url
 
 {% code title="secator/output_types/url.py" %}
 ```python
@@ -112,10 +128,13 @@ class Url(OutputType):
     lines: int = field(default=0, compare=False)
     screenshot_path: str = field(default='', compare=False)
     stored_response_path: str = field(default='', compare=False)
+    headers: dict = field(default_actory=dict, repr=True, compare=False)
 ```
 {% endcode %}
 
-### 👤 UserAccount
+***
+
+## 👤 UserAccount
 
 {% code title="secator/output_types/user_account.py" %}
 ```python
@@ -129,7 +148,9 @@ class UserAccount(OutputType):
 ```
 {% endcode %}
 
-### 🚨 Vulnerability
+***
+
+## 🚨 Vulnerability
 
 {% code title="secator/output_types/vulnerability.py" %}
 ```python
@@ -153,3 +174,4 @@ class Vulnerability(OutputType):
 ```
 {% endcode %}
 
+***

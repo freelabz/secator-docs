@@ -171,5 +171,6 @@ To figure out which languages or tools are installed on your system (along with 
 secator health
 ```
 
-<figure><img src="../.gitbook/assets/secator_health.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/secator_health.png" alt=""><figcaption><p>Secator Health CLI output</p></figcaption></figure>
 
+***

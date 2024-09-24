@@ -176,7 +176,7 @@ Use **`secator s <NAME> --help`** to list a options for a specific scan.
 
 `secator` provides a number of utilities that can be useful when doing pentesting.
 
-**Proxy**
+### **Proxy**
 
 You can get a random proxy:
 
@@ -185,7 +185,7 @@ secator u proxy                  # print a random proxy
 secator u proxy -n 5 --timeout 1 # print 5 proxies with 1s max timeout
 ```
 
-**Reverse shells**
+### **Reverse shells**
 
 You can spawn reverse shells in any language, and optional netcat listener:
 
@@ -196,7 +196,7 @@ secator u revshell javascript -h <LHOST> -p <LPORT>    # show a Javascript rever
 secator u revshell javascript -h <LHOST> -p <LPORT> -l # ... also spawn a netcat listener
 ```
 
-#### Serve
+### Serve
 
 You can run an HTTP server to serve payloads:
 
@@ -204,7 +204,7 @@ You can run an HTTP server to serve payloads:
 secator u serve
 ```
 
-**Recording**
+### **Recording**
 
 You can record pentesting sessions as a GIF:
 

@@ -8,6 +8,8 @@ This section will present a more complex use case where we have three commands: 
 
 We will start by integrating `bigdog` to `secator` before realizing that most options can be mutualized between the three tools, and a common output type `Cat` can be created for all three.
 
+***
+
 ## Bigdog
 
 Let's suppose we have a **fictional** utility called `bigdog` which purpose is to hunt cats on the internet. We want to add `bigdog` to `secator`.
@@ -91,18 +93,20 @@ secator x bigdog loadsofcats.com
 
 {% tab title="Python" %}
 ```python
->>> from secator.tasks import bigdog
+from secator.tasks import bigdog
 
 # Get all results as a list, blocks until command has finished running
->>> bigdog('loadsofcats.com').run()
+bigdog('loadsofcats.com').run()
 [
     {"name": "garfield", "age": 14, "host": "loadofcats.com", "position": "boss"},
     {"name": "tony", "age": 18, "host": "loadsofcats.com", "position": "admin"}
 ]
 
 # Get result items in real-time as they arrive to stdout
->>> for cat in bigdog('loadsofcats.com'):
->>> ... print(cat['name'] + '(' + cat['age'] + ')')
+for cat in bigdog('loadsofcats.com'):
+    print(cat['name'] + '(' + cat['age'] + ')')
+
+# Will print
 garfield (14)
 tony (18)
 ```
@@ -139,7 +143,7 @@ You can now use `bigdog` with this set of options:
 
 {% tabs %}
 {% tab title="CLI" %}
-```
+```bash
 secator x bigdog --help
 secator x bigdog loadsofcats.com -json
 secator x bigdog loadsofcats.com -timeout 1 -rate 100 -o table,csv,txt,gdrive
@@ -231,27 +235,27 @@ $ eagle -l hosts.txt -timeexpires 1 -jsonl
 {% endtab %}
 {% endtabs %}
 
-#### Cat output type
+### Cat output type
 
 We first define a base `Cat` dataclass to define the common output schema and a `CatHunter` category as an input interface.
 
 We take `bigdog`'s output schema as reference to create the `Cat` output type:
 
-{% code title="secator/output_types/cat.py" lineNumbers="true" %}
+{% code title="secator/output_types/cat.py" %}
 ```py
 from secator.definitions import OPT_NOT_SUPPORTED
 from secator.output_types import OutputType
 from secator.decorators import task
 from dataclasses import dataclass, field
 
-# common output type `Cat`
+
 @dataclass
 class Cat(OutputType):
     name: str
     age: int
     alive: bool = False
     _source: str = field(default='', repr=True)
-    _type: str = field(default='ip', repr=True)
+    _type: str = field(default='cat', repr=True)
     _uuid: str = field(default='', repr=True, compare=False)
 
     _table_fields = [name, age]
@@ -259,17 +263,18 @@ class Cat(OutputType):
 
     def __str__(self) -> str:
         return self.ip
+
 ```
 {% endcode %}
 
-#### CatHunter category
+### CatHunter category
 
 We take `bigdog`'s options names as reference and add the ones that can be mutualized to the `CatHunter` category:
 
-{% code title="secator/categories.py" lineNumbers="true" %}
+{% code title="secator/tasks/_categories.py" %}
 ```python
 from secator.output_types import Cat
-...
+# ...
 
 class CatHunter(Command):
     meta_opts = {
@@ -280,19 +285,19 @@ class CatHunter(Command):
 ```
 {% endcode %}
 
-#### Tools implementation
+### Tools implementation
 
 Finally we inherit all commands implementation from `CatHunter` and write the option mapping for the remaining cat-hunter commands:
 
 {% tabs %}
 {% tab title="bigdog" %}
-{% code title="secator/tasks/bigdog.py" lineNumbers="true" %}
+{% code title="secator/tasks/bigdog.py" %}
 ```python
 from secator.categories import CatHunter
 from secator.decorators import task
 
 
-@task
+@task()
 class bigdog(CatHunter):
     cmd = 'bigdog'
     json_flag = '-json'
@@ -304,14 +309,14 @@ class bigdog(CatHunter):
 {% endtab %}
 
 {% tab title="catkiller" %}
-{% code title="secator/tasks/catkiller.py" lineNumbers="true" %}
+{% code title="secator/tasks/catkiller.py" %}
 ```python
 from secator.categories import CatHunter
 from secator.decorators import task
 from secator.output_types import Cat
 
 
-@task
+@task()
 class catkiller(CatHunter):
     cmd = 'catkiller'
     json_flag = '--json'
@@ -346,13 +351,13 @@ class catkiller(CatHunter):
 {% endtab %}
 
 {% tab title="eagle" %}
-<pre class="language-python" data-title="secator/tasks/eagle.py" data-line-numbers><code class="lang-python">from secator.categories import CatHunter
+<pre class="language-python" data-title="secator/tasks/eagle.py"><code class="lang-python">from secator.categories import CatHunter
 from secator.decorators import task
 from secator.definitions import OPT_NOT_SUPPORTED
 from secator.output_types import Cat
 <strong>
 </strong><strong>
-</strong><strong>@task
+</strong><strong>@task()
 </strong>class eagle(CatHunter):
     cmd = 'eagle'
     json_flag = '-jsonl'
@@ -426,3 +431,5 @@ secator x catkiller loadsofcats.com -rate 1000 -timeout 1 -json
 ```
 {% endtab %}
 {% endtabs %}
+
+***

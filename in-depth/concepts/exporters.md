@@ -18,6 +18,8 @@ Available exporters out-of-the-box are:
 * **`gdrive`**: exports results to Google Drive. Set `addons.google.credentials_path` and `addons.google.drive_parent_folder_id` in your config for this exporter to work.
 * **`table`**: prints results as a table in the terminal.
 
+***
+
 ## Using exporters
 
 {% tabs %}
@@ -45,3 +47,4 @@ workflow.run()
 {% endtab %}
 {% endtabs %}
 
+***

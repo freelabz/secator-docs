@@ -95,3 +95,5 @@ for result in workflow.delay():
 {% hint style="info" %}
 If you want to run synchronously (bypassing the broker), you can use the `--sync` flag (CLI) or the `sync` kwarg (Python).
 {% endhint %}
+
+***

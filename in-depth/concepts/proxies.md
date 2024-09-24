@@ -14,9 +14,8 @@ Using `-proxy auto` for a `secator` run will result in auto-detecting the right 
 
 The defaults to use for proxies in `auto` mode are set through config variables:
 
-* ```bash
-  secator config set http.socks5_proxy socks5://tor-privoxy:9050
-  ```
+* <pre class="language-bash"><code class="lang-bash"><strong>secator config set http.socks5_proxy socks5://tor-privoxy:9050
+  </strong></code></pre>
 * ```bash
   secator config set http.http_proxy http://tor-privoxy:8118
   ```
@@ -47,5 +46,4 @@ You can pass a SOCKS5 proxy to a task / workflow / scan by using `-proxy socks5:
 
 You can pass `-proxy proxychains` to a task / workflow / scan by using `-proxy proxychains`. Remember to configure your `/etc/proxychains.conf` in that configuration, and test it prior to running `secator` tasks.
 
-
-
+***
