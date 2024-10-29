@@ -17,8 +17,8 @@ Based on how your tool's output maps will map to `secator` output types, read:
 
 **Steps:**
 
-* Use the default `JSONSerializer` item loader.
-* Add the mapping of your tool's output to one of secator's [output-types.md](../../../in-depth/concepts/output-types.md "mention")**.**
+* Use the `JSONSerializer` item loader.
+* Add an `output_map` to map your tool's output to one of secator's [output-types.md](../../../in-depth/concepts/output-types.md "mention")**.**
 
 #### **Example:**
 
@@ -62,8 +62,8 @@ class mytool(Command):
 * Import the desired output type(s) and the field names that we want to map.
 * Set `input_flag` to `mytool`'s input flag `-u`.&#x20;
 * Set `json_flag` to `mytool`'s JSON line flag `jsonl`.&#x20;
-* Set `output_types` to our desired output types `[Url]`.&#x20;
-* Set `output_map` to map `mytool`'s output fields to each `Url` 's fields (you need to map at least the required fields).
+* Set `output_types` to our desired output types \[[`Url`](../../../in-depth/concepts/output-types.md#url)].&#x20;
+* Set `output_map` to map `mytool`'s output fields to each [`Url`](../../../in-depth/concepts/output-types.md#url)'s fields (you need to map at least the `required=True` fields).
 
 That's it ! You can now run `mytool` with `secator` and enjoy all the features it brings on top of it:
 
@@ -78,7 +78,7 @@ secator x mytool mytarget.com
 /____/\___/\___/\__,_/\__/\____/_/     v0.6.0
 
                         freelabz.com
-mytool -u mytarget.com
+mytool -u mytarget.com -jsonl
 🔗 https://mytarget.com/api [200] [application/json]
 🔗 https://mytarget.com/api/metrics [403]
 ```
@@ -88,7 +88,7 @@ mytool -u mytarget.com
 ```python
 from secator.tasks import mytool
 
-task = mytool('TARGET')
+task = mytool('mytarget.com')
 for item in task:
     print(item)  # item is now a secator output type like Vulnerability or Port
 
@@ -102,7 +102,7 @@ for item in task:
 
 **Steps:**
 
-* Add a static method `on_json_loaded` to hook onto the JSON Serializer output
+* Add a static method `on_json_loaded` to hook onto the JSON Serializer output.
 * Modify the data and yield `secator` [output-types.md](../../../in-depth/concepts/output-types.md "mention").
 
 #### **Example:**
@@ -142,3 +142,34 @@ class mytool(Command):
 {% hint style="info" %}
 See [#lifecyle-hooks](../../../in-depth/concepts/runners.md#lifecyle-hooks "mention") for more details on which hooks you can use.
 {% endhint %}
+
+That's it ! You can now run `mytool` with `secator` and enjoy all the features it brings on top of it:
+
+{% tabs %}
+{% tab title="CLI" %}
+```bash
+secator x mytool mytarget.com
+                         __            
+   ________  _________ _/ /_____  _____
+  / ___/ _ \/ ___/ __ `/ __/ __ \/ ___/
+ (__  /  __/ /__/ /_/ / /_/ /_/ / /    
+/____/\___/\___/\__,_/\__/\____/_/     v0.6.0
+
+                        freelabz.com
+mytool -u mytarget.com -jsonl
+🔗 https://mytarget.com/api [200] [application/json]
+🔗 https://mytarget.com/api/metrics [403]
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+from secator.tasks import mytool
+
+task = mytool('mytarget.com')
+for item in task:
+    print(item)  # item is now a secator output type like Vulnerability or Port
+
+```
+{% endtab %}
+{% endtabs %}

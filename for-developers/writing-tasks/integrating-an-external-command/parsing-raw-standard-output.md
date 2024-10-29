@@ -17,7 +17,10 @@ Depending on how you want to parse the output, read:
 
 ## Using regular expressions
 
-You can parse the standard output using regular expressions thanks to `secator`'s `RegexSerializer`.
+**Steps:**
+
+* Use the `RegexSerializer` item loader.
+* Use the `on_regex_loaded` hook to yield `secator` output types.
 
 #### **Example:**
 
@@ -34,7 +37,7 @@ mytool -u mytarget.com
 [FOUND] CVE-2021-44228 [type=vulnerability] [matched_at=https://mytarget/api/sensitive_api_path]
 ```
 
-First we need to find an expressions that will match the items marked with `[FOUND]` and get the individual values using a named regex (you can use [Pythex](https://pythex.org) for this).
+First we need to find a regular expression that will match the items marked with `[FOUND]` and get the individual values using a named regex (you can use [Pythex](https://pythex.org) for this).
 
 Here is the one we came up with:
 
@@ -111,7 +114,7 @@ Run it with `secator`:
 {% tabs %}
 {% tab title="CLI" %}
 ```bash
-$ secator x mytool TARGET
+$ secator x mytool mytarget.com
 
                          __            
    ________  _________ _/ /_____  _____
@@ -122,7 +125,7 @@ $ secator x mytool TARGET
                         freelabz.com
 
 No Celery worker alive.
-/home/osboxes/.local/bin/mytool -u mytarget -jsonl
+/home/osboxes/.local/bin/mytool -u mytarget.com -jsonl
 [INF] This is an info message
 [ERR] This is an error message
 🔗 https://mytarget.com/api [200] [MyAwesomeWebPage] [application/json]
@@ -136,7 +139,7 @@ No Celery worker alive.
 {% tab title="Python" %}
 ```python
 from secator.tasks import mytool
-task = mytool('TARGET')
+task = mytool('mytarget.com')
 for item in task:
     print(item)  # this will output Url, Vulnerability, or Tag items.
 
@@ -148,7 +151,9 @@ for item in task:
 
 ### Writing a custom item loader
 
-You can parse the standard output using a custom item loader by overriding the `item_loader` static method in the task definition file.
+**Steps:**
+
+* Override the `item_loader` static method to parse the standard output with custom code.
 
 **Example:**
 
@@ -207,3 +212,42 @@ class mytool(Command):
  
 ```
 
+Run it with `secator`:
+
+{% tabs %}
+{% tab title="CLI" %}
+```bash
+$ secator x mytool mytarget.com
+
+                         __            
+   ________  _________ _/ /_____  _____
+  / ___/ _ \/ ___/ __ `/ __/ __ \/ ___/
+ (__  /  __/ /__/ /_/ / /_/ /_/ / /    
+/____/\___/\___/\__,_/\__/\____/_/     v0.6.0
+
+                        freelabz.com
+
+No Celery worker alive.
+/home/osboxes/.local/bin/mytool -u mytarget.com -jsonl
+[INF] This is an info message
+[ERR] This is an error message
+🔗 https://mytarget.com/api [200] [MyAwesomeWebPage] [application/json]
+🔗 https://mytarget.com/api/metrics [403]
+🏷️ aws_api_key found @ https://mytarget/api/.aws_key.json
+    secret: A3TBABCD1234EFGH5678
+🚨 [Object Injection 🡕] [critical] https://mytarget/api/sensitive_api_path
+```
+{% endtab %}
+
+{% tab title="Python" %}
+```python
+from secator.tasks import mytool
+task = mytool('mytarget.com')
+for item in task:
+    print(item)  # this will output Url, Vulnerability, or Tag items.
+
+```
+{% endtab %}
+{% endtabs %}
+
+***
