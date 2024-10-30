@@ -33,11 +33,11 @@ ports_open = naabu(subdomains).run()
 
 # ... or run a workflow
 config = TemplateLoader('workflows/host_recon')
-results = Workflow(config).run()
+results = Workflow(config, host).run()
 
 # ... or run a scan
 config = TemplateLoader('scans/domain')
-results = Scan(config).run()
+results = Scan(config, host).run()
 
 ```
 
@@ -74,7 +74,7 @@ for url in feroxbuster(host, rate_limit=100):
 
 # Use a workflow as a generator
 config = TemplateLoader('config/url_crawl')
-workflow = Workflow(config, rate_limit=100)
+workflow = Workflow(config, host, rate_limit=100)
 for result in workflow:
   if isinstance(result, Url):
     Thread(target=process_url, args=(result,))

@@ -159,20 +159,20 @@ To edit specific keys, use:
 secator config set <path.to.config.key> <VALUE>
 ```
 
-For instance, to set the debug level to 3:
+For instance, to set the debug component to `celery`:
 
 ```bash
-secator config set debug.level 3
+secator config set debug.component celery
 ```
 
 ### Env overrides
 
 Values  in the `secator` config can be overriden using environment variables. Environment variables are prefixed with `SECATOR_`and use dotted path notation.
 
-For instance, to override `debug.level`, run:
+For instance, to override `debug.component`, run:
 
 ```bash
-export SECATOR_DEBUG_LEVEL=2
+export SECATOR_DEBUG_COMPONENT=celery
 ```
 
 To override the default HTTP wordlist:

@@ -1,5 +1,5 @@
 ---
-description: ... or how to integrate tools that already output JSON lines.
+description: ... or how to integrate tools that output JSON lines.
 ---
 
 # Parsing JSON lines

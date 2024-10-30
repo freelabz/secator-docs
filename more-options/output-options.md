@@ -30,7 +30,7 @@ Unicode icons are printed before each result to distinguish each output type:
 * [#useraccount](../in-depth/concepts/output-types.md#useraccount "mention")
 * [#vulnerability](../in-depth/concepts/output-types.md#vulnerability "mention")
 
-When a vulnerability has a low confidence, the output will be dimmed:
+When an output type has a low `confidence`, the output will be dimmed:
 
 <div align="left" data-full-width="false">
 

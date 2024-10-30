@@ -326,10 +326,12 @@ You can repeat step 4 on more instances to increase the number of workers.
 
 ***
 
-## Bare metal \[WIP]
+## Bare metal
 
 ### Kubernetes
 
-### Docker-compose
+A Helm chart is available in the repository: [https://github.com/freelabz/secator/tree/main/helm](https://github.com/freelabz/secator/tree/main/helm).
+
+### Docker-compose \[WIP]
 
 ***

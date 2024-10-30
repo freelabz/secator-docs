@@ -40,8 +40,9 @@ To use exporters from the library, you can pass the `exporters` kwarg to any run
 from secator.runners import Workflow
 from secator.template import TemplateLoader
 
+host = 'mydomain.com'
 config = TemplateLoader(name='workflows/host_recon')
-workflow = Workflow(config, exporters=['csv', 'json'])
+workflow = Workflow(config, host, exporters=['csv', 'json'])
 workflow.run()
 ```
 {% endtab %}

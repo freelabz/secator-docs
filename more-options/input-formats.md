@@ -37,9 +37,11 @@ Input can also be passed directly from `stdin`:
 cat urls.txt | secator x httpx
 ```
 
-This also means you can build basic workflow using UNIX pipes and the [`raw`](output-options.md#raw-raw) output format:
+You can build basic workflow using UNIX pipes:
 
-<figure><img src="../.gitbook/assets/pipe.gif" alt=""><figcaption><p>Example of a piped workflow</p></figcaption></figure>
+```bash
+secator x subfinder vulnweb.com | secator x nmap | secator x httpx
+```
 
 {% hint style="info" %}
 For more complex workflows, we highly recommend using the YAML-based workflow definitions or the code-based workflow definitions (see [writing-workflows.md](../for-developers/writing-workflows.md "mention")).

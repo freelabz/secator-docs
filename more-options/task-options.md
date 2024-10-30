@@ -16,7 +16,7 @@ You can pass a workspace name to use for the runner, which will save all reports
 
 <summary><strong>Example: Save results to <code>mydomain</code> workspace</strong></summary>
 
-```
+```bash
 secator x httpx mydomain.com -ws mydomain
 secator w host_recon mydomain.com -ws mydomain
 secator s domain mydomain.com -ws mydomain
@@ -34,7 +34,7 @@ You can export reports in various formats using exporters.
 
 <summary><strong>Example:</strong> export reports as <code>table</code>, <code>csv</code>, and <code>json</code>formats</summary>
 
-```
+```bash
 secator x httpx mydomain.com -o table,csv,json
 secator w host_recon mydomain.com -o table,csv,json
 secator s domain mydomain.com -o table,csv,json
@@ -62,7 +62,7 @@ First, install the `mongodb` addon using `secator install addons mongodb`
 
 Then, use the `-driver` flag route your results:
 
-```
+```bash
 secator x httpx mydomain.com -driver mongodb
 secator w host_recon mydomain.com -driver mongodb
 secator s domain mydomain.com -driver mongodb

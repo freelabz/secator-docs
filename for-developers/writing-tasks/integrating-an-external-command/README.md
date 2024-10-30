@@ -29,7 +29,7 @@ The `task` decorator is required for `secator` to recognize class-based definiti
 
 Move this file over to:
 
-* `~/.secator/templates/` (or whatever your`dirs.templates` in [configuration.md](../../../getting-started/configuration.md "mention") points to)
+* `~/.secator/templates/` (or whatever your `dirs.templates` in [configuration.md](../../../getting-started/configuration.md "mention") points to)
 
 &#x20; **OR**
 
@@ -73,14 +73,16 @@ Now that you have a basic implementation working, you need to convert your comma
 Find out what your command's output looks like and pick the corresponding guide:
 
 * Read [parsing-json-lines.md](parsing-json-lines.md "mention") if your tool has an option to stream JSON lines (**preferred**).
-* Read [parsing-output-files.md](parsing-output-files.md "mention") if your tool has an option to record to a file (e.g JSON or CSV).
-* Read [parsing-raw-standard-output.md](parsing-raw-standard-output.md "mention") if your tools only outputs to `stdout` .
+* Read [parsing-output-files.md](parsing-output-files.md "mention") if your tool has an option to output to a file (e.g JSON or CSV).
+* Read [parsing-raw-standard-output.md](parsing-raw-standard-output.md "mention") if your tools **only** outputs to `stdout` .
 
 ***
 
 ### Adding more options \[optional]
 
-To support more options that your command provides, you can use the `opt_prefix`, `opts` , `opt_key_map` and `opt_value_map` attributes:
+To support more options, you can use the `opt_prefix`, `opts` , `opt_key_map` and `opt_value_map` attributes.
+
+Assuming `mytool` has the `--delay`, `--debug` and `--include-tags` options, we would support them this way:
 
 ```python
 @task()
@@ -130,7 +132,7 @@ class mytool(Command):
 ```
 
 {% hint style="info" %}
-If `install_github_handle` is set, `secator` will try to fetch a binary from GitHub releases specific to your platform, and fallback to `install_cmd` if it cannot find a suitable release.
+If `install_github_handle` is set, `secator` will try to fetch a binary from GitHub releases specific to your platform, and fallback to `install_cmd` if it cannot find a suitable release, or if the API rate limit is reached.
 {% endhint %}
 
 Now you can install `mytool` using:
@@ -145,9 +147,9 @@ secator install tools mytool
 
 If your tool fits into one of `secator`'s built-in command categories, you can inherit from it's option set:
 
-* `HttpCrawler`: A command that crawls URLs.
-* `HttpFuzzer`: A command that fuzzes URLs.
 * `Http`: A tool that makes HTTP requests.
+* `HttpCrawler`: A command that crawls URLs (subset of `Http`).
+* `HttpFuzzer`: A command that fuzzes URLs (subset of `Http`).
 
 You can inherit from these categories and map their options to your command.
 
@@ -197,7 +199,7 @@ class mytool(Command, HTTPFuzzer):
 ```
 
 {% hint style="info" %}
-Make sure you map all the options from the **`HTTPFuzzer`** category. If some options are not supported by your tool, mark them with `OPT_NOT_SUPPORTED`.
+Make sure you map **all** the options from the **`HTTPFuzzer`** category. If some options are not supported by your tool, mark them with `OPT_NOT_SUPPORTED`.
 {% endhint %}
 
 With this config, running:
@@ -208,8 +210,8 @@ secator x mytool --help
 
 would list:
 
-* The options in the `HTTPFuzzer` category that are supported by `mytool`.
-* The options specific to `mytool`.&#x20;
+* The `meta`options in the `HTTPFuzzer` category that are supported by `mytool`.
+* The options only usable by `mytool`.&#x20;
 
 For instance, running:
 
@@ -284,10 +286,6 @@ Assuming `mytool` does not support HTTP or SOCKS5 proxies, but works with `proxy
 @task()
 class mytool(Command):
     # ...
-    opt_key_map = {
-       # ...
-       'proxy': 'use-proxy'
-    }
     proxychains = True
     proxy_socks5 = False
     proxy_http = True
@@ -351,7 +349,7 @@ class mytool(Command):
     @staticmethod
     def on_line(self, line):
         return line.rstrip(',')  # strip trailing comma of stdout lines
-        
+
     @staticmethod
     def on_item_pre_convert(self, item):
         item['extra_data'] = {
@@ -410,3 +408,9 @@ would result in:
 mytool -l /tmp/task_0_9.txt
 mytool -l /tmp/task_10_19.txt
 ```
+
+{% hint style="info" %}
+If `mytool` did not support file input (i.e: `file_flag` not defined in the task definition class), the above would still work with an `input_chunk_size = 1`, thus splitting into one command per target passed.
+{% endhint %}
+
+***

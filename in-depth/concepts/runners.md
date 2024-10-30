@@ -34,7 +34,8 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 * `on_iter`: executed when the runner iterates.
 * `on_end` : executed when the runner has finished running.
 * `on_cmd`: runs when the mapped command is built <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
-* `on_start`: executed when command is ready and about to run <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_cmd_done`: runs when the command has finished running <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_line`: executed when a line is output to stdout or stderr <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
 
 **Item hooks:**
 
@@ -43,13 +44,12 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 * `on_duplicate`: runs after an item has been marked as a duplicate.
 * `on_line`: executed when a line is emitted to `stdout` <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
 * `on_error`: executed when an error is emitted by the command <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark> .
+* `on_`<mark style="color:purple;">`{serializer}`</mark>`_loaded`: executed when a serializer has finished running. For instance, `on_json_loaded` after the `JSONSerializer` has finished running  <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark> .
 
 {% hint style="info" %}
-All hooks take **`self`** as the **first** argument so that you can use the runner data in your hook implementation.
-{% endhint %}
-
-{% hint style="info" %}
-Item hooks take **`item`** as the **second** argument and expect you to return the modified item.
+**All hooks** are defined with the `@staticmethod` decorator and take **`self`** as the **first** argument so that you can use the runner data in your hook implementation.\
+\
+**Item hooks** take **`item`** as the **second** argument and expect you to return the modified item.
 {% endhint %}
 
 ***
@@ -133,6 +133,6 @@ workflow.run()
 
 ### **Drivers**
 
-See [#drivers](runners.md#drivers "mention").
+See [drivers.md](drivers.md "mention").
 
 ***

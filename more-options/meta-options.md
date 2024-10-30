@@ -310,7 +310,7 @@ Custom wordlist to use.
 
 <summary>Example: use fuzz-Bo0oM wordlist</summary>
 
-```
+```bash
 secator x ffuf mydomain.com/FFUF/ -w /usr/share/seclists/Fuzzing/fuzz-Bo0oM.txt
 ```
 

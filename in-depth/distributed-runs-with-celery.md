@@ -34,14 +34,12 @@ The following is an example using `redis`, but you can use any [supported Celery
 secator install addons redis
 ```
 
-\
 **Install `redis`:**
 
 ```sh
 sudo apt install redis
 ```
 
-\
 **Start `redis` and enable at boot:**
 
 ```sh
@@ -49,7 +47,6 @@ sudo systemctl enable redis
 sudo systemctl start redis
 ```
 
-\
 **Configure `secator` to use Redis:**
 
 <pre class="language-sh"><code class="lang-sh"><strong>secator config set celery.broker_url redis://&#x3C;REDIS_IP>:6379/0
@@ -84,8 +81,9 @@ secator w host_scan wikipedia.org
 from secator.runners import Workflow
 from secator.template import TemplateLoader
 
+host = 'testphp.vulnweb.com'
 config = TemplateLoader(name='workflows/host_scan')
-workflow = Workflow(config)
+workflow = Workflow(config, host)
 for result in workflow.delay():
   print(result)
 ```

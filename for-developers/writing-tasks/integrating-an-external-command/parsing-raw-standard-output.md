@@ -67,7 +67,7 @@ class mytool(Command):
   json_flag = '-jsonl'
   output_types = [Url, Tag, Vulnerability]
 
-  # Override the default item loader (JSONSerializer) with the RegexSerializer
+  # Use the RegexSerializer to load the stdout input
   item_loaders = [
     RegexSerializer(
       OUTPUT_REGEX,
