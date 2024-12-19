@@ -66,6 +66,18 @@ secator x mytool TARGET    # will run mytool -u TARGET
 secator x mytool TXT_FILE  # will run mytool -l TXT_FILE
 ```
 
+#### Important Note on Command Availability
+
+Ensure that the external command you are integrating is callable within your system's `PATH`. For example, a file located at `/opt/tools/testssl.sh/testssl.sh` **will not** work unless properly added to your `PATH`.
+
+To verify if your command is callable, you can run:
+
+```bash
+which [command]
+```
+
+If it returns the path to your command, then it is available and can be used with secator. If not, you will need to update your PATH or move the file to a directory that is already included in your PATH.
+
 ### Parsing a command's output
 
 Now that you have a basic implementation working, you need to convert your command's output into structured output (JSON).
@@ -190,7 +202,7 @@ class mytool(Command, HTTPFuzzer):
         USER_AGENT: 'user-agent',
 
         # my tool specific options
-        'tags': 'include-tags',      
+        'tags': 'include-tags',
     }
     opt_value_map = {
         'delay': lambda x: x * 1000  # convert seconds to milliseconds
