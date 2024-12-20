@@ -128,6 +128,21 @@ secator x mytool -t tag1,tag2 -dbg -d 5 TARGET              # short option forma
 mytool --include-tags tag1,tag2 --debug --delay 5000 -u TARGET
 ```
 
+{% hint style="warning" %}
+All keys in `opts` must be in lower case, so if you need an upper case option, create :
+```py
+opts = {
+    'my_upper_cas_option':{'type':str, 'shor':'P', 'help': 'Products'}
+}
+```
+Map your option with 
+```py
+opt_key_map = {
+    'my_upper_cas_option': 'P'
+}
+```
+{% endhint %}
+
 ***
 
 ### Adding an install command \[optional]
