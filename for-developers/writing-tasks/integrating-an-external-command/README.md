@@ -129,13 +129,15 @@ mytool --include-tags tag1,tag2 --debug --delay 5000 -u TARGET
 ```
 
 {% hint style="warning" %}
-All keys in `opts` must be in lower case, so if you need an upper case option, create :
+All keys in `opts` must be in lowercase. If you need to support an uppercase option, follow these steps :
+
+1. Define the option in opts using a lowercase key:
 ```py
 opts = {
     'my_upper_cas_option':{'type':str, 'shor':'P', 'help': 'Products'}
 }
 ```
-Map your option with 
+2. Map the lowercase key to its corresponding uppercase option using `opt_key_map`:
 ```py
 opt_key_map = {
     'my_upper_cas_option': 'P'
