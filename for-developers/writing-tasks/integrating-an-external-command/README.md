@@ -287,6 +287,30 @@ mytool \
   -u TARGET
 ```
 
+However, if your tool doesn’t fit into one of `secator`'s built-in command categories, you can define the `meta` options yourself.
+
+For example, let's say we want to support only `HEADER` and `PROXY` options for our tool:
+
+```py
+from secator.definitions import HEADER, METHOD
+from secator.tasks._categories import OPTS
+
+@task()
+class mytool(Command):
+    ...
+    opt_key_map = {
+        # HTTPFuzzer options mapping
+        HEADER: 'H',
+        PROXY: 'x'
+    }
+    meta_opts = {
+        HEADER: OPTS[HEADER],
+        PROXY: OPTS[PROXY],
+    }
+```
+
+With this configuration, you can use your tool with `-method` and `-proxie` options
+
 ***
 
 ### Supporting proxies \[optional]
