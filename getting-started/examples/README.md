@@ -21,8 +21,9 @@ from secator.tasks.recon import subfinder
 from secator.tasks.http import httpx
 
 target = 'alibaba.com'
-subdomains = subfinder(target, raw=True).run()
-for probe in httpx(subdomains, threads=30, rate_limit=10):
+results = subfinder(target).run()
+hosts = [_.host for _ in results if _._type == 'subdomain']
+for probe in httpx(hosts, threads=30, rate_limit=10):
     print('Found alive subdomain URL {url}[{status_code}]'.format(**probe))
 ```
 {% endtab %}
