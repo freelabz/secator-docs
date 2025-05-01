@@ -89,7 +89,7 @@ secator install tools        # install all supported tools
 
 ***
 
-## Installing addons
+## Installing addons (optional)
 
 `secator` comes installed with the minimum amount of dependencies.
 
