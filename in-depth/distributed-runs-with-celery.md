@@ -18,7 +18,7 @@ To use distributed runs, make sure the `worker` addon is installed:
 secator install addons worker
 ```
 
-## Step 1: Configure a broker \[optional]
+## Step 1: Configure a broker and result backend \[optional]
 
 {% hint style="info" %}
 This step is **optional**. If you do not configure a broker, the **file system** will be used as a broker and result backend. Note that this works only if the client and worker run on the same VM.
