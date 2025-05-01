@@ -50,7 +50,7 @@ results = Workflow(config, target).run()
 
 ## Consuming results live
 
-All runners yield results in real-time, which means you can run use them as generators to consume their results:
+All runners yield results in real-time, which means you can run them as generators to consume their results:
 
 For instance, you can consume results lazily using threads or a Celery task:
 
