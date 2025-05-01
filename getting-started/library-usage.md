@@ -18,7 +18,7 @@ We recommend using `secator` as a library when building complex systems around `
 
 You can run any task supported by `secator` by simply importing it by name from `secator.tasks`.&#x20;
 
-You can run any workflow or scan by loading it's YAML configs and running it using the `secator.runners.Workflow` or `secator.runners.Scan` class.
+You can run any workflow or scan by importing it from `secator.workflows` or `secator.scans`.&#x20;
 
 ```python
 from secator.template import TemplateLoader
@@ -30,14 +30,16 @@ from secator.scans import host
 # Run simple tasks, chain them together
 target = 'wikipedia.org'
 subdomains = subfinder(target).run()
-alive_urls = httpx(subdomains).run()
-ports_open = naabu(subdomains).run()
+hosts = set(_.host for _ in subdomains if _._type == 'subdomain']
+ports_open = naabu(hosts).run()
+to_probe = set(f'{_.host}:{_.port}' for _ in ports_open if _._type == 'port']
+alive_urls = httpx(to_probe).run()
 
 # ... or run a workflow
 results = host_recon(target).run()
 
 # ... or run a scan
-config = host(target).run()
+results = host(target).run()
 
 # ... or run any custom template by loading it dynamically
 config = TemplateLoader('/path/to/my/workflow.yaml')
