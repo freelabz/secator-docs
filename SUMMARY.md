@@ -27,7 +27,7 @@
   * [Exporters](in-depth/concepts/exporters.md)
   * [Runners](in-depth/concepts/runners.md)
   * [Drivers](in-depth/concepts/drivers.md)
-  * [Profiles \[WIP\]](in-depth/concepts/profiles-wip.md)
+  * [Profiles](in-depth/concepts/profiles.md)
 * [Deployment](in-depth/deployment.md)
 
 ## For developers

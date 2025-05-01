@@ -11,6 +11,6 @@ This page presents various `secator` concepts:
 * [exporters.md](exporters.md "mention")
 * [runners.md](runners.md "mention")
 * [drivers.md](drivers.md "mention")
-* [profiles-wip.md](profiles-wip.md "mention")
+* [profiles.md](profiles.md "mention")
 
 ***
