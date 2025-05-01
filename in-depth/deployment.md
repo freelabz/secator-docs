@@ -310,7 +310,7 @@ Celery worker is alive !
 
 If you want a more scaleable architecture, we recommend deploying RabbitMQ, Redis, and Celery workers on different machines.
 
-The steps are exactly the same as for [#deploy-on-multiple-gce-instances](deployment.md#deploy-on-multiple-gce-instances "mention"), expect that steps 2, 3, and **4** will each be run on **separate GCE instance**.&#x20;
+The steps are exactly the same as for the previous section, except that steps 2, 3, and **4** will each be run on **separate GCE instance**.&#x20;
 
 You can repeat step 4 on more instances to increase the number of workers.
 
@@ -322,7 +322,7 @@ You can repeat step 4 on more instances to increase the number of workers.
 
 ## Axiom \[WIP]
 
-**Axiom is a dynamic infrastructure framework** to efficiently work with multi-cloud environments, build and deploy repeatable infrastructure focussed on offensive and defensive security.
+**Axiom is a dynamic infrastructure framework** to efficiently work with multi-cloud environments, build and deploy repeatable infrastructure focused on offensive and defensive security.
 
 ***
 

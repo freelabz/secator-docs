@@ -4,10 +4,6 @@ description: ... or how to manage different runner option sets effectively.
 
 # Profiles \[WIP]
 
-{% hint style="info" %}
-This page is a Work In Progress. Profiles are not yet integrated with `secator`.
-{% endhint %}
-
 `secator` profiles are a way to mutualize sets of options to be quickly re-used in tasks, workflows, and scans.
 
 We have identified that for different security assessment we need vastly different option set.
@@ -109,19 +105,19 @@ Running a task / workflow / scan with profiles be like:
 {% tabs %}
 {% tab title="Task" %}
 ```bash
-secator x httpx -profiles ninja,jaguar
+secator x httpx -pf ninja,jaguar
 ```
 {% endtab %}
 
 {% tab title="Workflow" %}
 ```bash
-secator w host_recon -profiles ninja,jaguar
+secator w host_recon -pf ninja,jaguar
 ```
 {% endtab %}
 
 {% tab title="Scan" %}
 ```bash
-secator s host_recon -profiles ninja,jaguar
+secator s host_recon -pf ninja,jaguar
 ```
 {% endtab %}
 {% endtabs %}

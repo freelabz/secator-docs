@@ -193,13 +193,13 @@ We could verify this XSS in our browser to validate it, but `dalfox` already gav
 `secator` supports UNIX pipes out-of-the-box. You can write a `secator` pipe that can automate the 4 previous steps:
 
 ```bash
-secator x katana http://testphp.vulnweb.com | secator x httpx | secator x gf --pattern lfi -fmt '{match}' | secator x dalfox
+secator x katana http://testphp.vulnweb.com | secator x httpx | secator x gf --pattern lfi | secator x dalfox
 ```
 
 You don't have to specify any additional flag than when running normally, since `secator` will detect that you are running a UNIX pipe and automagically pass the proper inputs between task invocations:
 
 * By default, it will pass on `stdin` the raw string results from the previous task. If the task can output multiple [output-types.md](../../in-depth/concepts/output-types.md "mention"), then the first one in the class definition `output_types` attribute is picked.
-* We can specify which fields we want to use when passing raw strings using the `-fmt` option. In the previous command the `-fmt '{match}'` option will tell secator to only pass only the `match` field of the `Tag` objects we find with `gf` as string input to the `dalfox`.
+* We can specify which fields we want to use when passing raw strings using the `-fmt` option.&#x20;
 
 <details>
 
@@ -244,6 +244,7 @@ tasks:
         condition: item.status_code == 0
   gf:
     description: Identifying XSS
+    pattern: xss
     targets_:
       - url.url
   dalfox:

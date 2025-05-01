@@ -34,12 +34,14 @@ An integration of `mytool` with `secator` would look like:
 
 {% code title="secator/tasks/mytool.py" %}
 ```python
+from secator.decorators import task
 from secator.runners import Command
 from secator.output_types import Url
 from secator.serializers import JSONSerializer
 from secator.definitions import URL, STATUS_CODE, CONTENT_TYPE
 
 
+@task()
 class mytool(Command):
   input_flag = '-u'
   json_flag = '-jsonl'
@@ -116,12 +118,13 @@ mytool -jsonl -u mytarget.com
 
 An integration of `mytool` with `secator` would look like:
 
-{% code title="secator/tasks/mytool.py" %}
-```python
-from secator.runners import Command
-from secator.output_types import Url
+<pre class="language-python" data-title="secator/tasks/mytool.py"><code class="lang-python"><strong>from secator.decorators import task
+</strong><strong>from secator.runners import Command
+</strong>from secator.output_types import Url
 from secator.definitions import URL, STATUS_CODE, CONTENT_TYPE
 
+
+@task()
 class mytool(Command):
   input_flag = '-u'
   json_flag = '-jsonl'
@@ -136,8 +139,7 @@ class mytool(Command):
             CONTENT_TYPE: item.get('content-type', '')
           )
 
-```
-{% endcode %}
+</code></pre>
 
 {% hint style="info" %}
 See [#lifecyle-hooks](../../../in-depth/concepts/runners.md#lifecyle-hooks "mention") for more details on which hooks you can use.

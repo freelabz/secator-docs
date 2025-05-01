@@ -26,9 +26,9 @@ secator s domain mydomain.com -ws mydomain
 
 ***
 
-### Exporters (`-o`)
+### Output (`-o`)
 
-You can export reports in various formats using exporters.
+You can export reports in various formats using built-in exporters.
 
 <details>
 
@@ -75,3 +75,4 @@ Learn more about [drivers.md](../in-depth/concepts/drivers.md "mention").
 {% endhint %}
 
 ***
+

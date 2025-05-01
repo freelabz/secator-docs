@@ -70,7 +70,7 @@ We do make exceptions for really awesome tools and write custom parsers (e.g: `n
 
 ### **Unified input options**
 
-`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](../more-options/meta-options.md), while still retaining the capability to use unique options for each command.
+`secator` tools belonging to the same category (eg: fuzzers) <mark style="color:red;">**MUST**</mark> end up with <mark style="color:orange;">**mutualized**</mark> [<mark style="color:orange;">**input options**</mark>](../runner-options/meta-options.md), while still retaining the capability to use unique options for each command.
 
 ### **Unified output schema**
 

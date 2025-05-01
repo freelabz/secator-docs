@@ -10,12 +10,12 @@
 * [Examples](getting-started/examples/README.md)
   * [5 minutes secator session](getting-started/examples/5-minutes-secator-session.md)
 
-## MORE OPTIONS
+## RUNNER OPTIONS
 
-* [Global options](more-options/task-options.md)
-* [Meta options](more-options/meta-options.md)
-* [Input formats](more-options/input-formats.md)
-* [Output options](more-options/output-options.md)
+* [Global options](runner-options/task-options.md)
+* [Meta options](runner-options/meta-options.md)
+* [Input formats](runner-options/input-formats.md)
+* [Output options](runner-options/output-options.md)
 
 ## IN-DEPTH
 

@@ -72,19 +72,16 @@ secator worker
 {% tabs %}
 {% tab title="CLI" %}
 ```bash
-secator w host_scan wikipedia.org
+secator w host_recon wikipedia.org
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
-from secator.runners import Workflow
-from secator.template import TemplateLoader
+from secator.workflows import host_recon
 
-host = 'testphp.vulnweb.com'
-config = TemplateLoader(name='workflows/host_scan')
-workflow = Workflow(config, host)
-for result in workflow.delay():
+target = 'testphp.vulnweb.com'
+for result in host_recon(target, sync=False):
   print(result)
 ```
 {% endtab %}

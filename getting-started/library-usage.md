@@ -22,23 +22,26 @@ You can run any workflow or scan by loading it's YAML configs and running it usi
 
 ```python
 from secator.template import TemplateLoader
-from secator.runners import Workflow, Scan
+from secator.runners import Workflow
 from secator.tasks import subfinder, httpx, naabu
+from secator.workflows import host_recon
+from secator.scans import host
 
 # Run simple tasks, chain them together
-host = 'wikipedia.org'
-subdomains = subfinder(host).run()
+target = 'wikipedia.org'
+subdomains = subfinder(target).run()
 alive_urls = httpx(subdomains).run()
 ports_open = naabu(subdomains).run()
 
 # ... or run a workflow
-config = TemplateLoader('workflows/host_recon')
-results = Workflow(config, host).run()
+results = host_recon(target).run()
 
 # ... or run a scan
-config = TemplateLoader('scans/domain')
-results = Scan(config, host).run()
+config = host(target).run()
 
+# ... or run any custom template by loading it dynamically
+config = TemplateLoader('/path/to/my/workflow.yaml')
+results = Workflow(config, target).run()
 ```
 
 ***
@@ -53,7 +56,8 @@ For instance, you can consume results lazily using threads or a Celery task:
 {% tab title="Using threads" %}
 ```python
 from threading import Thread
-from secator.tasks.http import feroxbuster
+from secator.tasks import feroxbuster
+from secator.workflows import url_crawl
 from secator.output_types import Url, Tag
 from .models import Urls, Tags
 
@@ -73,13 +77,17 @@ for url in feroxbuster(host, rate_limit=100):
     Thread(target=process_url, args=(url,))
 
 # Use a workflow as a generator
-config = TemplateLoader('config/url_crawl')
-workflow = Workflow(config, host, rate_limit=100)
-for result in workflow:
+threads = []
+for result in url_crawl(host, rate_limit=100):
   if isinstance(result, Url):
-    Thread(target=process_url, args=(result,))
+    thread = Thread(target=process_url, args=(result,))
   elif isinstance(result, Tag):
-    Thread(target=process_tag, args=(result,))
+    thread = Thread(target=process_tag, args=(result,))
+  threads.append(thread)
+  thread.start()
+  
+for thread in threads:
+  thread.join()
 ```
 {% endtab %}
 
@@ -89,6 +97,7 @@ from celery import Celery
 from secator.tasks.http import ffuf
 from secator.output_types import Url, Tag
 from .models import Urls, Tags
+from secator.workflows import url_crawl
 
 app = Celery(__name__)
 
@@ -110,9 +119,7 @@ for url in feroxbuster(host, rate_limit=100):
     process_url.delay(url)
 
 # Use a workflow as a generator
-config = TemplateLoader('config/url_crawl')
-workflow = Workflow(config, rate_limit=100)
-for result in workflow:
+for result in url_crawl(host, rate_limit=100):
   if isinstance(result, Url):
     process_url.delay(result)
   elif isinstance(result, Tag):

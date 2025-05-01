@@ -64,7 +64,7 @@ If you chose the Bash, Docker, or Docker Compose installation methods, you can j
 
 ***
 
-## Installing languages
+## Installing languages (optional)
 
 `secator` uses external tools, so you might need to install languages used by those tools assuming they are not already installed on your system.
 
@@ -76,9 +76,9 @@ We provide a subcommand to install required languages if you don't manage them e
 
 ***
 
-## Installing tools
+## Installing tools (optional)
 
-`secator` does not install any of the external tools it supports by default.
+`secator` can install tools automatically at runtime (provided `security.auto_install_commands` is enabled, which is the default), but you can also do it manually.
 
 We provide a subcommand to install or update each supported tool which should work on all systems supporting `apt`:
 
@@ -147,22 +147,6 @@ secator install addons trace
 
 ***
 
-## Installing CVEs
-
-`secator` makes remote API calls to [https://cve.circl.lu/](https://cve.circl.lu/) to get in-depth information about the CVEs it encounters.
-
-We provide a subcommand to download all known CVEs locally so that future lookups are made from disk instead:
-
-```bash
-secator install cves
-```
-
-{% hint style="danger" %}
-This step can take a while as all CVEs will be download and extracted to disk.
-{% endhint %}
-
-***
-
 ## Checking installation health
 
 To figure out which languages or tools are installed on your system (along with their version):
@@ -171,6 +155,6 @@ To figure out which languages or tools are installed on your system (along with 
 secator health
 ```
 
-<figure><img src="../.gitbook/assets/secator_health.png" alt=""><figcaption><p>Secator Health CLI output</p></figcaption></figure>
+<div align="left"><figure><img src="../.gitbook/assets/2025-04-29 15_55_22-Debian 10.x 64-bit - VMware Workstation.png" alt=""><figcaption><p>Secator Health CLI Output</p></figcaption></figure></div>
 
 ***

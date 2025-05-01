@@ -20,8 +20,8 @@ secator x subfinder -raw alibaba.com | secator x httpx -threads 30 -rl 10
 from secator.tasks.recon import subfinder
 from secator.tasks.http import httpx
 
-host = 'alibaba.com'
-subdomains = subfinder('alibaba.com', raw=True).run()
+target = 'alibaba.com'
+subdomains = subfinder(target, raw=True).run()
 for probe in httpx(subdomains, threads=30, rate_limit=10):
     print('Found alive subdomain URL {url}[{status_code}]'.format(**probe))
 ```
@@ -41,12 +41,10 @@ secator w port_scan cnn.com
 
 {% tab title="Python" %}
 ```python
-from secator.runner import Workflow
-from secator.template import TemplateLoader
+from secator.workflows import host_recon
 
-host = 'cnn.com'
-config = TemplateLoader(name='workflows/port_scan')
-for result in Workflow(config):  # consume results live
+target = 'cnn.com'
+for result in host_recon(target):  # consume results live
     print(result)
 ```
 {% endtab %}
@@ -64,12 +62,9 @@ secator w url_fuzz example.com -mc 200,302 -rl 1 -w dicc.txt -o table -quiet
 {% endtab %}
 
 {% tab title="Python" %}
-```python
-from secator.runner import Workflow
-from secator.template import TemplateLoader
-from secator.exporters import TableExporter
-
-host = 'example.com'
+<pre class="language-python"><code class="lang-python">from secator.workflows import url_fuzz
+<strong>
+</strong>target = 'example.com'
 opts = {
     'match_codes': '200, 302',
     'rate_limit': 1 # req/s
@@ -77,13 +72,10 @@ opts = {
     'ffuf.wordlist': 'dicc.txt' # ffuf wordlist
 }
 
-host = 'cnn.com'
-config = TemplateLoader(name='workflows/url_fuzz')
-
 # Print results live and a summary table at the end of the run
-for result in Workflow(config, exporters=[TableExporter]):
+for result in url_fuzz(target, exporters=['table']):
     print(result)
-```
+</code></pre>
 {% endtab %}
 {% endtabs %}
 

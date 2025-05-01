@@ -14,7 +14,7 @@ All runners inherit from `secator.runners._base.Runner`.
 
 Some built-in runners are available out-of-the-box:
 
-<table><thead><tr><th width="134">Runner</th><th width="334">Description</th><th>Additional features</th></tr></thead><tbody><tr><td><strong>Command</strong></td><td>Run an external command and stream it's output.</td><td><ul><li>Automatic command install.</li><li>Priviledged mode (<code>sudo</code>).</li></ul></td></tr><tr><td><strong>Task</strong></td><td>Run a task.</td><td><ul><li>Remote mode (Celery).</li><li>Chunking on big inputs.</li><li>Direct calling from library.</li></ul></td></tr><tr><td><strong>Workflow</strong></td><td>Run a DAG of tasks, defined in a YAML config file.</td><td><ul><li>Remote mode (Celery).</li><li>Distributed (Celery).</li><li>Task chaining and parallel.</li><li>Re-use previous results as task inputs.</li></ul></td></tr><tr><td><strong>Scan</strong></td><td>Run a DAG of workflows, defined in a YAML config file.</td><td><ul><li>Distributed (Celery).</li><li>Workflow chaining.</li><li>Re-use previous results as workflow inputs.</li></ul></td></tr></tbody></table>
+<table><thead><tr><th width="134">Runner</th><th>Description</th><th>Additional features</th></tr></thead><tbody><tr><td><strong>Command</strong></td><td>Run an external command and stream it's output.</td><td><ul><li>Automatic command install.</li><li>Priviledged mode (<code>sudo</code>).</li></ul></td></tr><tr><td><strong>Task</strong></td><td>Run a task.</td><td><ul><li>Remote mode (Celery).</li><li>Chunking on big inputs.</li><li>Direct calling from library.</li></ul></td></tr><tr><td><strong>Workflow</strong></td><td>Run a DAG of tasks, defined in a YAML config file.</td><td><ul><li>Remote mode (Celery).</li><li>Distributed (Celery).</li><li>Task chaining and parallel.</li><li>Re-use previous results as task inputs.</li></ul></td></tr><tr><td><strong>Scan</strong></td><td>Run a DAG of workflows, defined in a YAML config file.</td><td><ul><li>Distributed (Celery).</li><li>Workflow chaining.</li><li>Re-use previous results as workflow inputs.</li></ul></td></tr></tbody></table>
 
 ***
 
@@ -33,18 +33,18 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 * `on_start` : executed when the runner has started running.
 * `on_iter`: executed when the runner iterates.
 * `on_end` : executed when the runner has finished running.
-* `on_cmd`: runs when the mapped command is built <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
-* `on_cmd_done`: runs when the command has finished running <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
-* `on_line`: executed when a line is output to stdout or stderr <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_cmd`: runs when the mapped command is built <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_cmd_done`: runs when the command has finished running <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_line`: executed when a line is output to stdout or stderr <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
 
 **Item hooks:**
 
 * `on_item_pre_convert`: executed before an item is converted to an output type.
 * `on_item`: executed when the runner emits an item.
 * `on_duplicate`: runs after an item has been marked as a duplicate.
-* `on_line`: executed when a line is emitted to `stdout` <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark>.
-* `on_error`: executed when an error is emitted by the command <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark> .
-* `on_`<mark style="color:purple;">`{serializer}`</mark>`_loaded`: executed when a serializer has finished running. For instance, `on_json_loaded` after the `JSONSerializer` has finished running  <mark style="color:red;">**\[**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">** **</mark><mark style="color:red;">**runner only ]**</mark> .
+* `on_line`: executed when a line is emitted to `stdout`  or `stderr` <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_error`: executed when an error is emitted by the command <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark> .
+* `on_`<mark style="color:purple;">`{serializer}`</mark>`_loaded`: executed when a serializer has finished running. For instance, `on_json_loaded` after the `JSONSerializer` has finished running  <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark> .
 
 {% hint style="info" %}
 **All hooks** are defined with the `@staticmethod` decorator and take **`self`** as the **first** argument so that you can use the runner data in your hook implementation.\
@@ -56,7 +56,7 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 
 ## Using hooks
 
-There are two different ways of specifying hooks: **static hooks** (in the task definition class), **dynamic hooks** (passed to a runner at runtime), or **drivers**.
+There are two different ways of specifying hooks: **static hooks** (in the task definition class), **dynamic hooks** (passed to a runner at runtime), or **drivers (collection of hooks).**
 
 ### Static hooks
 

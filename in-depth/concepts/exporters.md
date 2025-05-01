@@ -37,12 +37,10 @@ secator s url http://testphp.vulnweb.com -o csv,json
 To use exporters from the library, you can pass the `exporters` kwarg to any runner:
 
 ```python
-from secator.runners import Workflow
-from secator.template import TemplateLoader
+from secator.workflows import host_recon
 
 host = 'mydomain.com'
-config = TemplateLoader(name='workflows/host_recon')
-workflow = Workflow(config, host, exporters=['csv', 'json'])
+workflow = host_recon(host, exporters=['csv', 'json'])
 workflow.run()
 ```
 {% endtab %}
