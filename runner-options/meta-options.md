@@ -128,14 +128,14 @@ The following options will apply to tasks making HTTP requests (if they implemen
 
 ### Header (`-H`)
 
-Custom header to add to each request in the form "KEY1:VALUE1; KEY2:VALUE2".
+Custom header to add to each request in the form "KEY1:VALUE1;; KEY2:VALUE2".
 
 <details>
 
 <summary>Example: set an <code>Authorization</code> and an <code>Accept</code> header</summary>
 
 ```bash
-secator x cariddi mydomain.com -H "Authorization: Basic <TOKEN>; Accept: application/json"
+secator x cariddi mydomain.com -H "Authorization: Basic <TOKEN>;; Accept: application/json"
 ```
 
 </details>
