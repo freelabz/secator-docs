@@ -11,19 +11,18 @@ description: ... or concrete use cases for secator.
 {% tabs %}
 {% tab title="CLI" %}
 ```bash
-secator x subfinder -raw alibaba.com | secator x httpx -threads 30 -rl 10 
+secator x subfinder -raw alibaba.com | secator x httpx -rl 10 -ss
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
-from secator.tasks.recon import subfinder
-from secator.tasks.http import httpx
+from secator.tasks import subfinder, httpx
 
 target = 'alibaba.com'
 results = subfinder(target).run()
 hosts = [_.host for _ in results if _._type == 'subdomain']
-for probe in httpx(hosts, threads=30, rate_limit=10):
+for probe in httpx(hosts, rate_limit=10, screenshot=True):
     print('Found alive subdomain URL {url}[{status_code}]'.format(**probe))
 ```
 {% endtab %}
@@ -31,12 +30,12 @@ for probe in httpx(hosts, threads=30, rate_limit=10):
 
 ***
 
-### **Find open ports and run `nmap`'s `vulscan` NSE script on results**
+### **Run host reconnaissance workflow**
 
 {% tabs %}
 {% tab title="CLI" %}
 ```bash
-secator w port_scan cnn.com
+secator w host_recon cnn.com
 ```
 {% endtab %}
 
