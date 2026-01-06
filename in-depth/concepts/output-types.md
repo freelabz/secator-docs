@@ -6,11 +6,57 @@ description: ... or how secator unifies all output into common schemas.
 
 `secator` uses the notion of output types to uniformize tasks output. A task can output one or multiple output types.
 
-The currently available output types are [#exploit](output-types.md#exploit "mention"), [#ip](output-types.md#ip "mention"), [#port](output-types.md#port "mention"), [#record](output-types.md#record "mention"),[#subdomain](output-types.md#subdomain "mention"), [#tag](output-types.md#tag "mention"), [#url](output-types.md#url "mention"), [#useraccount](output-types.md#useraccount "mention"), [#vulnerability](output-types.md#vulnerability "mention").
+The currently available output types are [#certificate](output-types.md#certificate "mention"), [#domain](output-types.md#domain "mention"), [#exploit](output-types.md#exploit "mention"), [#ip](output-types.md#ip "mention"), [#port](output-types.md#port "mention"), [#record](output-types.md#record "mention"), [#subdomain](output-types.md#subdomain "mention"), [#tag](output-types.md#tag "mention"), [#url](output-types.md#url "mention"), [#useraccount](output-types.md#useraccount "mention"), [#vulnerability](output-types.md#vulnerability "mention").
 
 {% hint style="info" %}
 Feel free to request more output types by [opening an issue](https://github.com/freelabz/secator/issues/new/choose) on the GitHub repo.
 {% endhint %}
+
+***
+
+## 📜 Certificate
+
+{% code title="secator/output_types/certificate.py" %}
+```python
+@dataclass
+class Certificate(OutputType):
+    host: str
+    fingerprint_sha256: str = field(default='')
+    ip: str = field(default='', compare=False)
+    raw_value: str = field(default='', compare=False)
+    subject_cn: str = field(default='', compare=False)
+    subject_an: list[str] = field(default_factory=list, compare=False)
+    not_before: datetime = field(default=None, compare=False)
+    not_after: datetime = field(default=None, compare=False)
+    issuer_dn: str = field(default='', compare=False)
+    issuer_cn: str = field(default='', compare=False)
+    issuer: str = field(default='', compare=False)
+    self_signed: bool = field(default=True, compare=False)
+    trusted: bool = field(default=False, compare=False)
+    status: str = field(default=CERTIFICATE_STATUS_UNKNOWN, compare=False)
+    keysize: int = field(default=None, compare=False)
+    serial_number: str = field(default='', compare=False)
+    ciphers: list[str] = field(default_factory=list, compare=False)
+```
+{% endcode %}
+
+***
+
+## 🪪 Domain
+
+{% code title="secator/output_types/domain.py" %}
+```python
+@dataclass
+class Domain(OutputType):
+    domain: str
+    registrar: str = ''
+    alive: bool = False
+    creation_date: str = ''
+    expiration_date: str = ''
+    registrant: str = ''
+    extra_data: dict = field(default_factory=dict, compare=False)
+```
+{% endcode %}
 
 ***
 
