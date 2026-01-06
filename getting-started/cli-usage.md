@@ -220,8 +220,8 @@ secator u record --script test.sh <RECORD_NAME>  # put your commands in a script
 To configure `secator`, use the following commands:
 
 ```bash
-secator c get                                     # get current user config
-secator c get --full                              # get full config (with defaults)
+secator c get                                     # get full config (with defaults)
+secator c get --user                              # get user config
 secator c get wordlists.defaults.http             # get default wordlist path
 secator c set wordlists.defaults.http rockyou.txt # set default wordlist 
 secator c edit                                    # edit user config yaml
