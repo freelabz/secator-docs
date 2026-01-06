@@ -16,18 +16,22 @@ Feel free to request more output types by [opening an issue](https://github.com/
 
 ## ⍼  Exploit
 
-<pre class="language-python"><code class="lang-python"><strong>@dataclass
-</strong>class Exploit(OutputType):
+{% code title="secator/output_types/exploit.py" %}
+```python
+@dataclass
+class Exploit(OutputType):
     name: str
-    id: str
     provider: str
+    id: str
     matched_at: str = ''
     ip: str = ''
-    reference: str = ''
+    confidence: str = 'low'
+    reference: str = field(default='', repr=True, compare=False)
     cves: list = field(default_factory=list, compare=False)
     tags: list = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
-</code></pre>
+```
+{% endcode %}
 
 ***
 
@@ -38,8 +42,10 @@ Feel free to request more output types by [opening an issue](https://github.com/
 @dataclass
 class Ip(OutputType):
     ip: str
-    host: str = ''
+    host: str = field(default='', repr=True, compare=False)
     alive: bool = False
+    protocol: str = field(default=IpProtocol.IPv4)
+    extra_data: dict = field(default_factory=dict, compare=False)
 ```
 {% endcode %}
 
@@ -57,8 +63,9 @@ class Port(OutputType):
     service_name: str = field(default='', compare=False)
     cpes: list = field(default_factory=list, compare=False)
     host: str = field(default='', repr=True, compare=False)
-    protocol: str = field(default='TCP', repr=True, compare=False)
+    protocol: str = field(default='tcp', repr=True, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    confidence: str = field(default='low', repr=False, compare=False)
 ```
 {% endcode %}
 
@@ -87,6 +94,7 @@ class Record(OutputType):
 class Subdomain(OutputType):
     host: str
     domain: str
+    verified: bool = field(default=False, compare=False)
     sources: List[str] = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
 ```
@@ -101,8 +109,11 @@ class Subdomain(OutputType):
 @dataclass
 class Tag(OutputType):
     name: str
+    value: str
     match: str
+    category: str = field(default='general')
     extra_data: dict = field(default_factory=dict, repr=True, compare=False)
+    stored_response_path: str = field(default='', compare=False)
 ```
 {% endcode %}
 
@@ -116,8 +127,10 @@ class Tag(OutputType):
 class Url(OutputType):
     url: str
     host: str = field(default='', compare=False)
+    verified: bool = field(default=False, compare=False)
     status_code: int = field(default=0, compare=False)
     title: str = field(default='', compare=False)
+    protocol: str = field(default='', compare=False)
     webserver: str = field(default='', compare=False)
     tech: list = field(default_factory=list, compare=False)
     content_type: str = field(default='', compare=False)
@@ -128,7 +141,13 @@ class Url(OutputType):
     lines: int = field(default=0, compare=False)
     screenshot_path: str = field(default='', compare=False)
     stored_response_path: str = field(default='', compare=False)
-    headers: dict = field(default_actory=dict, repr=True, compare=False)
+    confidence: str = field(default='high', compare=False)
+    response_headers: dict = field(default_factory=dict, repr=True, compare=False)
+    request_headers: dict = field(default_factory=dict, repr=True, compare=False)
+    extra_data: dict = field(default_factory=dict, compare=False)
+    is_directory: bool = field(default=False, compare=False)
+    is_root: bool = field(default=False, compare=False)
+    is_redirect: bool = field(default=False, compare=False)
 ```
 {% endcode %}
 
@@ -161,10 +180,12 @@ class Vulnerability(OutputType):
     id: str = ''
     matched_at: str = ''
     ip: str = field(default='', compare=False)
-    confidence: int = 'low'
+    confidence: str = 'low'
     severity: str = 'unknown'
     cvss_score: float = 0
-    tags: List[str] = field(default_factory=list)
+    cvss_vec: str = ''
+    epss_score: float = 0
+    tags: List[str] = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
     description: str = field(default='', compare=False)
     references: List[str] = field(default_factory=list, compare=False)
