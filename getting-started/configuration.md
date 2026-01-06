@@ -45,16 +45,27 @@ celery:
   task_acks_late: false
   task_send_sent_event: false
   task_reject_on_worker_lost: false
+  task_max_timeout: -1
+  task_memory_limit_mb: -1
   worker_max_tasks_per_child: 20
   worker_prefetch_multiplier: 1
   worker_send_task_events: false
   worker_kill_after_task: false
   worker_kill_after_idle_seconds: -1
+  worker_command_verbose: false
 
 cli:
   github_token: ''
   record: false
   stdin_timeout: 1000
+  show_http_response_headers: false
+  show_command_output: false
+  exclude_http_response_headers:
+    - connection
+    - content_type
+    - content_length
+    - date
+    - server
 
 runners:
   input_chunk_size: 100
@@ -66,16 +77,17 @@ runners:
   skip_exploit_search: false
   skip_cve_low_confidence: false
   remove_duplicates: false
-  show_chunk_progress: false
-  show_command_output: false
+  threads: 50
+  prompt_timeout: 20
 
 http:
   socks5_proxy: socks5://127.0.0.1:9050
   http_proxy: https://127.0.0.1:9080
-  store_responses: false
+  store_responses: true
   response_max_size_bytes: 100000
   proxychains_command: proxychains
   freeproxy_timeout: 1
+  default_header: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
 
 tasks:
   exporters:
@@ -105,10 +117,12 @@ wordlists:
   defaults:
     http: bo0m_fuzz
     dns: combined_subdomains
+    http_params: burp-parameter-names
   templates:
     bo0m_fuzz: https://raw.githubusercontent.com/Bo0oM/fuzz.txt/master/fuzz.txt
     combined_subdomains: https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/combined_subdomains.txt
-    directory_list_small: https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/directory-list-2.3-small.txt
+    directory_list_small: https://gist.githubusercontent.com/sl4v/c087e36164e74233514b/raw/c51a811c70bbdd87f4725521420cc30e7232b36d/directory-list-2.3-small.txt
+    burp-parameter-names: https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/burp-parameter-names.txt
   lists: {}
 
 addons:
@@ -128,6 +142,28 @@ addons:
     update_frequency: 60
     max_pool_size: 10
     server_selection_timeout_ms: 5000
+    max_items: null
+    duplicate_main_copy_fields:
+      - screenshot_path
+      - stored_response_path
+      - is_false_positive
+      - is_acknowledged
+      - verified
+  vulners:
+    enabled: false
+    api_key: ''
+
+profiles:
+  defaults: []
+
+drivers:
+  defaults: []
+
+providers:
+  defaults:
+    cve: circl
+    exploit: exploitdb
+    ghsa: ghsa
 
 security:
   allow_local_file_access: true

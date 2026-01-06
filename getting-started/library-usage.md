@@ -96,7 +96,7 @@ for thread in threads:
 {% tab title="Using a Celery task" %}
 ```python
 from celery import Celery
-from secator.tasks.http import ffuf
+from secator.tasks import ffuf
 from secator.output_types import Url, Tag
 from .models import Urls, Tags
 from secator.workflows import url_crawl
@@ -143,7 +143,7 @@ Options specified with the name of the command name prefixed will override globa
 For instance, if you want a global rate limit of `1000` (reqs/s), but for ffuf you want it to be `100` you can do so:
 
 ```python
-from secator.tasks.http import ffuf, gau, gospider, katana
+from secator.tasks import ffuf, gau, gospider, katana
 host = 'wikipedia.org'
 options = {
     'rate_limit': 1000, # reqs/s
