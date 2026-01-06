@@ -230,7 +230,7 @@ Task pipes are good to quickly find things, but workflows are much better to rep
 
 Here is a `secator` workflow corresponding to the previous set of tasks:
 
-{% code title="xss_finder.yaml" %}
+{% code title="~/.secator/templates/xss_finder.yaml" %}
 ```yaml
 type: workflow
 name: xss_finder
