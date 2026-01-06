@@ -92,14 +92,30 @@ secator w host_recon mydomain.com -timeout 10
 
 ### Retries (`-retries`)
 
-Retries is the number of retries for the port scan.
+Number of retries for failed requests.
 
 <details>
 
 <summary>Example: set <code>5</code> retries for all requests</summary>
 
 ```bash
-secator w port_scan mydomain.com -retries 5
+secator w host_recon mydomain.com -retries 5
+```
+
+</details>
+
+***
+
+### Delay (`-d`)
+
+Delay to add between each request (in seconds).
+
+<details>
+
+<summary>Example: add a <code>0.5</code> second delay between requests</summary>
+
+```bash
+secator w host_recon mydomain.com -d 0.5
 ```
 
 </details>
@@ -110,7 +126,7 @@ secator w port_scan mydomain.com -retries 5
 
 The following options will apply to tasks making HTTP requests (if they implement it).
 
-### Header (`-header`)
+### Header (`-H`)
 
 Custom header to add to each request in the form "KEY1:VALUE1; KEY2:VALUE2".
 
@@ -119,14 +135,14 @@ Custom header to add to each request in the form "KEY1:VALUE1; KEY2:VALUE2".
 <summary>Example: set an <code>Authorization</code> and an <code>Accept</code> header</summary>
 
 ```bash
-secator x cariddi mydomain.com -header "Authorization: Basic <TOKEN>; Accept: application/json"
+secator x cariddi mydomain.com -H "Authorization: Basic <TOKEN>; Accept: application/json"
 ```
 
 </details>
 
 ***
 
-### Method (`-method`)
+### Method (`-X`)
 
 HTTP method to use for request GET, POST, PUT, DELETE, etc...
 
@@ -135,7 +151,23 @@ HTTP method to use for request GET, POST, PUT, DELETE, etc...
 <summary>Example: use <code>POST</code> method for fuzzing</summary>
 
 ```bash
-secator x ffuf mydomain.com -method POST
+secator x ffuf mydomain.com -X POST
+```
+
+</details>
+
+***
+
+### Data (`-data`)
+
+Data to send in the request body.
+
+<details>
+
+<summary>Example: send JSON data in POST request</summary>
+
+```bash
+secator x ffuf mydomain.com/api -X POST -data '{"key":"value"}'
 ```
 
 </details>
@@ -302,6 +334,38 @@ secator x katana mydomain.com -frd
 
 ***
 
+### Depth (`-depth`)
+
+Scan depth for crawling tasks.
+
+<details>
+
+<summary>Example: set crawl depth to <code>3</code></summary>
+
+```bash
+secator x gospider mydomain.com -depth 3
+```
+
+</details>
+
+***
+
+### Replay proxy (`-P`)
+
+Proxy to use for replay requests (useful for fuzzing tasks).
+
+<details>
+
+<summary>Example: use a proxy for replay requests</summary>
+
+```bash
+secator x ffuf mydomain.com/FUZZ -P http://localhost:8080
+```
+
+</details>
+
+***
+
 ### Wordlist (`-w`)
 
 Custom wordlist to use.
@@ -312,6 +376,42 @@ Custom wordlist to use.
 
 ```bash
 secator x ffuf mydomain.com/FFUF/ -w /usr/share/seclists/Fuzzing/fuzz-Bo0oM.txt
+```
+
+</details>
+
+***
+
+## Port Scanning Options
+
+The following options apply to port scanning tasks (e.g., `naabu`, `nmap`).
+
+### Ports (`-p`)
+
+Only scan specific ports. Accepts a comma-separated list of ports, or `-` for all ports.
+
+<details>
+
+<summary>Example: scan ports <code>80</code>, <code>443</code>, and <code>8080</code></summary>
+
+```bash
+secator x naabu mydomain.com -p 80,443,8080
+```
+
+</details>
+
+***
+
+### Top ports (`-tp`)
+
+Scan the N most common ports.
+
+<details>
+
+<summary>Example: scan top <code>100</code> most common ports</summary>
+
+```bash
+secator x naabu mydomain.com -tp 100
 ```
 
 </details>
