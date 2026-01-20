@@ -72,16 +72,27 @@ secator worker
 {% tabs %}
 {% tab title="CLI" %}
 ```bash
+secator x httpx wikipedia.org
 secator w host_recon wikipedia.org
+secator s host wikipedia.org
 ```
 {% endtab %}
 
 {% tab title="Python" %}
 ```python
+from secator.tasks impor httpx
 from secator.workflows import host_recon
+from secator.scans import host
 
 target = 'testphp.vulnweb.com'
+
+for result in httpx(target, sync=False):
+  print(result)
+
 for result in host_recon(target, sync=False):
+  print(result)
+  
+for result in host(target, sync=False):
   print(result)
 ```
 {% endtab %}
