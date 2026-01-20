@@ -66,6 +66,18 @@ secator x mytool TARGET    # will run mytool -u TARGET
 secator x mytool TXT_FILE  # will run mytool -l TXT_FILE
 ```
 
+#### Important Note on Command Availability
+
+Ensure that the external command you are integrating is callable within your system's `PATH`. For example, a file located at `/opt/tools/testssl.sh/testssl.sh` **will not** work unless properly added to your `PATH`.
+
+To verify if your command is callable, you can run:
+
+```bash
+which [command]
+```
+
+If it returns the path to your command, then it is available and can be used with secator. If not, you will need to update your PATH or move the file to a directory that is already included in your PATH.
+
 ### Parsing a command's output
 
 Now that you have a basic implementation working, you need to convert your command's output into structured output (JSON).
@@ -115,6 +127,23 @@ secator x mytool -t tag1,tag2 -dbg -d 5 TARGET              # short option forma
 ```bash
 mytool --include-tags tag1,tag2 --debug --delay 5000 -u TARGET
 ```
+
+{% hint style="warning" %}
+All keys in `opts` must be in lowercase. If you need to support an uppercase option, follow these steps :
+
+1. Define the option in opts using a lowercase key:
+```py
+opts = {
+    'my_upper_cas_option':{'type':str, 'shor':'P', 'help': 'Products'}
+}
+```
+2. Map the lowercase key to its corresponding uppercase option using `opt_key_map`:
+```py
+opt_key_map = {
+    'my_upper_cas_option': 'P'
+}
+```
+{% endhint %}
 
 ***
 
@@ -190,7 +219,7 @@ class mytool(Command, HTTPFuzzer):
         USER_AGENT: 'user-agent',
 
         # my tool specific options
-        'tags': 'include-tags',      
+        'tags': 'include-tags',
     }
     opt_value_map = {
         'delay': lambda x: x * 1000  # convert seconds to milliseconds
@@ -257,6 +286,30 @@ mytool \
   --include-tags tag1,tag2
   -u TARGET
 ```
+
+However, if your tool doesn’t fit into one of `secator`'s built-in command categories, you can define the `meta` options yourself.
+
+For example, let's say we want to support only `HEADER` and `PROXY` options for our tool:
+
+```py
+from secator.definitions import HEADER, METHOD
+from secator.tasks._categories import OPTS
+
+@task()
+class mytool(Command):
+    ...
+    opt_key_map = {
+        # HTTPFuzzer options mapping
+        HEADER: 'H',
+        PROXY: 'x'
+    }
+    meta_opts = {
+        HEADER: OPTS[HEADER],
+        PROXY: OPTS[PROXY],
+    }
+```
+
+With this configuration, you can use your tool with `-method` and `-proxie` options
 
 ***
 
