@@ -408,7 +408,7 @@ Scan the N most common ports.
 
 <details>
 
-<summary>Example: scan top <code>100</code> most common ports</summary>
+<summary></summary>
 
 ```bash
 secator x naabu mydomain.com -tp 100
