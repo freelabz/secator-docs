@@ -36,6 +36,30 @@ tasks:
 
 ***
 
+### Finding the Original Workflow Files
+
+The original YAML workflow files provided by secator are located in the installed library directory, typically under:
+
+```
+**/python3.11/site-packages/secator/configs/workflows/*.yaml
+```
+
+To locate these files on your system, you can use the following command:
+
+```bash
+find / -type f -path "*/secator/configs/workflows/*" -name "*.yaml"
+```
+
+This command will search your filesystem for YAML files under the `secator/configs/workflows` path.
+
+### Adding Your Own Workflows
+
+You can add your custom workflows by placing their YAML files in:
+
+* `~/.secator/templates/` (or whatever your `dirs.templates` in [configuration.md](../../../getting-started/configuration.md "mention") points to)
+
+This allows you to extend the functionality of secator without modifying the original library files, making it easier to manage updates and custom configurations.
+
 ## Dynamic targets
 
 You can specify dynamic targets for tasks from current run results, by using the `targets_` key in your template like:
