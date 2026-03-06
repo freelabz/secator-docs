@@ -278,9 +278,7 @@ Data to send in the request body.
 | **Library** | `data` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: send JSON data in POST request</summary>
+**Example:** send JSON data in POST request
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -297,8 +295,6 @@ results = ffuf('mydomain.com/api', method='POST', data='{"key":"value"}').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### User-agent
@@ -311,9 +307,7 @@ Custom user-agent to use for request.
 | **Library** | `user_agent` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: use a custom user agent value</summary>
+**Example:** use a custom user agent value
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -330,8 +324,6 @@ results = dalfox('mydomain.com', user_agent='secator/1.0').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Match regex
@@ -344,9 +336,7 @@ Keep responses which body content match the input.
 | **Library** | `match_regex` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: keep responses which match the regex MySQLError.*</summary>
+**Example:** keep responses which match the regex MySQLError.*
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -363,8 +353,6 @@ results = ffuf('mydomain.com', match_regex='MySQLError.*').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Match size
@@ -377,9 +365,7 @@ Keep responses which body size (in bytes) match the input.
 | **Library** | `match_size` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: keep responses with 1025 bytes</summary>
+**Example:** keep responses with 1025 bytes
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -396,8 +382,6 @@ results = katana('mydomain.com', match_size=1025).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Match words
@@ -410,9 +394,7 @@ Keep responses which body word count match the input.
 | **Library** | `match_words` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: keep responses with 10 words</summary>
+**Example:** keep responses with 10 words
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -429,8 +411,6 @@ results = katana('mydomain.com', match_words=10).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Match codes
@@ -443,9 +423,7 @@ Keep responses which HTTP status codes match the input.
 | **Library** | `match_codes` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: keep responses matching HTTP statuses 200, 400, 501</summary>
+**Example:** keep responses matching HTTP statuses 200, 400, 501
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -462,8 +440,6 @@ results = katana('mydomain.com', match_codes='200,400,501').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Filter regex
@@ -476,9 +452,7 @@ Filter out responses which body content match the input.
 | **Library** | `filter_regex` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: filter out responses containing the string LoginPage</summary>
+**Example:** filter out responses containing the string LoginPage
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -495,8 +469,6 @@ results = ffuf('mydomain.com', filter_regex='LoginPage.*').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Filter codes
@@ -509,9 +481,7 @@ Filter out responses which HTTP status codes match the input.
 | **Library** | `filter_codes` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: filter out responses matching HTTP status 500</summary>
+**Example:** filter out responses matching HTTP status 500
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -528,8 +498,6 @@ results = ffuf('mydomain.com', filter_codes='500').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Filter size
@@ -542,9 +510,7 @@ Filter out responses which body size (in bytes) match the input.
 | **Library** | `filter_size` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: filter out responses with 1025 bytes</summary>
+**Example:** filter out responses with 1025 bytes
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -561,8 +527,6 @@ results = ffuf('mydomain.com', filter_size=1025).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Filter words
@@ -575,9 +539,7 @@ Filter out responses which body word count match the input.
 | **Library** | `filter_words` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: filter out responses with 10 words</summary>
+**Example:** filter out responses with 10 words
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -594,8 +556,6 @@ results = ffuf('mydomain.com', filter_words=10).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Follow redirect
@@ -608,9 +568,7 @@ Follow all HTTP redirects.
 | **Library** | `follow_redirect` |
 | **Type** | `flag` (boolean) |
 
-<details>
-
-<summary>Example: follow HTTP redirects</summary>
+**Example:** follow HTTP redirects
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -627,8 +585,6 @@ results = katana('mydomain.com', follow_redirect=True).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Depth
@@ -641,9 +597,7 @@ Scan depth for crawling tasks.
 | **Library** | `depth` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: set crawl depth to 3</summary>
+**Example:** set crawl depth to 3
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -660,8 +614,6 @@ results = gospider('mydomain.com', depth=3).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Replay proxy
@@ -674,9 +626,7 @@ Proxy to use for replay requests (useful for fuzzing tasks).
 | **Library** | `replay_proxy` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: use a proxy for replay requests</summary>
+**Example:** use a proxy for replay requests
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -693,8 +643,6 @@ results = ffuf('mydomain.com/FUZZ', replay_proxy='http://localhost:8080').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Wordlist
@@ -707,9 +655,7 @@ Custom wordlist to use.
 | **Library** | `wordlist` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: use fuzz-Bo0oM wordlist</summary>
+**Example:** use fuzz-Bo0oM wordlist
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -725,8 +671,6 @@ results = ffuf('mydomain.com/FUZZ', wordlist='/usr/share/seclists/Fuzzing/fuzz-B
 ```
 {% endtab %}
 {% endtabs %}
-
-</details>
 
 ***
 
@@ -744,9 +688,7 @@ Only scan specific ports. Accepts a comma-separated list of ports, or `-` for al
 | **Library** | `ports` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: scan ports 80, 443, and 8080</summary>
+**Example:** scan ports 80, 443, and 8080
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -763,8 +705,6 @@ results = naabu('mydomain.com', ports='80,443,8080').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Top ports
@@ -777,9 +717,7 @@ Scan the N most common ports.
 | **Library** | `top_ports` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: scan top 100 most common ports</summary>
+**Example:** scan top 100 most common ports
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -795,8 +733,6 @@ results = naabu('mydomain.com', top_ports=100).run()
 ```
 {% endtab %}
 {% endtabs %}
-
-</details>
 
 ***
 
