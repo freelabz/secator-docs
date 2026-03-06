@@ -7,6 +7,7 @@
 * [CLI Usage](getting-started/cli-usage.md)
 * [Library usage](getting-started/library-usage.md)
 * [Configuration](getting-started/configuration.md)
+* [Reports & Workspaces](getting-started/reports-and-workspaces.md)
 * [Examples](getting-started/examples/README.md)
   * [5 minutes secator session](getting-started/examples/5-minutes-secator-session.md)
 
@@ -21,6 +22,7 @@
 
 * [Philosophy & design](in-depth/philosophy-and-design.md)
 * [Distributed runs with Celery](in-depth/distributed-runs-with-celery.md)
+* [AI Assistant](in-depth/ai-assistant.md)
 * [Concepts](in-depth/concepts/README.md)
   * [Output types](in-depth/concepts/output-types.md)
   * [Proxies](in-depth/concepts/proxies.md)

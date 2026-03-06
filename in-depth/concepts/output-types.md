@@ -49,12 +49,21 @@ class Certificate(OutputType):
 @dataclass
 class Domain(OutputType):
     domain: str
-    registrar: str = ''
     alive: bool = False
-    creation_date: str = ''
-    expiration_date: str = ''
-    registrant: str = ''
+    creation_date: datetime = field(default=None, compare=False)
+    expiration_date: datetime = field(default=None, compare=False)
+    updated_date: datetime = field(default=None, compare=False)
+    status: list = field(default_factory=list, compare=False)
+    registrar: str = field(default='', compare=False)
+    registrar_info: dict = field(default_factory=dict, compare=False)
+    registrant: str = field(default='', compare=False)
+    registrant_info: dict = field(default_factory=dict, compare=False)
+    administrative_info: dict = field(default_factory=dict, compare=False)
+    technical_info: dict = field(default_factory=dict, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -76,6 +85,8 @@ class Exploit(OutputType):
     cves: list = field(default_factory=list, compare=False)
     tags: list = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
 ```
 {% endcode %}
 
@@ -143,6 +154,9 @@ class Subdomain(OutputType):
     verified: bool = field(default=False, compare=False)
     sources: List[str] = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -160,6 +174,9 @@ class Tag(OutputType):
     category: str = field(default='general')
     extra_data: dict = field(default_factory=dict, repr=True, compare=False)
     stored_response_path: str = field(default='', compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -194,6 +211,9 @@ class Url(OutputType):
     is_directory: bool = field(default=False, compare=False)
     is_root: bool = field(default=False, compare=False)
     is_redirect: bool = field(default=False, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -231,13 +251,15 @@ class Vulnerability(OutputType):
     cvss_score: float = 0
     cvss_vec: str = ''
     epss_score: float = 0
-    tags: List[str] = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
     description: str = field(default='', compare=False)
     references: List[str] = field(default_factory=list, compare=False)
     reference: str = field(default='', compare=False)
     confidence_nb: int = 0
     severity_nb: int = 0
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 

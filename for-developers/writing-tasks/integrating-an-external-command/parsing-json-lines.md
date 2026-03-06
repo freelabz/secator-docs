@@ -134,9 +134,9 @@ class mytool(Command):
   def on_json_loaded(self, data):
       for item in data['urls']:
           yield Url(
-            URL: item['url'],
-            STATUS_CODE: item['status'],
-            CONTENT_TYPE: item.get('content-type', '')
+            url=item['url'],
+            status_code=item['status'],
+            content_type=item.get('content-type', '')
           )
 
 </code></pre>

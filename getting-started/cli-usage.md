@@ -126,7 +126,43 @@ To find user accounts for a username:
 secator w user_hunt elonmusk
 ```
 {% endtab %}
+
+{% tab title="Domain recon" %}
+To perform domain reconnaissance:
+
+```bash
+secator w domain_recon mydomain.com
+```
+{% endtab %}
+
+{% tab title="URL vuln" %}
+To scan URLs for vulnerabilities:
+
+```bash
+secator w url_vuln https://mydomain.com
+```
+{% endtab %}
+
+{% tab title="URL secrets hunt" %}
+To hunt for secrets in HTTP responses:
+
+```bash
+secator w url_secrets_hunt https://mydomain.com
+```
+{% endtab %}
+
+{% tab title="WordPress" %}
+To scan WordPress sites:
+
+```bash
+secator w wordpress https://mydomain.com
+```
+{% endtab %}
 {% endtabs %}
+
+{% hint style="info" %}
+Additional workflows available: `cidr_recon`, `url_bypass`, `url_dirsearch`, `url_params_fuzz`. Use **`secator w`** to list all available workflows.
+{% endhint %}
 
 {% hint style="info" %}
 Use **`secator w <NAME> --help`** to list options for a specific workflow.
@@ -246,5 +282,69 @@ secator worker
 {% hint style="info" %}
 Learn more about [distributed-runs-with-celery.md](../in-depth/distributed-runs-with-celery.md "mention")
 {% endhint %}
+
+***
+
+## Cheatsheet
+
+For a quick reference of common commands, use the built-in cheatsheet:
+
+```bash
+secator cheatsheet
+secator cs  # short alias
+```
+
+This displays an interactive command reference covering:
+- Basic commands and syntax
+- Aliases for productivity
+- Configuration management
+- Worker usage for parallel execution
+- Report querying and filtering
+- Common scan patterns
+
+***
+
+## Additional Commands
+
+### Health Check
+
+Check the status of installed tools and dependencies:
+
+```bash
+secator health
+secator h              # short alias
+secator health --json  # JSON output
+secator health --strict  # fail if tools missing
+```
+
+### Profile Management
+
+List available profiles:
+
+```bash
+secator profile list
+secator p list  # short alias
+```
+
+### Alias Management
+
+Enable command aliases for faster workflow:
+
+```bash
+secator alias enable   # generate aliases file
+secator alias list     # list all aliases
+secator alias disable  # disable aliases
+```
+
+After enabling, source the aliases:
+```bash
+source ~/.secator/.aliases
+```
+
+Now you can use shortcuts:
+```bash
+httpx example.com              # instead of secator x httpx
+w subdomain_recon example.com  # instead of secator w subdomain_recon
+```
 
 ***

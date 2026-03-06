@@ -143,6 +143,14 @@ Add tracing tools like `memray` and `pyinstrument` required for tracing function
 secator install addons trace
 ```
 {% endtab %}
+
+{% tab title="ai" %}
+Add AI-powered penetration testing assistant support using LiteLLM.
+
+```sh
+secator install addons ai
+```
+{% endtab %}
 {% endtabs %}
 
 ***

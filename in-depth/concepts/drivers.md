@@ -47,3 +47,121 @@ The `addons.gcs.credentials_path` config option is available but optional, as th
 {% endhint %}
 
 ***
+
+## API driver
+
+The API driver sends runner and finding data to an external REST API in real-time. This is useful for integrating `secator` with external platforms, dashboards, or security orchestration tools.
+
+### Setup
+
+```bash
+# Configure the API endpoint
+secator config set addons.api.url https://your-api.example.com
+secator config set addons.api.key your-api-key
+
+# Run with the API driver
+secator w host_recon example.com -driver api -ws my-workspace-id
+```
+
+{% hint style="warning" %}
+The API driver requires a valid workspace ID (not `default`). Use `-ws <workspace_id>` to specify one.
+{% endhint %}
+
+### Configuration Options
+
+| Config Key | Default | Description |
+|------------|---------|-------------|
+| `addons.api.enabled` | `false` | Enable/disable the API driver |
+| `addons.api.url` | `''` | Base URL of the external API |
+| `addons.api.key` | `''` | API key for authentication |
+| `addons.api.header_name` | `Bearer` | Authorization header prefix |
+| `addons.api.force_ssl` | `true` | Enable SSL certificate verification |
+| `addons.api.timeout` | `30` | Request timeout in seconds |
+| `addons.api.runner_create_endpoint` | `/runners` | Endpoint for creating runners |
+| `addons.api.runner_update_endpoint` | `/runners/{runner_id}` | Endpoint for updating runners |
+| `addons.api.finding_create_endpoint` | `/findings` | Endpoint for creating findings |
+| `addons.api.finding_update_endpoint` | `/findings/{finding_id}` | Endpoint for updating findings |
+| `addons.api.workspace_get_endpoint` | `/workspaces/{workspace_id}` | Endpoint for getting workspace info |
+
+### API Endpoints
+
+The API driver expects your external API to implement the following endpoints:
+
+#### Runner Endpoints
+
+**POST** `{runner_create_endpoint}` - Create a new runner
+- Request body: Runner data (JSON)
+- Response: `{ "id": "<runner_id>" }`
+
+**PUT** `{runner_update_endpoint}` - Update an existing runner
+- URL parameter: `{runner_id}`
+- Request body: Runner update data (JSON)
+
+#### Finding Endpoints
+
+**POST** `{finding_create_endpoint}` - Create a new finding
+- Request body: Finding data (JSON)
+- Response: `{ "id": "<finding_id>" }`
+
+**PUT** `{finding_update_endpoint}` - Update an existing finding
+- URL parameter: `{finding_id}`
+- Request body: Finding update data (JSON)
+
+#### Workspace Endpoint
+
+**GET** `{workspace_get_endpoint}` - Get workspace information
+- URL parameter: `{workspace_id}`
+- Response: `{ "name": "<workspace_name>" }`
+
+### Example Usage
+
+{% tabs %}
+{% tab title="CLI" %}
+```bash
+# Configure API settings
+secator config set addons.api.url https://api.securityplatform.com
+secator config set addons.api.key sk-your-api-key-here
+
+# Run a workflow with API integration
+secator w host_recon example.com -driver api -ws project-123
+
+# Combine with other drivers
+secator w host_recon example.com -driver mongodb,api -ws project-123
+```
+{% endtab %}
+
+{% tab title="Library" %}
+```python
+from secator.workflows import host_recon
+
+# Run with API driver
+results = host_recon(
+    'example.com',
+    drivers=['api'],
+    context={'workspace_id': 'project-123'}
+).run()
+```
+{% endtab %}
+{% endtabs %}
+
+### Authentication
+
+The API driver sends authentication headers with each request:
+
+```
+Authorization: {header_name} {api_key}
+Content-Type: application/json
+```
+
+By default, this results in:
+```
+Authorization: Bearer your-api-key
+```
+
+You can customize the header prefix:
+```bash
+secator config set addons.api.header_name "X-API-Key"
+# Results in: X-API-Key your-api-key
+```
+
+***

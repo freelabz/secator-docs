@@ -30,9 +30,9 @@ from secator.scans import host
 # Run simple tasks, chain them together
 target = 'wikipedia.org'
 subdomains = subfinder(target).run()
-hosts = set(_.host for _ in subdomains if _._type == 'subdomain']
+hosts = set(_.host for _ in subdomains if _._type == 'subdomain')
 ports_open = naabu(hosts).run()
-to_probe = set(f'{_.host}:{_.port}' for _ in ports_open if _._type == 'port']
+to_probe = set(f'{_.host}:{_.port}' for _ in ports_open if _._type == 'port')
 alive_urls = httpx(to_probe).run()
 
 # ... or run a workflow

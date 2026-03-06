@@ -152,6 +152,31 @@ addons:
   vulners:
     enabled: false
     api_key: ''
+  ai:
+    enabled: false
+    api_key: ''
+    api_base: ''
+    default_model: claude-sonnet-4-6
+    intent_model: claude-haiku-4-5
+    execution_model: ''
+    temperature: 0.7
+    max_tokens: 30000
+    max_tokens_total: 100000
+    max_results: 500
+    encrypt_pii: true
+  api:
+    enabled: false
+    url: ''
+    key: ''
+    header_name: Bearer
+    force_ssl: true
+    timeout: 30
+    runner_create_endpoint: /runners
+    runner_update_endpoint: /runners/{runner_id}
+    finding_create_endpoint: /findings
+    finding_update_endpoint: /findings/{finding_id}
+    finding_search_endpoint: /findings
+    workspace_get_endpoint: /workspaces/{workspace_id}
 
 profiles:
   defaults: []
