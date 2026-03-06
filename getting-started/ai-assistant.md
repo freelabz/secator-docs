@@ -2,7 +2,7 @@
 description: ... or how to use AI-powered penetration testing assistance.
 ---
 
-# AI Assistant
+# AI assistant
 
 `secator` includes an AI-powered penetration testing assistant that can help automate security assessments, analyze results, and provide intelligent guidance during engagements.
 
@@ -22,17 +22,40 @@ secator install addons ai
 ```bash
 # Install the AI addon
 secator install addons ai
-
-# Configure your API key
-secator config set addons.ai.api_key <YOUR_API_KEY>
-
-# Optionally set a custom model
-secator config set addons.ai.default_model gpt-4o
 ```
 
-### Supported Providers
+### Authentication
 
-The AI assistant uses [LiteLLM](https://docs.litellm.ai/) under the hood, which supports many LLM providers:
+The recommended way to authenticate is through provider environment variables. This allows you to easily switch between models using the `--model` flag:
+
+```bash
+# Set your provider API keys
+export ANTHROPIC_API_KEY=<YOUR_KEY>  # For Claude models
+export OPENAI_API_KEY=<YOUR_KEY>     # For GPT models
+export OPENROUTER_API_KEY=<YOUR_KEY> # For OpenRouter models
+
+# Now you can switch models on the fly
+secator x ai example.com -p "Scan this target" --model claude-sonnet-4-6
+secator x ai example.com -p "Scan this target" --model gpt-4o
+secator x ai example.com -p "Scan this target" --model openrouter/anthropic/claude-haiku-4-5
+```
+
+{% hint style="warning" %}
+**Cost warning:** The default models (`claude-sonnet-4-6` for main tasks and `claude-haiku-4-5` for intent detection) can get expensive fast, especially Claude Sonnet during long attack sessions. Consider using cheaper models like `gpt-4o-mini` or `claude-haiku-4-5` for cost-sensitive use cases.
+{% endhint %}
+
+{% hint style="info" %}
+Alternatively, you can set a single API key in the secator config:
+```bash
+secator config set addons.ai.api_key <YOUR_API_KEY>
+```
+{% endhint %}
+
+### Supported providers
+
+The AI assistant uses [LiteLLM](https://docs.litellm.ai/) under the hood, which supports many LLM providers. See the [full list of supported models](https://models.litellm.ai/).
+
+Common providers include:
 
 - **OpenAI**: `gpt-4o`, `gpt-4o-mini`, `gpt-4-turbo`
 - **Anthropic**: `claude-sonnet-4-20250514`, `claude-opus-4-20250514`
@@ -42,14 +65,14 @@ The AI assistant uses [LiteLLM](https://docs.litellm.ai/) under the hood, which 
 Set `addons.ai.api_base` if using a custom endpoint:
 
 ```bash
-secator config set addons.ai.api_base http://localhost:11434/v1
+secator config set addons.ai.api_base http://localhost:11434
 ```
 
 ***
 
 ## Usage
 
-### Basic Usage
+### Basic usage
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -92,7 +115,7 @@ analysis = ai('example.com', prompt='Analyze these results', results=ports + url
 
 The AI assistant has two primary modes:
 
-### Attack Mode
+### Attack mode
 
 In **attack mode**, the AI actively executes security tasks:
 
@@ -105,7 +128,7 @@ In **attack mode**, the AI actively executes security tasks:
 secator x ai example.com -p "Perform a full reconnaissance" --mode attack
 ```
 
-### Chat Mode
+### Chat mode
 
 In **chat mode**, the AI analyzes and discusses findings:
 
@@ -126,14 +149,14 @@ If you don't specify a mode, the AI automatically detects intent from your promp
 
 ## Options
 
-### AI Task Options
+### AI task options
 
 | Option | CLI | Library | Default | Description |
 |--------|-----|---------|---------|-------------|
 | Prompt | `-p, --prompt` | `prompt` | `''` | The instruction or question for the AI |
 | Mode | `--mode` | `mode` | auto-detect | `attack` or `chat` |
-| Model | `--model` | `model` | config default | LLM model to use |
-| API Key | `--api-key` | `api_key` | config default | API key for LLM provider |
+| Model | `--model` | `model` | `claude-sonnet-4-6` | LLM model to use |
+| API Key | `--api-key` | `api_key` | config or env var | API key for LLM provider |
 | API Base | `--api-base` | `api_base` | `''` | Custom API endpoint |
 | Temperature | `--temperature` | `temperature` | `0.7` | LLM temperature (0-1) |
 | Max Iterations | `--max-iterations` | `max_iterations` | `10` | Maximum action iterations |
@@ -141,37 +164,37 @@ If you don't specify a mode, the AI automatically detects intent from your promp
 | Dry Run | `--dry-run` | `dry_run` | `False` | Show actions without executing |
 | Auto Accept | `-y, --yes` | `yes` | `False` | Auto-accept all actions |
 | Interactive | `--interactive` | `interactive` | `True` | Prompt for follow-up actions |
-| Intent Model | `--intent-model` | `intent_model` | config default | Model for intent detection |
+| Intent Model | `--intent-model` | `intent_model` | `claude-haiku-4-5` | Model for intent detection |
 | Max Tokens | `--max-tokens-total` | `max_tokens_total` | `100000` | Token budget limit |
 
 ***
 
-## AI Actions
+## AI actions
 
 The AI can perform the following actions:
 
-### Task Execution
+### Task execution
 Run any `secator` task:
 ```
 AI: I'll run an nmap scan to discover open ports.
 [Executes: secator x nmap example.com]
 ```
 
-### Workflow Execution
+### Workflow execution
 Run predefined workflows:
 ```
 AI: Let me perform a full subdomain reconnaissance.
 [Executes: secator w subdomain_recon example.com]
 ```
 
-### Shell Commands
+### Shell commands
 Execute shell commands for additional reconnaissance:
 ```
 AI: I'll check the DNS records.
 [Executes: dig example.com ANY]
 ```
 
-### Query Results
+### Query results
 Query previous findings:
 ```
 AI: Let me check for critical vulnerabilities.
@@ -181,49 +204,49 @@ AI: Let me check for critical vulnerabilities.
 ### Follow-up
 Continue the conversation with new questions or tasks.
 
-### Add Finding
+### Add finding
 Manually add a finding based on analysis.
 
 ***
 
 ## Configuration
 
-### Configuration Options
+### Configuration options
 
 | Config Key | Default | Description |
 |------------|---------|-------------|
 | `addons.ai.enabled` | `false` | Enable/disable AI addon |
 | `addons.ai.api_key` | `''` | API key for LLM provider |
 | `addons.ai.api_base` | `''` | Custom API base URL |
-| `addons.ai.default_model` | `gpt-4o` | Default LLM model |
-| `addons.ai.intent_model` | `gpt-4o-mini` | Model for intent classification |
+| `addons.ai.default_model` | `claude-sonnet-4-6` | Default LLM model |
+| `addons.ai.intent_model` | `claude-haiku-4-5` | Model for intent classification |
 | `addons.ai.temperature` | `0.7` | Default temperature |
 | `addons.ai.max_tokens` | `30000` | Max tokens per response |
 | `addons.ai.max_tokens_total` | `100000` | Total token budget |
 | `addons.ai.max_results` | `500` | Max results to send to LLM |
 | `addons.ai.encrypt_pii` | `true` | Encrypt sensitive data |
 
-### Setting Configuration
+### Setting configuration
 
 ```bash
-# Set API key
-secator config set addons.ai.api_key sk-...
-
-# Set default model
-secator config set addons.ai.default_model claude-sonnet-4-20250514
-
-# Set custom API endpoint (e.g., for local models)
-secator config set addons.ai.api_base http://localhost:11434/v1
-
-# Adjust temperature
+# Adjust temperature (0-1, higher = more creative)
 secator config set addons.ai.temperature 0.5
+
+# Limit max tokens per response
+secator config set addons.ai.max_tokens 20000
+
+# Limit max results sent to LLM
+secator config set addons.ai.max_results 200
+
+# Disable PII encryption (for local models)
+secator config set addons.ai.encrypt_pii false
 ```
 
 ***
 
 ## Features
 
-### Sensitive Data Encryption
+### Sensitive data encryption
 
 When `sensitive` mode is enabled (default), the AI assistant automatically encrypts:
 
@@ -240,7 +263,7 @@ This prevents sensitive data from being sent to external LLM providers in plain 
 secator x ai example.com -p "Scan this target" --no-sensitive
 ```
 
-### Token Management
+### Token management
 
 The AI assistant automatically manages token usage:
 
@@ -249,7 +272,7 @@ The AI assistant automatically manages token usage:
 - Truncates large results to fit token budget
 - Shows token usage in status messages
 
-### Interactive Mode
+### Interactive mode
 
 By default, the AI operates in interactive mode:
 
@@ -267,13 +290,13 @@ secator x ai example.com -p "Full scan" --no-interactive -y
 
 ## Examples
 
-### Full Reconnaissance
+### Full reconnaissance
 
 ```bash
 secator x ai example.com -p "Perform comprehensive reconnaissance including subdomain enumeration, port scanning, and web vulnerability scanning"
 ```
 
-### Analyze Existing Results
+### Analyze existing results
 
 ```bash
 # First, run some scans
@@ -283,7 +306,7 @@ secator w host_recon example.com
 secator x ai -p "Summarize the findings and prioritize remediation"
 ```
 
-### Automated Pipeline
+### Automated pipeline
 
 ```bash
 # Non-interactive mode with auto-accept
@@ -295,7 +318,7 @@ secator x ai example.com \
   -o json
 ```
 
-### Using with Workflows
+### Using with workflows
 
 ```python
 from secator.workflows import host_recon
@@ -317,7 +340,7 @@ analysis = ai(
 
 ## Troubleshooting
 
-### Authentication Errors
+### Authentication errors
 
 ```
 Error: AuthenticationError
@@ -329,7 +352,13 @@ secator config get addons.ai.api_key
 secator config set addons.ai.api_key <VALID_KEY>
 ```
 
-### Rate Limiting
+Or ensure the appropriate environment variable is set:
+```bash
+export ANTHROPIC_API_KEY=<YOUR_KEY>  # For Claude models
+export OPENAI_API_KEY=<YOUR_KEY>     # For GPT models
+```
+
+### Rate limiting
 
 The AI assistant automatically handles rate limits by waiting and retrying. If you encounter persistent rate limiting, consider:
 
@@ -337,7 +366,7 @@ The AI assistant automatically handles rate limits by waiting and retrying. If y
 - Reducing `max_iterations`
 - Adding delays between requests
 
-### Empty Responses
+### Empty responses
 
 If the LLM returns empty responses:
 

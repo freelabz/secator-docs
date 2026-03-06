@@ -2,7 +2,7 @@
 description: ... or how to organize and query your security assessment results.
 ---
 
-# Reports & Workspaces
+# Reports & workspaces
 
 `secator` provides built-in features for organizing results into workspaces and querying reports with powerful filters.
 
@@ -12,7 +12,7 @@ description: ... or how to organize and query your security assessment results.
 
 Workspaces help you organize scan results into separate folders. Each workspace is a directory under `~/.secator/reports/` where all results for that workspace are stored.
 
-### Managing Workspaces
+### Managing workspaces
 
 ```bash
 # List all workspaces
@@ -28,7 +28,7 @@ secator workspace current
 secator ws current
 ```
 
-### Using Workspaces
+### Using workspaces
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -53,7 +53,7 @@ results = host_recon(
 {% endtab %}
 {% endtabs %}
 
-### Workspace Structure
+### Workspace structure
 
 ```
 ~/.secator/reports/
@@ -79,7 +79,7 @@ results = host_recon(
 
 ## Reports
 
-### Listing Reports
+### Listing reports
 
 ```bash
 # List all reports
@@ -103,7 +103,7 @@ secator r list -d 7d   # last week
 secator r list -w myproject -r scan -d 7d
 ```
 
-### Showing Report Contents
+### Showing report contents
 
 ```bash
 # Show a specific report (by path or fuzzy match)
@@ -120,7 +120,7 @@ secator r show -w myproject -o markdown
 secator r show -w myproject -o table
 ```
 
-### Querying Reports
+### Querying reports
 
 The `-q` / `--query` option allows filtering results using Python expressions:
 
@@ -141,7 +141,7 @@ secator r show -q "vulnerability.severity == 'critical' || vulnerability.severit
 secator r show -q "port.port == 443 && port.state == 'open'"
 ```
 
-### Query Syntax
+### Query syntax
 
 The query syntax follows the pattern: `<output_type>.<field> <operator> <value>`
 
@@ -167,7 +167,7 @@ The query syntax follows the pattern: `<output_type>.<field> <operator> <value>`
 | `subdomain.verified == True` | Verified subdomains |
 | `tag.name == 'waf'` | WAF detections |
 
-### Formatting Output
+### Formatting output
 
 Use `-f` / `--format` to extract specific fields:
 
@@ -182,7 +182,7 @@ secator r show -w myproject -f url.url,url.status_code
 secator r show -w myproject -f vulnerability.name,vulnerability.severity
 ```
 
-### Unified Results
+### Unified results
 
 Use `-u` / `--unified` to merge and deduplicate results across multiple reports:
 
@@ -197,7 +197,7 @@ secator r show report1.json,report2.json -u
 secator r list -w myproject | secator r show -u
 ```
 
-### Exporting Reports
+### Exporting reports
 
 ```bash
 # Export to JSON
@@ -212,7 +212,7 @@ secator report export /path/to/report.json -o json --output-folder /tmp/exports
 
 ***
 
-## Report Command Reference
+## Report command reference
 
 ### `secator report list`
 
@@ -247,7 +247,7 @@ secator report export /path/to/report.json -o json --output-folder /tmp/exports
 
 ***
 
-## Workspace Command Reference
+## Workspace command reference
 
 ### `secator workspace list`
 
@@ -265,7 +265,7 @@ Shows the current default workspace name.
 
 ## Examples
 
-### Security Assessment Workflow
+### Security assessment workflow
 
 ```bash
 # 1. Create and use a workspace for the project
@@ -285,7 +285,7 @@ secator r show -u -o csv > critical-findings.csv
 secator r show -u -o markdown > assessment-report.md
 ```
 
-### Multi-Project Management
+### Multi-project management
 
 ```bash
 # Work on Project A

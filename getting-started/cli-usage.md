@@ -304,9 +304,9 @@ This displays an interactive command reference covering:
 
 ***
 
-## Additional Commands
+## Additional commands
 
-### Health Check
+### Health check
 
 Check the status of installed tools and dependencies:
 
@@ -317,7 +317,7 @@ secator health --json  # JSON output
 secator health --strict  # fail if tools missing
 ```
 
-### Profile Management
+### Profile management
 
 List available profiles:
 
@@ -326,7 +326,7 @@ secator profile list
 secator p list  # short alias
 ```
 
-### Alias Management
+### Alias management
 
 Enable command aliases for faster workflow:
 

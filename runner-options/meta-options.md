@@ -32,9 +32,7 @@ Number of threads to use. Applies to all tasks supporting threads (or concurrenc
 | **Library** | `threads` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: set 50 threads</summary>
+**Example:** set 50 threads
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -50,8 +48,6 @@ results = host_recon('mydomain.com', threads=50).run()
 ```
 {% endtab %}
 {% endtabs %}
-
-</details>
 
 ***
 
@@ -69,9 +65,7 @@ Proxy (HTTP, Socks5, ...) to use when communicating with the targets.
 | **Library** | `proxy` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: set proxies in config and use auto proxy selection</summary>
+**Example:** set proxies in config and use auto proxy selection
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -90,8 +84,6 @@ results = host_recon('mydomain.com', proxy='http://localhost:8080').run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 {% hint style="info" %}
 Learn more about [proxies.md](../in-depth/concepts/proxies.md "mention").
 {% endhint %}
@@ -108,9 +100,7 @@ Rate limit is an upper limit on the number of requests per second.
 | **Library** | `rate_limit` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: set a rate limit of 50 requests/second</summary>
+**Example:** set a rate limit of 50 requests/second
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -127,8 +117,6 @@ results = host_recon('mydomain.com', rate_limit=50).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Timeout
@@ -141,9 +129,7 @@ Timeout is the time to wait (in seconds) before giving up on the request.
 | **Library** | `timeout` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: set a request timeout of 10 seconds</summary>
+**Example:** set a request timeout of 10 seconds
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -160,8 +146,6 @@ results = host_recon('mydomain.com', timeout=10).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Retries
@@ -174,9 +158,7 @@ Number of retries for failed requests.
 | **Library** | `retries` |
 | **Type** | `int` |
 
-<details>
-
-<summary>Example: set 5 retries for all requests</summary>
+**Example:** set 5 retries for all requests
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -193,8 +175,6 @@ results = host_recon('mydomain.com', retries=5).run()
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Delay
@@ -207,9 +187,7 @@ Delay to add between each request (in seconds).
 | **Library** | `delay` |
 | **Type** | `float` |
 
-<details>
-
-<summary>Example: add a 0.5 second delay between requests</summary>
+**Example:** add a 0.5 second delay between requests
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -225,8 +203,6 @@ results = host_recon('mydomain.com', delay=0.5).run()
 ```
 {% endtab %}
 {% endtabs %}
-
-</details>
 
 ***
 
@@ -244,9 +220,7 @@ Custom header to add to each request in the form "KEY1:VALUE1;; KEY2:VALUE2".
 | **Library** | `header` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: set an Authorization and an Accept header</summary>
+**Example:** set an Authorization and an Accept header
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -263,8 +237,6 @@ results = cariddi('mydomain.com', header='Authorization: Basic <TOKEN>;; Accept:
 {% endtab %}
 {% endtabs %}
 
-</details>
-
 ***
 
 ### Method
@@ -277,9 +249,7 @@ HTTP method to use for request GET, POST, PUT, DELETE, etc...
 | **Library** | `method` |
 | **Type** | `str` |
 
-<details>
-
-<summary>Example: use POST method for fuzzing</summary>
+**Example:** use POST method for fuzzing
 
 {% tabs %}
 {% tab title="CLI" %}
@@ -295,8 +265,6 @@ results = ffuf('mydomain.com', method='POST').run()
 ```
 {% endtab %}
 {% endtabs %}
-
-</details>
 
 ***
 

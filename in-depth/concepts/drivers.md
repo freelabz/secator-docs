@@ -67,7 +67,7 @@ secator w host_recon example.com -driver api -ws my-workspace-id
 The API driver requires a valid workspace ID (not `default`). Use `-ws <workspace_id>` to specify one.
 {% endhint %}
 
-### Configuration Options
+### Configuration options
 
 | Config Key | Default | Description |
 |------------|---------|-------------|
@@ -83,11 +83,11 @@ The API driver requires a valid workspace ID (not `default`). Use `-ws <workspac
 | `addons.api.finding_update_endpoint` | `/findings/{finding_id}` | Endpoint for updating findings |
 | `addons.api.workspace_get_endpoint` | `/workspaces/{workspace_id}` | Endpoint for getting workspace info |
 
-### API Endpoints
+### API endpoints
 
 The API driver expects your external API to implement the following endpoints:
 
-#### Runner Endpoints
+#### Runner endpoints
 
 **POST** `{runner_create_endpoint}` - Create a new runner
 - Request body: Runner data (JSON)
@@ -97,7 +97,7 @@ The API driver expects your external API to implement the following endpoints:
 - URL parameter: `{runner_id}`
 - Request body: Runner update data (JSON)
 
-#### Finding Endpoints
+#### Finding endpoints
 
 **POST** `{finding_create_endpoint}` - Create a new finding
 - Request body: Finding data (JSON)
@@ -107,13 +107,13 @@ The API driver expects your external API to implement the following endpoints:
 - URL parameter: `{finding_id}`
 - Request body: Finding update data (JSON)
 
-#### Workspace Endpoint
+#### Workspace endpoint
 
 **GET** `{workspace_get_endpoint}` - Get workspace information
 - URL parameter: `{workspace_id}`
 - Response: `{ "name": "<workspace_name>" }`
 
-### Example Usage
+### Example usage
 
 {% tabs %}
 {% tab title="CLI" %}
