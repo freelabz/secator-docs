@@ -7,6 +7,8 @@
 * [CLI Usage](getting-started/cli-usage.md)
 * [Library usage](getting-started/library-usage.md)
 * [Configuration](getting-started/configuration.md)
+* [Reports & workspaces](getting-started/reports-and-workspaces.md)
+* [AI assistant](getting-started/ai-assistant.md)
 * [Examples](getting-started/examples/README.md)
   * [5 minutes secator session](getting-started/examples/5-minutes-secator-session.md)
 
