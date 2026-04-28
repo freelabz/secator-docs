@@ -47,6 +47,8 @@
   * [Attack capabilities](ui/attack-capabilities.md)
   * [Available scans](ui/available-scans.md)
   * [Available workflows](ui/available-workflows.md)
+  * [Meta options](ui/meta-options.md)
+  * [Attack patterns](ui/attack-patterns.md)
 * Concepts
   * [Platform overview](ui/platform-overview.md)
   * [Glossary](ui/glossary.md)

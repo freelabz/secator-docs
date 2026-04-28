@@ -49,6 +49,19 @@ Configure the run before launching:
 
 **Profile combination rule:** options come from the runner's defaults → then each selected profile is merged in order → then your manual edits in the Options panel override everything. If you tweak an option that a profile set, your value wins; if you uncheck the profile later, only the options you did **not** touch revert.
 
+**Profile recipes** — typical engagement combos:
+
+| Engagement goal | Profile combo |
+|---|---|
+| Quick sanity check on a fresh asset | `passive` |
+| Stealth recon during business hours | `passive` + `polite` |
+| Anonymous recon (Tor exit) | `passive` + `tor` |
+| Authorized vuln scan with screenshots & request records | `aggressive` + `http_record` |
+| Full attack-surface mapping (every TCP port + secrets) | `active` + `all_ports` + `hunt_secrets` |
+| IDS/IPS-evading red team probe | `stealth` + `sneaky` + `paranoid` |
+| Modern JS-heavy app crawl | `active` + `http_headless` |
+| Production scan with safe rate limits | `polite` + `passive` |
+
 > [!caution]
 > The `http_record`, `http_headless` and `full` profiles need Chromium installed on the worker host. Without it, every task that triggers a screenshot fails with *"the chrome browser is not installed"*. Pick a different profile or ask your administrator to install Chromium on the worker.
 
