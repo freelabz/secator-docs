@@ -30,6 +30,34 @@
   * [Profiles](in-depth/concepts/profiles.md)
 * [Deployment](in-depth/deployment.md)
 
+## UI guide
+
+* [Overview](ui/README.md)
+* Quickstart
+  * [First run in 5 minutes](ui/quickstart.md)
+  * [Sign in & first login](ui/sign-in.md)
+  * [Global interface](ui/global-interface.md)
+  * [Dashboard](ui/dashboard.md)
+  * [Workspaces](ui/workspaces.md)
+  * [Targets](ui/targets.md)
+  * [Runners](ui/runners.md)
+  * [Findings](ui/findings.md)
+  * [Reports](ui/reports.md)
+* Attacks
+  * [Attack capabilities](ui/attack-capabilities.md)
+  * [Available scans](ui/available-scans.md)
+  * [Available workflows](ui/available-workflows.md)
+* Concepts
+  * [Platform overview](ui/platform-overview.md)
+  * [Glossary](ui/glossary.md)
+* Power features
+  * [AI suggestions](ui/ai-suggestions.md)
+  * [Chores & owner features](ui/chores.md)
+* Account & API
+  * [Profile, organization, billing](ui/profile-billing.md)
+  * [API tokens](ui/api-tokens.md)
+* [Quick reference](ui/quick-reference.md)
+
 ## For developers
 
 * [Development setup](for-developers/development-setup.md)
