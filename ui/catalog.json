@@ -1,0 +1,962 @@
+{
+  "scans": [
+    {
+      "name": "domain",
+      "description": "Domain scan",
+      "long_description": "Comprehensive security assessment of a domain, combining multiple workflows for complete coverage.\nPerforms domain reconnaissance, subdomain discovery, host reconnaissance, URL crawling, and\nvulnerability scanning. Provides a full picture of the domain's attack surface, infrastructure,\nand potential security issues. Ideal for thorough domain-level security assessments.",
+      "tags": [
+        "recon",
+        "dns",
+        "ssl",
+        "network",
+        "http",
+        "crawl",
+        "takeovers",
+        "vuln",
+        "secrets"
+      ],
+      "input_types": [
+        "host"
+      ],
+      "workflows": [
+        "domain_recon",
+        "subdomain_recon",
+        "host_recon",
+        "url_crawl",
+        "url_vuln"
+      ]
+    },
+    {
+      "name": "host",
+      "description": "Host scan",
+      "long_description": "In-depth security assessment of a specific host or IP address.\nCombines host reconnaissance with URL crawling and vulnerability scanning to identify\nopen ports, running services, web applications, and potential security weaknesses.\nPerfect for targeted host-level security testing and penetration testing.",
+      "tags": [
+        "recon",
+        "dns",
+        "network",
+        "http",
+        "crawl",
+        "ssl",
+        "vuln",
+        "secrets"
+      ],
+      "input_types": [
+        "host",
+        "ip"
+      ],
+      "workflows": [
+        "host_recon",
+        "url_crawl",
+        "url_vuln"
+      ]
+    },
+    {
+      "name": "network",
+      "description": "Internal network scan",
+      "long_description": "Comprehensive security assessment of an internal network or CIDR range.\nDiscovers live hosts, scans for services and vulnerabilities, and performs URL-based\ntesting on discovered web applications. Combines CIDR reconnaissance with web application\nsecurity testing. Essential for internal network security assessments and lateral movement testing.",
+      "tags": [
+        "recon",
+        "cidr",
+        "dns",
+        "network",
+        "internal",
+        "http",
+        "crawl",
+        "ssl",
+        "vuln",
+        "secrets"
+      ],
+      "input_types": [
+        "cidr_range",
+        "slug"
+      ],
+      "workflows": [
+        "cidr_recon",
+        "host_recon",
+        "url_crawl",
+        "url_vuln"
+      ]
+    },
+    {
+      "name": "subdomain",
+      "description": "Subdomain scan",
+      "long_description": "Complete security assessment focused on subdomain discovery and testing.\nDiscovers all subdomains of a target domain, performs reconnaissance on discovered hosts,\ncrawls web applications, and scans for vulnerabilities. Identifies the full subdomain\nattack surface and potential security issues. Crucial for comprehensive domain security testing.",
+      "tags": [
+        "recon",
+        "dns",
+        "network",
+        "http",
+        "crawl",
+        "ssl",
+        "takeovers",
+        "vuln",
+        "secrets"
+      ],
+      "input_types": [
+        "host"
+      ],
+      "workflows": [
+        "subdomain_recon",
+        "host_recon",
+        "url_crawl",
+        "url_vuln"
+      ]
+    },
+    {
+      "name": "url",
+      "description": "URL scan",
+      "long_description": "Thorough security assessment of web applications and URLs.\nCombines URL crawling, fuzzing, and vulnerability scanning to discover hidden content,\nidentify potential attack vectors, and find security vulnerabilities. Tests for common\nweb vulnerabilities including XSS, injection flaws, and misconfigurations. Essential for web application security testing.",
+      "tags": [
+        "http",
+        "crawl",
+        "fuzz",
+        "vuln",
+        "secrets"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "workflows": [
+        "url_crawl",
+        "url_fuzz",
+        "url_params_fuzz",
+        "url_vuln"
+      ]
+    }
+  ],
+  "workflows": [
+    {
+      "name": "cidr_recon",
+      "description": "Local network reconnaissance",
+      "long_description": "Discovers and analyzes hosts within a CIDR range or local network through ARP / ICMP scanning.\nMaps IP addresses and identifies live hosts.\nUseful for local network security assessments and penetration testing.",
+      "tags": [
+        "recon",
+        "cidr",
+        "network",
+        "vuln",
+        "internal"
+      ],
+      "input_types": [
+        "cidr_range",
+        "ip",
+        "slug"
+      ],
+      "tree": [
+        {
+          "type": "group",
+          "name": "discover",
+          "children": [
+            {
+              "type": "task",
+              "name": "netdetect",
+              "description": "Discover local network CIDR ranges",
+              "condition": "targets"
+            },
+            {
+              "type": "task",
+              "name": "arp",
+              "description": "Discover neighbors with ARP requests",
+              "condition": "targets"
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "prompt",
+          "description": "Select a CIDR range manually",
+          "condition": null
+        },
+        {
+          "type": "group",
+          "name": "probe",
+          "children": [
+            {
+              "type": "task",
+              "name": "arpscan",
+              "description": "Discover hosts with ARP requests",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "fping",
+              "description": "Discover hosts with ICMP requests",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "nmap",
+              "description": "Discover live hosts with ping scan",
+              "condition": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "code_scan",
+      "description": "Code vulnerability scan and secret hunt",
+      "long_description": "Analyzes source code repositories and filesystems for security vulnerabilities and exposed secrets.\nScans dependencies for known CVEs, detects hardcoded credentials, API keys, and sensitive data\nin code. Supports multiple input types including local paths, Git repositories, and cloud storage.\nEssential for DevSecOps and identifying security issues before deployment.",
+      "tags": [
+        "vuln",
+        "secret",
+        "code"
+      ],
+      "input_types": [
+        "path",
+        "url",
+        "gcs_url",
+        "string"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "_group",
+          "description": "",
+          "condition": null
+        }
+      ]
+    },
+    {
+      "name": "domain_recon",
+      "description": "Domain reconnaissance",
+      "long_description": "Performs comprehensive reconnaissance on a domain to gather essential information.\nCollects WHOIS data, probes HTTP services, detects technologies, analyzes SSL/TLS security,\nresolves DNS records, retrieves ASN information, and identifies any Web Application Firewalls (WAF).\nIdeal for understanding a domain's infrastructure and security posture before deeper testing.",
+      "tags": [
+        "recon",
+        "dns",
+        "ssl",
+        "http"
+      ],
+      "input_types": [
+        "host"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "_group",
+          "description": "",
+          "condition": null
+        },
+        {
+          "type": "task",
+          "name": "wafw00f",
+          "description": "Check WAF",
+          "condition": "!passive"
+        }
+      ]
+    },
+    {
+      "name": "host_recon",
+      "description": "Host reconnaissance",
+      "long_description": "Performs comprehensive reconnaissance on a host or IP address to identify open ports and services.\nCombines multiple port scanning techniques, detects service versions, searches for known vulnerabilities,\naudits SSH configurations, and probes HTTP services. Optionally runs nuclei scans for network and\nSSL vulnerabilities. Essential for understanding a host's security posture and attack surface.",
+      "tags": [
+        "recon",
+        "network",
+        "http"
+      ],
+      "input_types": [
+        "ip",
+        "host",
+        "cidr_range"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "_group",
+          "description": "",
+          "condition": null
+        },
+        {
+          "type": "task",
+          "name": "nmap",
+          "description": "Detect services and versions",
+          "condition": "!passive"
+        },
+        {
+          "type": "task",
+          "name": "sshaudit",
+          "description": "Audit SSH port",
+          "condition": "!passive"
+        },
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Probe HTTP services on open ports",
+          "condition": "!passive"
+        },
+        {
+          "type": "group",
+          "name": "nuclei",
+          "children": [
+            {
+              "type": "task",
+              "name": "nuclei/network",
+              "description": "Scan network and SSL vulnerabilities",
+              "condition": "nuclei"
+            },
+            {
+              "type": "task",
+              "name": "nuclei/url",
+              "description": "Search for vulnerabilities on alive HTTP services",
+              "condition": "nuclei"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "vuln",
+          "children": [
+            {
+              "type": "task",
+              "name": "searchsploit",
+              "description": "Search for related exploits",
+              "condition": "exploiters"
+            },
+            {
+              "type": "task",
+              "name": "search_vulns",
+              "description": "Search for related vulns and exploits",
+              "condition": "exploiters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "js_secrets_params_hunt",
+      "description": "JS secrets and params recon",
+      "long_description": "Crawls the target with multiple engines, hunts for JavaScript variables and secret patterns\nusing gf, scans HTTP responses with TruffleHog, discovers hidden parameters with Arjun, and\noptionally scans tagged URLs with nuclei for vulnerabilities.",
+      "tags": [
+        "http",
+        "crawl",
+        "secrets",
+        "params",
+        "vuln"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "group",
+          "name": "crawl",
+          "children": [
+            {
+              "type": "task",
+              "name": "gospider",
+              "description": "Crawl target with an alternative engine",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "katana",
+              "description": "Crawl target to discover endpoints",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "cariddi",
+              "description": "Hunt URL patterns and juicy endpoints",
+              "condition": null
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Probe discovered URLs and store responses",
+          "condition": null
+        },
+        {
+          "type": "group",
+          "name": "pattern_analysis",
+          "children": [
+            {
+              "type": "task",
+              "name": "gf/interestingparams",
+              "description": "Hunt interesting parameters and potential injection points",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/idor",
+              "description": "Hunt IDOR-like parameters",
+              "condition": null
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "secrets_hunt",
+          "children": [
+            {
+              "type": "task",
+              "name": "trufflehog",
+              "description": "Find secrets in HTTP responses",
+              "condition": "hunt_secrets"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "extract_params",
+          "children": [
+            {
+              "type": "task",
+              "name": "arjun",
+              "description": "Extract parameters from GF-tagged URLs",
+              "condition": null
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "nuclei",
+          "description": "Scan GF/Arjun URLs for vulnerabilities",
+          "condition": "nuclei"
+        }
+      ]
+    },
+    {
+      "name": "subdomain_recon",
+      "description": "Subdomain reconnaissance",
+      "long_description": "Discovers subdomains associated with a target domain using multiple passive and active techniques.\nCombines passive sources, DNS queries, TLS certificate analysis, and optional brute-force methods.\nVerifies discovered subdomains, checks for subdomain takeover vulnerabilities, and can optionally\ntest SSL/TLS security or hunt for secrets in HTTP responses. Perfect for mapping attack surface.",
+      "tags": [
+        "recon",
+        "dns",
+        "http",
+        "ssl",
+        "secrets",
+        "takeovers"
+      ],
+      "input_types": [
+        "host"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "httpx/tls",
+          "description": "Find subdomains through TLS certificates",
+          "condition": "!passive"
+        },
+        {
+          "type": "group",
+          "name": "hunt",
+          "children": [
+            {
+              "type": "task",
+              "name": "subfinder",
+              "description": "List subdomains (passive)",
+              "condition": "!active"
+            },
+            {
+              "type": "task",
+              "name": "gau",
+              "description": "List subdomains (passive)",
+              "condition": "!active"
+            },
+            {
+              "type": "task",
+              "name": "dnsx/brute",
+              "description": "Bruteforce subdomains (DNS)",
+              "condition": "brute_dns"
+            },
+            {
+              "type": "task",
+              "name": "ffuf/url",
+              "description": "Bruteforce subdomains (URL)",
+              "condition": "brute_http"
+            },
+            {
+              "type": "task",
+              "name": "ffuf/host",
+              "description": "Bruteforce subdomains (Host header)",
+              "condition": "brute_http"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "probe",
+          "children": [
+            {
+              "type": "task",
+              "name": "dnsx/probe",
+              "description": "Verify subdomains by probing DNS records",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "httpx/probe",
+              "description": "Run HTTP probes on subdomains",
+              "condition": "!passive"
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "vuln",
+          "children": [
+            {
+              "type": "task",
+              "name": "testssl",
+              "description": "Test SSL/TLS security on subdomains",
+              "condition": "test_ssl"
+            },
+            {
+              "type": "task",
+              "name": "nuclei",
+              "description": "Check for subdomain takeovers",
+              "condition": "!passive"
+            },
+            {
+              "type": "task",
+              "name": "trufflehog",
+              "description": "Find secrets in HTTP responses",
+              "condition": "hunt_secrets"
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "search_vulns",
+          "description": "Search for related vulns and exploits",
+          "condition": null
+        }
+      ]
+    },
+    {
+      "name": "url_bypass",
+      "description": "4xx URL bypass techniques",
+      "long_description": "Attempts to bypass access restrictions on URLs that return 4xx status codes (forbidden, not found, etc.).\nUses various HTTP header manipulation and path traversal techniques to potentially gain access\nto protected resources. Useful for finding misconfigured access controls and authorization bypasses.",
+      "tags": [
+        "http",
+        "bypass"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "bup",
+          "description": "Bypass 4xx",
+          "condition": null
+        }
+      ]
+    },
+    {
+      "name": "url_crawl",
+      "description": "URL crawl",
+      "long_description": "Rapidly crawls and discovers URLs from a target website using multiple crawling engines.\nSupports both passive sources (collecting from external databases) and active crawlers\n(spidering the website directly). Identifies interesting patterns, endpoints, and parameters.\nCan optionally hunt for secrets in HTTP responses and probe URLs for additional information.",
+      "tags": [
+        "http",
+        "crawl",
+        "secrets"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "group",
+          "name": "crawl",
+          "children": [
+            {
+              "type": "task",
+              "name": "xurlfind3r",
+              "description": "Crawl URLs from passive sources",
+              "condition": "crawlers"
+            },
+            {
+              "type": "task",
+              "name": "urlfinder",
+              "description": "Crawl URLs from passive sources",
+              "condition": "crawlers"
+            },
+            {
+              "type": "task",
+              "name": "gau",
+              "description": "Crawl URLs from passive sources",
+              "condition": "crawlers"
+            },
+            {
+              "type": "task",
+              "name": "katana",
+              "description": "Crawl URLs",
+              "condition": "crawlers"
+            },
+            {
+              "type": "task",
+              "name": "gospider",
+              "description": "Crawl URLs",
+              "condition": "crawlers"
+            },
+            {
+              "type": "task",
+              "name": "cariddi",
+              "description": "Hunt URLs patterns",
+              "condition": "crawlers"
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Run HTTP probes on unverified URLs",
+          "condition": "!passive"
+        },
+        {
+          "type": "group",
+          "name": "data_hunt",
+          "children": [
+            {
+              "type": "task",
+              "name": "trufflehog",
+              "description": "Find secrets in HTTP responses",
+              "condition": "hunt_secrets"
+            },
+            {
+              "type": "task",
+              "name": "maigret",
+              "description": "Hunt email addresses found",
+              "condition": "hunt_secrets"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "url_dirsearch",
+      "description": "URL directory search",
+      "long_description": "Searches for hidden directories and files on web servers using content discovery techniques.\nProbes URLs for directory listings, optionally bruteforces directories and crawls discovered\ndirectory contents. Can hunt for sensitive files and secrets in HTTP responses.\nHelpful for finding hidden admin panels, backup files, and exposed directories.",
+      "tags": [
+        "http",
+        "dir",
+        "secrets"
+      ],
+      "input_types": [
+        "url",
+        "host",
+        "host:port",
+        "ip"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Run HTTP probes on URLs",
+          "condition": null
+        },
+        {
+          "type": "task",
+          "name": "ffuf",
+          "description": "Search for HTTP directories",
+          "condition": "hunt_dirs"
+        },
+        {
+          "type": "task",
+          "name": "katana",
+          "description": "Crawl files from HTTP directories",
+          "condition": "hunt_files"
+        },
+        {
+          "type": "task",
+          "name": "trufflehog",
+          "description": "Find secrets in HTTP responses",
+          "condition": "hunt_files"
+        }
+      ]
+    },
+    {
+      "name": "url_fuzz",
+      "description": "URL fuzz (slow)",
+      "long_description": "Performs comprehensive fuzzing of URLs to discover hidden content and directories.\nUses multiple fuzzing engines (dirsearch, feroxbuster, ffuf) with intelligent calibration\nto filter false positives. Probes discovered URLs, captures screenshots when configured,\nand optionally hunts for secrets in HTTP responses. Thorough but time-intensive.",
+      "tags": [
+        "http",
+        "fuzz",
+        "secrets"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "group",
+          "name": "fuzz",
+          "children": [
+            {
+              "type": "task",
+              "name": "feroxbuster",
+              "description": "Fuzz URLs",
+              "condition": "fuzzers"
+            },
+            {
+              "type": "task",
+              "name": "ffuf",
+              "description": "Fuzz URLs",
+              "condition": "fuzzers"
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Run HTTP probes on fuzzed URLs",
+          "condition": null
+        },
+        {
+          "type": "task",
+          "name": "trufflehog",
+          "description": "Find secrets in HTTP responses",
+          "condition": "hunt_secrets"
+        }
+      ]
+    },
+    {
+      "name": "url_params_fuzz",
+      "description": "URL parameter fuzzing",
+      "long_description": "Identifies and tests URL parameters for vulnerabilities through intelligent fuzzing.\nExtracts parameters from URLs using multiple techniques, then fuzzes them with various payloads\nto discover potential security issues. Probes fuzzed URLs to verify results and optionally\nhunts for secrets in responses. Effective for finding hidden parameters and testing input validation.",
+      "tags": [
+        "http",
+        "fuzz",
+        "secrets"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Probe URLs and eliminate unresponsive ones",
+          "condition": "probe"
+        },
+        {
+          "type": "task",
+          "name": "urlparser",
+          "description": "Extract base URLs",
+          "condition": null
+        },
+        {
+          "type": "group",
+          "name": "extract_params",
+          "children": [
+            {
+              "type": "task",
+              "name": "arjun",
+              "description": "Extract parameters from URLs",
+              "condition": "fuzzers"
+            },
+            {
+              "type": "task",
+              "name": "x8",
+              "description": "Bruteforce URL params",
+              "condition": "fuzzers"
+            }
+          ]
+        },
+        {
+          "type": "task",
+          "name": "ffuf",
+          "description": "Fuzz URL params",
+          "condition": "fuzz_values"
+        },
+        {
+          "type": "task",
+          "name": "trufflehog",
+          "description": "Find secrets in HTTP responses",
+          "condition": "hunt_secrets"
+        }
+      ]
+    },
+    {
+      "name": "url_secrets_hunt",
+      "description": "URL secrets hunt",
+      "long_description": "Searches for exposed secrets, credentials, and sensitive information in web content.\nProbes URLs and analyzes HTTP responses for API keys, passwords, tokens, private keys,\nand other confidential data. Uses TruffleHog to detect various secret patterns.\nCritical for identifying accidental credential exposure and sensitive data leaks.",
+      "tags": [
+        "http",
+        "fuzz",
+        "secrets"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "Run HTTP probes on URLs",
+          "condition": null
+        },
+        {
+          "type": "task",
+          "name": "trufflehog",
+          "description": "Find secrets in HTTP responses",
+          "condition": null
+        }
+      ]
+    },
+    {
+      "name": "url_vuln",
+      "description": "URL vulnerability scan (gf, dalfox)",
+      "long_description": "Scans URLs for common web vulnerabilities using pattern matching and automated testing tools.\nIdentifies potential XSS, LFI, SSRF, RCE, IDOR, and other vulnerability indicators in URL parameters.\nTests discovered vulnerable patterns with specialized tools like Dalfox for XSS exploitation.\nOptionally runs comprehensive nuclei scans for additional HTTP vulnerability detection.",
+      "tags": [
+        "http",
+        "vuln"
+      ],
+      "input_types": [
+        "url"
+      ],
+      "tree": [
+        {
+          "type": "group",
+          "name": "pattern_analysis",
+          "children": [
+            {
+              "type": "task",
+              "name": "gf/xss",
+              "description": "Hunt XSS params",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/lfi",
+              "description": "Hunt LFI params",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/ssrf",
+              "description": "Hunt SSRF params",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/rce",
+              "description": "Hunt RCE params",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/interestingparams",
+              "description": "Hunt interest params",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/idor",
+              "description": "Hunt Idor params",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "gf/debug_logic",
+              "description": "Hunt debug params",
+              "condition": null
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "name": "vuln_scan",
+          "children": [
+            {
+              "type": "task",
+              "name": "dalfox",
+              "description": "Attack XSS vulnerabilities",
+              "condition": "!passive"
+            },
+            {
+              "type": "task",
+              "name": "nuclei",
+              "description": "Search for HTTP vulns",
+              "condition": "nuclei"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "user_hunt",
+      "description": "User account search",
+      "long_description": "Searches for user accounts and associated information across various online platforms and services.\nTakes usernames, email addresses, or other identifiers and queries multiple sources to find\nassociated accounts, password leaks, and online profiles. Useful for OSINT investigations,\ncredential stuffing prevention checks, and understanding a user's digital footprint.",
+      "tags": [
+        "user_account",
+        "leak"
+      ],
+      "input_types": [
+        "slug",
+        "string",
+        "email"
+      ],
+      "tree": [
+        {
+          "type": "group",
+          "name": "hunt_users",
+          "children": [
+            {
+              "type": "task",
+              "name": "maigret",
+              "description": "Hunt user accounts",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "h8mail",
+              "description": "Find password leaks",
+              "condition": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "wordpress",
+      "description": "Wordpress vulnerability scan",
+      "long_description": "Specialized security assessment for WordPress websites and installations.\nIdentifies WordPress version, installed themes and plugins, known vulnerabilities,\nmisconfigurations, and weak configurations. Uses multiple WordPress-specific tools\nto provide comprehensive coverage. Critical for WordPress site security audits.",
+      "tags": [
+        "http",
+        "wordpress",
+        "vuln"
+      ],
+      "input_types": [
+        "url",
+        "ip",
+        "host",
+        "host:port"
+      ],
+      "tree": [
+        {
+          "type": "task",
+          "name": "httpx",
+          "description": "URL probe",
+          "condition": null
+        },
+        {
+          "type": "group",
+          "name": "hunt_wordpress",
+          "children": [
+            {
+              "type": "task",
+              "name": "wpscan",
+              "description": "WPScan",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "wpprobe",
+              "description": "WPProbe",
+              "condition": null
+            },
+            {
+              "type": "task",
+              "name": "nuclei",
+              "description": "Nuclei Wordpress scan",
+              "condition": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
