@@ -23,7 +23,8 @@ target = 'alibaba.com'
 results = subfinder(target).run()
 hosts = [_.host for _ in results if _._type == 'subdomain']
 for probe in httpx(hosts, rate_limit=10, screenshot=True):
-    print('Found alive subdomain URL {url}[{status_code}]'.format(**probe))
+    if probe._type == 'url':
+        print('Found alive subdomain URL {url}[{status_code}]'.format(**probe.toDict()))
 ```
 {% endtab %}
 {% endtabs %}
@@ -67,13 +68,14 @@ secator w url_fuzz example.com -mc 200,302 -rl 1 -w dicc.txt -o table -quiet
 </strong>target = 'example.com'
 opts = {
     'match_codes': '200, 302',
-    'rate_limit': 1 # req/s
+    'rate_limit': 1,  # req/s
     'quiet': True,
-    'ffuf.wordlist': 'dicc.txt' # ffuf wordlist
+    'ffuf.wordlist': 'dicc.txt',  # ffuf wordlist
+    'exporters': ['table'],  # print a summary table at the end of the run
 }
 
 # Print results live and a summary table at the end of the run
-for result in url_fuzz(target, exporters=['table']):
+for result in url_fuzz(target, **opts):
     print(result)
 </code></pre>
 {% endtab %}

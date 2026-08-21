@@ -26,6 +26,28 @@ secator s domain mydomain.com -ws mydomain
 
 ***
 
+### Profiles (`-pf`)
+
+Profiles are named presets of options (rate limits, ports, tools to enable, drivers, exporters, ...) that you can apply to any runner. Pass one or more comma-separated profile names.
+
+<details>
+
+<summary><strong>Example -</strong> run with the <code>aggressive</code> profile</summary>
+
+```bash
+secator x httpx mydomain.com -pf aggressive
+secator w host_recon mydomain.com -pf aggressive
+secator s domain mydomain.com -pf aggressive,all_ports
+```
+
+</details>
+
+{% hint style="info" %}
+Use **`secator profile list`** (alias `secator p list`) to list available profiles.
+{% endhint %}
+
+***
+
 ### Output (`-o`)
 
 You can export reports in various formats using built-in exporters.

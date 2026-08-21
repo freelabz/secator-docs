@@ -16,6 +16,8 @@ secator x      # List available tasks
 secator w      # List available workflows
 secator s      # List available scans
 secator u      # List available utilities
+secator q      # Query saved results
+secator r      # Manage reports
 ```
 
 ***
@@ -126,7 +128,43 @@ To find user accounts for a username:
 secator w user_hunt elonmusk
 ```
 {% endtab %}
+
+{% tab title="Domain recon" %}
+To perform domain reconnaissance:
+
+```bash
+secator w domain_recon mydomain.com
+```
+{% endtab %}
+
+{% tab title="URL vuln" %}
+To scan URLs for vulnerabilities:
+
+```bash
+secator w url_vuln https://mydomain.com
+```
+{% endtab %}
+
+{% tab title="URL secrets hunt" %}
+To hunt for secrets in HTTP responses:
+
+```bash
+secator w url_secrets_hunt https://mydomain.com
+```
+{% endtab %}
+
+{% tab title="WordPress" %}
+To scan WordPress sites:
+
+```bash
+secator w wordpress https://mydomain.com
+```
+{% endtab %}
 {% endtabs %}
+
+{% hint style="info" %}
+Additional workflows available: `cidr_recon`, `url_bypass`, `url_dirsearch`, `url_params_fuzz`. Use **`secator w`** to list all available workflows.
+{% endhint %}
 
 {% hint style="info" %}
 Use **`secator w <NAME> --help`** to list options for a specific workflow.
@@ -150,6 +188,12 @@ secator s domain example.com
 {% tab title="Subdomain scan" %}
 ```
 secator s subdomain sub.example.com
+```
+{% endtab %}
+
+{% tab title="Host scan" %}
+```
+secator s host 192.168.1.18
 ```
 {% endtab %}
 
@@ -206,12 +250,58 @@ secator u serve
 
 ### **Recording**
 
-You can record pentesting sessions as a GIF:
+You can record pentesting sessions as a GIF using [VHS](https://github.com/charmbracelet/vhs):
 
 ```bash
-secator u record -i <RECORD_NAME>                # record an interactive session
-secator u record --script test.sh <RECORD_NAME>  # put your commands in a script and record the execution
+secator u record --name mydemo   # create a template .tape file to edit, then render it with VHS
+secator u record mydemo.tape     # render an existing .tape file to a GIF
+secator u record mydemo.tap      # convert a .tap capture to .tape, then render it to a GIF
 ```
+
+{% hint style="info" %}
+Recording requires the [VHS](https://github.com/charmbracelet/vhs) binary to be installed.
+{% endhint %}
+
+### Shell completion
+
+You can print or install shell auto-completion for `secator` (supports `bash`, `zsh`, and `fish`):
+
+```bash
+secator u completion --shell zsh            # print the completion script
+secator u completion --shell zsh --install  # install it to your shell config
+```
+
+***
+
+## Querying results
+
+Every task, workflow, and scan saves its findings so you can query them later with the `secator q` (query) subcommand. A query can be a **filter expression**, a **saved query name**, or a **natural-language question** (answered by the AI addon).
+
+```bash
+secator q                                                   # show all findings in the current workspace
+secator q vulnerability                                     # show all vulnerabilities
+secator q "vulnerability.severity == 'high'"                # filter by a field
+secator q "port.state == 'open' && port.port in [22,443]"   # combine conditions
+secator q "url.status_code == 200" -rf tasks/10,tasks/11    # scope to specific runners
+secator q "vulnerability.severity == 'high'" -o json        # export results (e.g. as JSON)
+```
+
+You can save a query expression under a name and reuse it later:
+
+```bash
+secator q "vulnerability.severity == 'high'" --save vuln_high # save the expression
+secator q vuln_high                                           # run the saved query
+```
+
+Natural-language queries are answered by the AI addon:
+
+```bash
+secator q "Show me the top 5 vulnerabilities in my workspace" # requires: secator install addons ai && secator x ai setup
+```
+
+{% hint style="info" %}
+Use **`secator q --help`** for the full list of options (`-o`, `-of`, `-d`, `-f`, `-w`, `-l`, `-rf`, `--driver`, ...).
+{% endhint %}
 
 ***
 
@@ -223,7 +313,8 @@ To configure `secator`, use the following commands:
 secator c get                                     # get full config (with defaults)
 secator c get --user                              # get user config
 secator c get wordlists.defaults.http             # get default wordlist path
-secator c set wordlists.defaults.http rockyou.txt # set default wordlist 
+secator c set wordlists.defaults.http rockyou.txt # set default wordlist
+secator c unset wordlists.defaults.http           # unset a value (reset to default)
 secator c edit                                    # edit user config yaml
 secator c default                                 # get default config
 ```
@@ -246,5 +337,69 @@ secator worker
 {% hint style="info" %}
 Learn more about [distributed-runs-with-celery.md](../in-depth/distributed-runs-with-celery.md "mention")
 {% endhint %}
+
+***
+
+## Cheatsheet
+
+For a quick reference of common commands, use the built-in cheatsheet:
+
+```bash
+secator cheatsheet
+secator cs  # short alias
+```
+
+This displays an interactive command reference covering:
+- Basic commands and syntax
+- Aliases for productivity
+- Configuration management
+- Worker usage for parallel execution
+- Report querying and filtering
+- Common scan patterns
+
+***
+
+## Additional commands
+
+### Health check
+
+Check the status of installed tools and dependencies:
+
+```bash
+secator health
+secator h              # short alias
+secator health --json  # JSON output
+secator health --strict  # fail if tools missing
+```
+
+### Profile management
+
+List available profiles:
+
+```bash
+secator profile list
+secator p list  # short alias
+```
+
+### Alias management
+
+Enable command aliases for faster workflow:
+
+```bash
+secator alias enable   # generate aliases file
+secator alias list     # list all aliases
+secator alias disable  # disable aliases
+```
+
+After enabling, source the aliases:
+```bash
+source ~/.secator/.aliases
+```
+
+Now you can use shortcuts:
+```bash
+httpx example.com              # instead of secator x httpx
+w subdomain_recon example.com  # instead of secator w subdomain_recon
+```
 
 ***

@@ -31,7 +31,7 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 * `before_init`: executed before the base runner's init starts.
 * `on_init`: executed when the base runner's init is completed.
 * `on_start` : executed when the runner has started running.
-* `on_iter`: executed when the runner iterates.
+* `on_interval`: executed periodically while the runner iterates.
 * `on_end` : executed when the runner has finished running.
 * `on_cmd`: runs when the mapped command is built <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
 * `on_cmd_done`: runs when the command has finished running <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
@@ -47,8 +47,8 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 * `on_`<mark style="color:purple;">`{serializer}`</mark>`_loaded`: executed when a serializer has finished running. For instance, `on_json_loaded` after the `JSONSerializer` has finished running  <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark> .
 
 {% hint style="info" %}
-**All hooks** are defined with the `@staticmethod` decorator and take **`self`** as the **first** argument so that you can use the runner data in your hook implementation.\
-\
+**All hooks** are defined with the `@staticmethod` decorator and take **`self`** as the **first** argument so that you can use the runner data in your hook implementation.\\
+\\
 **Item hooks** take **`item`** as the **second** argument and expect you to return the modified item.
 {% endhint %}
 
@@ -91,7 +91,7 @@ Here are examples of specifying dynamic hooks:
 
 {% tabs %}
 {% tab title="Task" %}
-<pre class="language-python"><code class="lang-python">from secator.task import mytool
+<pre class="language-python"><code class="lang-python">from secator.tasks import mytool
 
 api_url = 'https://myapi.com'
 hooks = {
@@ -107,21 +107,21 @@ from secator.runners import Workflow, Task
 from secator.template import TemplateLoader
 from secator.hooks.mongodb import update_runner, update_finding
 
-config = TemplateLoader(path='/path/to/my/workflow.yaml')
+config = TemplateLoader('/path/to/my/workflow.yaml')
 workflow = Workflow(
     config,
     hooks={
        Workflow: {
             'on_init': [update_runner],
             'on_start': [update_runner],
-            'on_iter': [update_runner],
+            'on_interval': [update_runner],
             'on_end': [update_runner]
         },
         Task: {
             'on_init': [update_runner],
             'on_item': [update_finding],
             'on_duplicate': [update_finding],
-            'on_iter': [update_runner],
+            'on_interval': [update_runner],
             'on_end': [update_runner]
         }
     }
