@@ -28,6 +28,7 @@
   * [Runners](in-depth/concepts/runners.md)
   * [Drivers](in-depth/concepts/drivers.md)
   * [Profiles](in-depth/concepts/profiles.md)
+* [Running internal scans and getting results on the platform](in-depth/running-internal-scans-on-the-platform.md)
 * [Deployment](in-depth/deployment.md)
 
 ## For developers

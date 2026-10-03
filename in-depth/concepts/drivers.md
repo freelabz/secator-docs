@@ -47,3 +47,19 @@ The `addons.gcs.credentials_path` config option is available but optional, as th
 {% endhint %}
 
 ***
+
+## API driver
+
+To send live runners and findings to a remote HTTP API — in particular to get
+an externally-run scan to show up on the Secator platform (Secator Cloud or a
+self-hosted deployment):
+
+```bash
+secator config set addons.api.url https://app.secator.cloud/api
+secator config set addons.api.key <API_TOKEN>
+secator w host_recon example.com -driver api -ws my-workspace
+```
+
+See [Running internal scans and getting results on the platform](../running-internal-scans-on-the-platform.md) for the full walkthrough, including the network/proxy requirement and how to route specific scans to dedicated workers.
+
+***
