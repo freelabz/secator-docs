@@ -32,7 +32,7 @@ SECTIONS = {
 	'wordlists': 'Wordlists used by fuzzing and brute-force tasks.',
 	'profiles': 'Profiles (see [Profiles](../in-depth/concepts/profiles.md)).',
 	'drivers': 'Drivers (see [Drivers](../in-depth/concepts/drivers.md)).',
-	'workspaces': 'Workspaces (see [Workspaces](../in-depth/concepts/workspaces.md)).',
+	'workspaces': 'Workspaces (see [Workspaces](../in-depth/concepts/workspaces.md)). `workspaces.routes` is deprecated and ignored (a one-time warning is printed if your config still sets it).',  # noqa: E501
 	'addons': 'Addon settings. Install addons with `secator install addons <name>`.',
 	'security': 'Security controls.',
 	'providers': 'Default enrichment providers.',
@@ -117,7 +117,6 @@ DESCRIPTIONS = {
 	'profiles.defaults': 'Profiles applied to every run.',
 	'drivers.defaults': 'Drivers applied to every run.',
 	'workspaces.current': 'Current workspace (set with `secator ws use <name>`). Empty means `default`.',
-	'workspaces.routes': 'Automatic workspace routing: workspace -> list of glob patterns matched against inputs.',
 	'workspaces.profiles': 'Default profiles per workspace: workspace -> list of profiles.',
 	'addons.gdrive.enabled': 'Enable the Google Drive exporter.',
 	'addons.gdrive.drive_parent_folder_id': 'Parent Google Drive folder ID.',

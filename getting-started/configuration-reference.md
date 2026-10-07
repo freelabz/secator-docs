@@ -206,12 +206,11 @@ Drivers (see [Drivers](../in-depth/concepts/drivers.md)).
 
 ## workspaces
 
-Workspaces (see [Workspaces](../in-depth/concepts/workspaces.md)).
+Workspaces (see [Workspaces](../in-depth/concepts/workspaces.md)). `workspaces.routes` is deprecated and ignored (a one-time warning is printed if your config still sets it).
 
 | Key | Type | Default | Env var | Description |
 | --- | --- | --- | --- | --- |
 | `workspaces.current` | `str` | `""` | `SECATOR_WORKSPACES_CURRENT` | Current workspace (set with `secator ws use <name>`). Empty means `default`. |
-| `workspaces.routes` | `dict[str, list[str]]` | `{}` | `SECATOR_WORKSPACES_ROUTES_<KEY>` | Automatic workspace routing: workspace -> list of glob patterns matched against inputs. |
 | `workspaces.profiles` | `dict[str, list[str]]` | `{}` | `SECATOR_WORKSPACES_PROFILES_<KEY>` | Default profiles per workspace: workspace -> list of profiles. |
 
 ***

@@ -165,30 +165,6 @@ You can use [Rich markup](https://rich.readthedocs.io/en/stable/markup.html) lik
 
 ***
 
-## Routing targets to workspaces
-
-You can send runs to a workspace **automatically**, based on their targets. Set `workspaces.routes.<workspace>` to a list of glob patterns:
-
-```bash
-secator config set --append workspaces.routes.acme '*acme.com*'
-secator config set --append workspaces.routes.acme '10.10.*'
-```
-
-A run without `-ws` whose target matches one of the patterns runs in the `acme` workspace:
-
-```bash
-secator x httpx https://www.acme.com     # runs in 'acme'
-secator x httpx https://example.com      # runs in the current workspace
-```
-
-Patterns use shell-style wildcards (`*`, `?`, `[...]`) and must match the **whole** target string, so add `*` on both sides to match part of a URL. Routes are checked in the order they appear in your config, and the first match wins.
-
-{% hint style="warning" %}
-Known limitation: when the workspace comes from a route or from a profile (rather than `-ws` or `secator ws use`), the run's local report files are currently still written under the current workspace folder, and the `workspaces.profiles` of that workspace are not applied. Pass `-ws` explicitly if you rely on either.
-{% endhint %}
-
-***
-
 ## Default profiles per workspace
 
 You can apply [profiles.md](profiles.md "mention") automatically to every run in a given workspace with `workspaces.profiles.<workspace>`:
@@ -228,9 +204,7 @@ opts:
 secator s host www.acme.com -pf acme    # runs in 'acme'
 ```
 
-{% hint style="info" %}
-See the known limitation in [#routing-targets-to-workspaces](workspaces.md#routing-targets-to-workspaces "mention").
-{% endhint %}
+The run's report files are written under the profile's workspace, and that workspace's `workspaces.profiles` are applied. A `workspace` set in a profile that is itself listed in `workspaces.profiles` is ignored.
 
 ***
 
@@ -241,9 +215,12 @@ When a run starts, its workspace is picked in this order:
 1. The `workspace` of an **enforced** profile (`enforce: true`).
 2. The `-ws` option.
 3. The `workspace` of a non-enforced profile.
-4. The first `workspaces.routes` pattern that matches a target.
-5. The current workspace (`workspaces.current`, set with `secator ws use`).
-6. `default`.
+4. The current workspace (`workspaces.current`, set with `secator ws use`).
+5. `default`.
+
+{% hint style="warning" %}
+`workspaces.routes` (automatic routing by target pattern) is **deprecated** and no longer has any effect. A config that still sets it loads normally: the key is ignored and secator prints a one-time deprecation warning. Use `-ws`, `secator ws use` or a profile `workspace` instead.
+{% endhint %}
 
 ***
 
