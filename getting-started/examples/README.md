@@ -57,7 +57,7 @@ for result in host_recon(target):  # consume results live
 {% tabs %}
 {% tab title="CLI" %}
 ```bash
-secator w url_fuzz example.com -mc 200,302 -rl 1 -w dicc.txt -o table -quiet 
+secator w url_fuzz example.com -mc 200,302 -rl 1 -w dicc.txt -o table
 ```
 {% endtab %}
 
