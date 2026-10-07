@@ -142,6 +142,23 @@ secator x cariddi mydomain.com -H "Authorization: Basic <TOKEN>;; Accept: applic
 
 ***
 
+### Raw request (`-rf`)
+
+Path to a file containing a raw HTTP request (Burp-style format). The request method, headers and body are applied to the task (unless set with `-X`, `-data`), and its URL is used as input when no target is passed.
+
+<details>
+
+<summary>Example: fuzz with a request saved from Burp</summary>
+
+```bash
+secator x httpx -rf request.txt                          # target taken from the request
+secator x ffuf http://mydomain.com/FUZZ -rf request.txt  # reuse the request headers and body
+```
+
+</details>
+
+***
+
 ### Method (`-X`)
 
 HTTP method to use for request GET, POST, PUT, DELETE, etc...

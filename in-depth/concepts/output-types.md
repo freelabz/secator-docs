@@ -6,7 +6,7 @@ description: ... or how secator unifies all output into common schemas.
 
 `secator` uses the notion of output types to uniformize tasks output. A task can output one or multiple output types.
 
-The currently available output types are [#certificate](output-types.md#certificate "mention"), [#domain](output-types.md#domain "mention"), [#exploit](output-types.md#exploit "mention"), [#ip](output-types.md#ip "mention"), [#port](output-types.md#port "mention"), [#record](output-types.md#record "mention"), [#subdomain](output-types.md#subdomain "mention"), [#tag](output-types.md#tag "mention"), [#url](output-types.md#url "mention"), [#useraccount](output-types.md#useraccount "mention"), [#vulnerability](output-types.md#vulnerability "mention").
+The currently available output types are [#certificate](output-types.md#certificate "mention"), [#domain](output-types.md#domain "mention"), [#exploit](output-types.md#exploit "mention"), [#ip](output-types.md#ip "mention"), [#port](output-types.md#port "mention"), [#record](output-types.md#record "mention"), [#subdomain](output-types.md#subdomain "mention"), [#tag](output-types.md#tag "mention"), [#technology](output-types.md#technology "mention"), [#url](output-types.md#url "mention"), [#useraccount](output-types.md#useraccount "mention"), [#vulnerability](output-types.md#vulnerability "mention").
 
 {% hint style="info" %}
 Feel free to request more output types by [opening an issue](https://github.com/freelabz/secator/issues/new/choose) on the GitHub repo.
@@ -49,12 +49,21 @@ class Certificate(OutputType):
 @dataclass
 class Domain(OutputType):
     domain: str
-    registrar: str = ''
     alive: bool = False
-    creation_date: str = ''
-    expiration_date: str = ''
-    registrant: str = ''
+    creation_date: datetime = field(default=None, compare=False)
+    expiration_date: datetime = field(default=None, compare=False)
+    updated_date: datetime = field(default=None, compare=False)
+    status: list = field(default_factory=list, compare=False)
+    registrar: str = field(default='', compare=False)
+    registrar_info: dict = field(default_factory=dict, compare=False)
+    registrant: str = field(default='', compare=False)
+    registrant_info: dict = field(default_factory=dict, compare=False)
+    administrative_info: dict = field(default_factory=dict, compare=False)
+    technical_info: dict = field(default_factory=dict, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -76,6 +85,8 @@ class Exploit(OutputType):
     cves: list = field(default_factory=list, compare=False)
     tags: list = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
 ```
 {% endcode %}
 
@@ -92,6 +103,9 @@ class Ip(OutputType):
     alive: bool = False
     protocol: str = field(default=IpProtocol.IPv4)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -112,6 +126,10 @@ class Port(OutputType):
     protocol: str = field(default='tcp', repr=True, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
     confidence: str = field(default='low', repr=False, compare=False)
+    service_confidence: str = field(default='low', repr=False, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -127,6 +145,9 @@ class Record(OutputType):
     type: str
     host: str = ''
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -143,6 +164,9 @@ class Subdomain(OutputType):
     verified: bool = field(default=False, compare=False)
     sources: List[str] = field(default_factory=list, compare=False)
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -160,6 +184,25 @@ class Tag(OutputType):
     category: str = field(default='general')
     extra_data: dict = field(default_factory=dict, repr=True, compare=False)
     stored_response_path: str = field(default='', compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
+```
+{% endcode %}
+
+***
+
+## 📦 Technology
+
+{% code title="secator/output_types/technology.py" %}
+```python
+@dataclass
+class Technology(OutputType):
+    product: str
+    match: str
+    version: str = None
+    extra_data: dict = field(default_factory=dict, repr=True, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -194,6 +237,9 @@ class Url(OutputType):
     is_directory: bool = field(default=False, compare=False)
     is_root: bool = field(default=False, compare=False)
     is_redirect: bool = field(default=False, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -210,6 +256,9 @@ class UserAccount(OutputType):
     email: str = ''
     site_name: str = ''
     extra_data: dict = field(default_factory=dict, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
 
@@ -222,23 +271,38 @@ class UserAccount(OutputType):
 @dataclass
 class Vulnerability(OutputType):
     name: str
-    provider: str = ''
     id: str = ''
     matched_at: str = ''
+    provider: str = field(default='', compare=False)
     ip: str = field(default='', compare=False)
-    confidence: str = 'low'
-    severity: str = 'unknown'
-    cvss_score: float = 0
-    cvss_vec: str = ''
-    epss_score: float = 0
-    tags: List[str] = field(default_factory=list, compare=False)
-    extra_data: dict = field(default_factory=dict, compare=False)
+    confidence: str = field(default='low', compare=False)
+    severity: str = field(default='unknown', compare=False)
+    cvss_score: float = field(default=0.0, compare=False)
+    cvss_vec: str = field(default='', compare=False)
+    epss_score: float = field(default=0.0, compare=False)
     description: str = field(default='', compare=False)
+    remediation: str = field(default='', compare=False)
+    impact: str = field(default='', compare=False)
+    poc: str = field(default='', compare=False)
     references: List[str] = field(default_factory=list, compare=False)
     reference: str = field(default='', compare=False)
-    confidence_nb: int = 0
-    severity_nb: int = 0
+    confidence_nb: int = field(default=0, compare=False)
+    severity_nb: int = field(default=0, compare=False)
+    extra_data: dict = field(default_factory=dict, compare=False)
+    verified: bool = field(default=False, compare=False)
+    is_false_positive: bool = field(default=False, compare=False)
+    is_acknowledged: bool = field(default=False, compare=False)
+    status: str = field(default='', compare=False)
+    tags: list = field(default_factory=list, compare=False)
 ```
 {% endcode %}
+
+Notable fields:
+
+* `severity_nb` / `confidence_nb`: numeric severity and confidence, handy for queries (`0` = critical, `1` = high, ...), e.g. `secator q "vulnerability.severity_nb < 2"`.
+* `cvss_vec`, `epss_score`: CVSS vector and EPSS score, when the provider returns them.
+* `description`, `impact`, `remediation`, `poc`: free-text details and proof-of-concept.
+* `status`: triage status of the vulnerability. With the `mongodb` and `sqlite` drivers, it is carried over to the same vulnerability found again in later runs of the workspace, together with `is_false_positive`, `is_acknowledged`, `verified`, `tags` and `poc`.
+* `tags`: vulnerabilities whose CVE is in the [CISA Known Exploited Vulnerabilities](https://www.cisa.gov/known-exploited-vulnerabilities-catalog) catalog are tagged `kev` automatically (a bundled copy of the catalog is used when offline), e.g. `secator q "vulnerability.tags ~= 'kev'"`.
 
 ***

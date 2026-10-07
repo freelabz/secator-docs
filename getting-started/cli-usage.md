@@ -15,7 +15,13 @@ secator --help # General help
 secator x      # List available tasks
 secator w      # List available workflows
 secator s      # List available scans
+secator q      # Query results
+secator r      # Manage reports
+secator ws     # Manage workspaces
+secator p      # Manage profiles
+secator c      # View or edit config
 secator u      # List available utilities
+secator cs     # Show an interactive cheatsheet
 ```
 
 ***
@@ -153,6 +159,12 @@ secator s subdomain sub.example.com
 ```
 {% endtab %}
 
+{% tab title="Host scan" %}
+```
+secator s host example.com
+```
+{% endtab %}
+
 {% tab title="Network scan" %}
 ```
 secator s network 192.168.1.0/24
@@ -168,6 +180,23 @@ secator s url http://testphp.vulnweb.com
 
 {% hint style="info" %}
 Use **`secator s <NAME> --help`** to list a options for a specific scan.
+{% endhint %}
+
+***
+
+## Querying results
+
+Every run is saved as a report. You can list reports, show their results, and query findings across all reports of a workspace:
+
+```bash
+secator r list                                     # list reports
+secator r show tasks/3 -o csv                      # show (and export) a report's results
+secator q "vulnerability.severity == 'critical'"   # query findings across reports
+secator ws summary                                 # summarize the current workspace
+```
+
+{% hint style="info" %}
+Learn more about [querying-results.md](querying-results.md "mention") and [workspaces.md](../in-depth/concepts/workspaces.md "mention").
 {% endhint %}
 
 ***
@@ -213,6 +242,14 @@ secator u record -i <RECORD_NAME>                # record an interactive session
 secator u record --script test.sh <RECORD_NAME>  # put your commands in a script and record the execution
 ```
 
+### Shell completion
+
+You can show or install shell completion for `bash`, `zsh` or `fish`:
+
+```bash
+secator u completion --shell bash --install
+```
+
 ***
 
 ## Configuring secator
@@ -224,17 +261,31 @@ secator c get                                     # get full config (with defaul
 secator c get --user                              # get user config
 secator c get wordlists.defaults.http             # get default wordlist path
 secator c set wordlists.defaults.http rockyou.txt # set default wordlist 
+secator c unset wordlists.defaults.http           # reset key to default
 secator c edit                                    # edit user config yaml
 secator c default                                 # get default config
 ```
 
-To see the full available configuration options,  get the default configuration using `secator c default`.
+To see all available configuration options, read the [configuration-reference.md](configuration-reference.md "mention") or run `secator c default`.
+
+***
+
+## Aliases
+
+`secator` ships short shell aliases (`x`, `w`, `s`, ...) so you can omit the `secator` prefix:
+
+```bash
+secator alias list      # list aliases
+secator alias enable    # write the aliases to ~/.secator/.aliases
+source ~/.secator/.aliases
+secator alias disable   # disable aliases
+```
 
 ***
 
 ## Running a worker \[optional]
 
-You can enable enable distributed runs by starting `secator` workers.  All tasks / workflows / scans will be sent to the workers for execution.
+You can enable distributed runs by starting `secator` workers.  All tasks / workflows / scans will be sent to the workers for execution.
 
 You can run a worker using the file system as a broker and result backend:
 
