@@ -8,176 +8,17 @@ description: ... how to configure every aspect of how secator operates.
 
 ## Default configuration
 
-`secator` is configured using a YAML config file.
+`secator` is configured using a YAML config file. Every option has a default value, so the config file only needs the keys you want to change.
 
-The default configuration is as follow:
-
-```yaml
-dirs:
-  bin: ~/.local/bin
-  share: ~/.local/share
-  data: ~/.secator
-  templates: ~/.secator/templates
-  reports: ~/.secator/reports
-  wordlists: ~/.secator/wordlists
-  cves: ~/.secator/cves
-  payloads: ~/.secator/payloads
-  performance: ~/.secator/performance
-  revshells: ~/.secator/revshells
-  celery: ~/.secator/celery
-  celery_data: ~/.secator/celery/data
-  celery_results: ~/.secator/celery/results
-
-debug:
-  level: 0
-  component: ''
-
-celery:
-  broker_url: filesystem://
-  broker_pool_limit: 10
-  broker_connection_timeout: 4.0
-  broker_visibility_timeout: 3600
-  broker_transport_options: ''
-  override_default_logging: true
-  result_backend: file://~/.secator/celery/results
-  result_backend_transport_options: ''
-  result_expires: 86400
-  task_acks_late: false
-  task_send_sent_event: false
-  task_reject_on_worker_lost: false
-  task_max_timeout: -1
-  task_memory_limit_mb: -1
-  worker_max_tasks_per_child: 20
-  worker_prefetch_multiplier: 1
-  worker_send_task_events: false
-  worker_kill_after_task: false
-  worker_kill_after_idle_seconds: -1
-  worker_command_verbose: false
-
-cli:
-  github_token: ''
-  record: false
-  stdin_timeout: 1000
-  show_http_response_headers: false
-  show_command_output: false
-  exclude_http_response_headers:
-    - connection
-    - content_type
-    - content_length
-    - date
-    - server
-
-runners:
-  input_chunk_size: 100
-  progress_update_frequency: 20
-  stat_update_frequency: 20
-  backend_update_frequency: 5
-  poll_frequency: 5
-  skip_cve_search: false
-  skip_exploit_search: false
-  skip_cve_low_confidence: false
-  remove_duplicates: false
-  threads: 50
-  prompt_timeout: 20
-
-http:
-  socks5_proxy: socks5://127.0.0.1:9050
-  http_proxy: https://127.0.0.1:9080
-  store_responses: true
-  response_max_size_bytes: 100000
-  proxychains_command: proxychains
-  freeproxy_timeout: 1
-  default_header: User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36
-
-tasks:
-  exporters:
-  - json
-  - csv
-  - txt
-
-workflows:
-  exporters:
-  - json
-  - csv
-  - txt
-
-scans:
-  exporters:
-  - json
-  - csv
-  - txt
-
-payloads:
-  templates:
-    lse: https://github.com/diego-treitos/linux-smart-enumeration/releases/latest/download/lse.sh
-    linpeas: https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
-    sudo_killer: https://github.com/TH3xACE/SUDO_KILLER/archive/refs/heads/V3.zip
-
-wordlists:
-  defaults:
-    http: bo0m_fuzz
-    dns: combined_subdomains
-    http_params: burp-parameter-names
-  templates:
-    bo0m_fuzz: https://raw.githubusercontent.com/Bo0oM/fuzz.txt/master/fuzz.txt
-    combined_subdomains: https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/DNS/combined_subdomains.txt
-    directory_list_small: https://gist.githubusercontent.com/sl4v/c087e36164e74233514b/raw/c51a811c70bbdd87f4725521420cc30e7232b36d/directory-list-2.3-small.txt
-    burp-parameter-names: https://raw.githubusercontent.com/danielmiessler/SecLists/refs/heads/master/Discovery/Web-Content/burp-parameter-names.txt
-  lists: {}
-
-addons:
-  gdrive:
-    enabled: false
-    drive_parent_folder_id: ''
-    credentials_path: ''
-  gcs:
-    enabled: false
-    bucket_name: ''
-    credentials_path: ''
-  worker:
-    enabled: false
-  mongodb:
-    enabled: false
-    url: mongodb://localhost
-    update_frequency: 60
-    max_pool_size: 10
-    server_selection_timeout_ms: 5000
-    max_items: null
-    duplicate_main_copy_fields:
-      - screenshot_path
-      - stored_response_path
-      - is_false_positive
-      - is_acknowledged
-      - verified
-  vulners:
-    enabled: false
-    api_key: ''
-
-profiles:
-  defaults: []
-
-drivers:
-  defaults: []
-
-providers:
-  defaults:
-    cve: circl
-    exploit: exploitdb
-    ghsa: ghsa
-
-security:
-  allow_local_file_access: true
-  auto_install_commands: true
-  force_source_install: false
-
-offline_mode: false
-```
-
-To get `secator`'s default configuration, run:
+To print the full default configuration of your installed version, run:
 
 ```bash
 secator config default
 ```
+
+{% hint style="info" %}
+Every key, its type, its default value and its environment variable are listed in the [configuration-reference.md](configuration-reference.md "mention").
+{% endhint %}
 
 ***
 
@@ -187,12 +28,16 @@ It is possible to override `secator`'s default configuration using a **user conf
 
 The default user configuration is empty.
 
+{% hint style="info" %}
+The config file lives in the data folder (`~/.secator` by default). To use another data folder, and therefore another config file, set the `SECATOR_DIRS_DATA` environment variable.
+{% endhint %}
+
 ### Get config
 
-To get `secator`'s user config, run:
-
 ```bash
-secator config get
+secator config get                         # get full config (with defaults)
+secator config get --user                  # get user config (non-default values only)
+secator config get wordlists.defaults.http # get a single key
 ```
 
 ### Edit config
@@ -231,10 +76,10 @@ To edit specific keys, use:
 secator config set <path.to.config.key> <VALUE>
 ```
 
-For instance, to set the debug component to `celery`:
+For instance, to print debug messages for the `celery` component:
 
 ```bash
-secator config set debug.component celery
+secator config set debug celery
 ```
 
 ... or to set the `mongodb` addon URL:
@@ -243,23 +88,110 @@ secator config set debug.component celery
 secator config set addons.mongodb.url mongodb://mymongodbhost
 ```
 
-### Env overrides
-
-Values  in the `secator` config can be overriden using environment variables. Environment variables are prefixed with `SECATOR_`and use dotted path notation.
-
-For instance, to override `debug.component`, run:
+List fields can be replaced, appended to, or have a single item removed:
 
 ```bash
-export SECATOR_DEBUG_COMPONENT=celery
+secator config set drivers.defaults mongodb           # replace the list
+secator config set drivers.defaults json --append     # append to the list
+secator config unset drivers.defaults json            # remove one item from the list
 ```
 
-To override the default HTTP wordlist:
+Dict fields accept sub-keys:
+
+```bash
+secator config set wordlists.defaults.http mylist                # set a dict sub-key
+secator config set workspaces.profiles.my_ws aggressive,passive  # set the default profiles of a workspace
+secator config unset wordlists.defaults.http                     # remove a dict sub-key
+```
+
+#### Resetting config keys
+
+To reset a key to its default value, use `secator config unset`:
+
+```bash
+secator config unset debug
+```
+
+### Env overrides
+
+Values in the `secator` config can be overriden using environment variables. Environment variables are prefixed with `SECATOR_`, upper-cased, and use the dotted path of the key with dots replaced by underscores.
+
+For instance, to override `debug`, run:
+
+```bash
+export SECATOR_DEBUG=celery
+```
+
+To override the default HTTP wordlist (`wordlists.defaults.http`):
 
 ```bash
 export SECATOR_WORDLISTS_DEFAULTS_HTTP=/path/to/wordlist.txt
 ```
 
-and so on.
+To use Redis as a Celery broker (`celery.broker_url`):
+
+```bash
+export SECATOR_CELERY_BROKER_URL=redis://localhost:6379/0
+```
+
+and so on. Environment variables take precedence over the config file. Unknown keys are ignored with a warning.
 
 ***
 
+## Task overrides
+
+`tasks.overrides` changes attributes of a specific task without touching its code. Keys are task names, values are the task attributes to override. Common attributes are:
+
+| Attribute          | Description                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `max_timeout`      | Max execution time of the task in seconds (overrides `celery.task_max_timeout` for this task).                            |
+| `input_chunk_size` | Number of inputs per chunk when the task runs on workers (`-1` disables chunking).                                        |
+| `profile`          | Worker queue the task is sent to (`small`, `medium`, `large`, `extra_large`), see [distributed-runs-with-celery.md](../in-depth/distributed-runs-with-celery.md "mention"). |
+
+{% tabs %}
+{% tab title="CLI" %}
+```bash
+secator config set tasks.overrides.nmap.max_timeout 3600
+secator config set tasks.overrides.search_vulns.profile large
+```
+{% endtab %}
+
+{% tab title="YAML" %}
+```yaml
+tasks:
+  overrides:
+    nmap:
+      max_timeout: 3600
+    search_vulns:
+      profile: large
+```
+{% endtab %}
+
+{% tab title="Env vars" %}
+Use `SECATOR_TASKS_OVERRIDES_<TASK>_<ATTRIBUTE>`. Task names containing underscores are supported:
+
+```bash
+export SECATOR_TASKS_OVERRIDES_NMAP_MAX_TIMEOUT=3600
+export SECATOR_TASKS_OVERRIDES_SEARCH_VULNS_PROFILE=large
+```
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+A `profile` override only applies to tasks with a static queue. Tasks that pick their queue dynamically (for instance `katana` in headless mode) keep their own routing.
+{% endhint %}
+
+***
+
+## Debugging
+
+The `debug` key prints internal debug messages for selected components. It accepts a comma-separated list of component names (prefix match), regexes, or `all`:
+
+```bash
+secator config set debug all            # everything
+secator x httpx example.com             # ... run something
+SECATOR_DEBUG=celery,hooks secator w host_recon example.com  # only for one run
+SECATOR_DEBUG='cve.*' secator x nmap example.com             # regex
+```
+
+***
