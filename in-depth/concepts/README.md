@@ -12,5 +12,6 @@ This page presents various `secator` concepts:
 * [runners.md](runners.md "mention")
 * [drivers.md](drivers.md "mention")
 * [profiles.md](profiles.md "mention")
+* [workspaces.md](workspaces.md "mention")
 
 ***
