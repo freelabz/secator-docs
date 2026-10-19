@@ -107,6 +107,23 @@ patterns over action classes: `target(...)`, `read(...)`, `write(...)`,
 ask > default-deny**: a deny always wins, an unmatched action falls through to
 `ask`, and if nothing matches it is denied.
 
+### Guardrail levels at a glance
+
+The flags combine into escalating trust levels - from "gate everything" to
+"trust the LLM". Each row shows which guardrail layers still apply:
+
+| Mode | Command | Path | Target / scope | Approval prompts | Shell isolation |
+|---|:---:|:---:|:---:|:---:|:---:|
+| **default** | ✅ gated | ✅ gated | ✅ gated | yes | no |
+| **`--in-scope` / `--out-of-scope`** | ✅ | ✅ | ✅ in-scope pre-approved | fewer¹ | no |
+| **`--isolated`** | ❌ dropped² | ❌ dropped² | ✅ still enforced | targets only | ✅ Docker sandbox |
+| **`--dangerous`** | ❌ | ❌ | ❌ scope dropped too | none | no |
+
+¹ In-scope targets are pre-approved, so they don't prompt; out-of-scope targets
+are denied (or prompt, unless `scope_hard_deny` is set). ² The sandbox container
+*is* the command/filesystem boundary, so those layers drop to *allow* - but
+network egress (targets) and sensitive-env access still gate.
+
 ***
 
 ## Bypass permissions - `--dangerous`
