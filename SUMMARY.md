@@ -21,6 +21,7 @@
 
 * [Philosophy & design](in-depth/philosophy-and-design.md)
 * [Distributed runs with Celery](in-depth/distributed-runs-with-celery.md)
+* [AI task](in-depth/ai-task.md)
 * [Concepts](in-depth/concepts/README.md)
   * [Output types](in-depth/concepts/output-types.md)
   * [Proxies](in-depth/concepts/proxies.md)
