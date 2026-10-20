@@ -32,6 +32,7 @@
   * [Drivers](in-depth/concepts/drivers.md)
   * [Profiles](in-depth/concepts/profiles.md)
   * [Workspaces](in-depth/concepts/workspaces.md)
+* [Running internal scans on the platform](in-depth/running-internal-scans-on-the-platform.md)
 * [Deployment](in-depth/deployment.md)
 
 ## For developers
