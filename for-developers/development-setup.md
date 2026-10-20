@@ -34,7 +34,7 @@ pip install -e .[dev]                          # install secator and dev depende
 If you want to run unit tests to test a specific task only:
 
 ```sh
-secator test unit --test test_task --task <TASK_NAME>
+secator test unit --test test_tasks --tasks <TASK_NAME>
 ```
 
 ***

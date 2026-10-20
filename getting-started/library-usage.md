@@ -30,9 +30,9 @@ from secator.scans import host
 # Run simple tasks, chain them together
 target = 'wikipedia.org'
 subdomains = subfinder(target).run()
-hosts = set(_.host for _ in subdomains if _._type == 'subdomain']
+hosts = list(set(_.host for _ in subdomains if _._type == 'subdomain'))
 ports_open = naabu(hosts).run()
-to_probe = set(f'{_.host}:{_.port}' for _ in ports_open if _._type == 'port']
+to_probe = list(set(f'{_.host}:{_.port}' for _ in ports_open if _._type == 'port'))
 alive_urls = httpx(to_probe).run()
 
 # ... or run a workflow
@@ -64,11 +64,11 @@ from secator.output_types import Url, Tag
 from .models import Urls, Tags
 
 def process_url(url):
-    Urls.objects.create(**url)
+    Urls.objects.create(**url.toDict())
     print(f'Saved {url.url} [{url.status_code}] to database')
     
 def process_tag(tag):
-    Tags.objects.create(**tag)
+    Tags.objects.create(**tag.toDict())
     print(f'Found tag {tag.name} for target {tag.match}')
 
 # Set the initial host
@@ -76,7 +76,8 @@ host = 'http://testphp.vulnweb.com'
 
 # Use a task as a generator
 for url in feroxbuster(host, rate_limit=100):
-    Thread(target=process_url, args=(url,))
+    if isinstance(url, Url):
+        Thread(target=process_url, args=(url,)).start()
 
 # Use a workflow as a generator
 threads = []
@@ -96,7 +97,7 @@ for thread in threads:
 {% tab title="Using a Celery task" %}
 ```python
 from celery import Celery
-from secator.tasks import ffuf
+from secator.tasks import feroxbuster
 from secator.output_types import Url, Tag
 from .models import Urls, Tags
 from secator.workflows import url_crawl
@@ -106,26 +107,27 @@ app = Celery(__name__)
 @app.task
 def process_url(url):
     Urls.objects.create(**url)
-    print(f'Saved {url.url} [{url.status_code}] to database')
+    print(f'Saved {url["url"]} [{url["status_code"]}] to database')
 
 @app.task
 def process_tag(tag):
     Tags.objects.create(**tag)
-    print(f'Found tag {tag.name} for target {tag.match}')
+    print(f'Found tag {tag["name"]} for target {tag["match"]}')
 
 # Set the initial host
 host = 'http://testphp.vulnweb.com'
 
 # Use a task as a generator
 for url in feroxbuster(host, rate_limit=100):
-    process_url.delay(url)
+    if isinstance(url, Url):
+        process_url.delay(url.toDict())
 
 # Use a workflow as a generator
 for result in url_crawl(host, rate_limit=100):
   if isinstance(result, Url):
-    process_url.delay(result)
+    process_url.delay(result.toDict())
   elif isinstance(result, Tag):
-    process_tag.delay(result)
+    process_tag.delay(result.toDict())
 ```
 {% endtab %}
 {% endtabs %}

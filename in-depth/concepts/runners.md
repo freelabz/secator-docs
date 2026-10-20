@@ -29,11 +29,13 @@ The `Runner` lifecycle contains hooks that a user can plug into:
 **Base hooks:**
 
 * `before_init`: executed before the base runner's init starts.
+* `on_build`: executed when a task is built for dispatch to a Celery worker, before it runs.
 * `on_init`: executed when the base runner's init is completed.
 * `on_start` : executed when the runner has started running.
-* `on_iter`: executed when the runner iterates.
+* `on_interval`: executed after each item is processed (drivers use it to push periodic runner updates).
 * `on_end` : executed when the runner has finished running.
 * `on_cmd`: runs when the mapped command is built <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
+* `on_cmd_opts`: runs when the command options are built, to adjust them <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
 * `on_cmd_done`: runs when the command has finished running <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
 * `on_line`: executed when a line is output to stdout or stderr <mark style="color:red;">**\[**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**`Command`**</mark><mark style="color:red;">**&#x20;**</mark><mark style="color:red;">**runner only ]**</mark>.
 

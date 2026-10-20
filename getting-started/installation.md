@@ -23,7 +23,14 @@ pip install secator
 
 {% tab title="Bash" %}
 ```bash
-wget -O - https://raw.githubusercontent.com/freelabz/secator/main/scripts/install.sh | sh
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/freelabz/secator/main/scripts/install_universal.sh)"
+```
+
+The script accepts optional flags (`--version <version>`, `--addons <list>`, `--tools [<list>]`, `--templates <path>`), for instance:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/freelabz/secator/main/scripts/install_universal.sh -o install_secator.sh
+bash install_secator.sh --addons worker,mongodb --tools httpx,nuclei
 ```
 {% endtab %}
 
@@ -52,8 +59,8 @@ secator --help
 {% tab title="Docker Compose" %}
 <pre class="language-bash"><code class="lang-bash">git clone https://github.com/freelabz/secator
 cd secator
-<strong>docker-compose up -d
-</strong><strong>docker-compose exec secator secator --help
+<strong>docker compose up -d
+</strong><strong>docker compose exec secator secator --help
 </strong></code></pre>
 {% endtab %}
 {% endtabs %}
@@ -104,11 +111,19 @@ secator install addons worker
 ```
 {% endtab %}
 
-{% tab title="google" %}
-Add support for Google Drive exporter (see [exporters.md](../in-depth/concepts/exporters.md "mention")).
+{% tab title="gdrive" %}
+Add support for the Google Drive exporter (see [exporters.md](../in-depth/concepts/exporters.md "mention")).
 
 ```sh
-secator install addons google
+secator install addons gdrive
+```
+{% endtab %}
+
+{% tab title="gcs" %}
+Add support for the Google Cloud Storage driver (see [#gcs-driver](../in-depth/concepts/drivers.md#gcs-driver "mention")).
+
+```sh
+secator install addons gcs
 ```
 {% endtab %}
 
@@ -128,6 +143,22 @@ secator install addons redis
 ```
 {% endtab %}
 
+{% tab title="vulners" %}
+Add support for the Vulners CVE provider (set `addons.vulners.api_key` and `providers.defaults.cve` to `vulners`).
+
+```sh
+secator install addons vulners
+```
+{% endtab %}
+
+{% tab title="ai" %}
+Add support for the `ai` task (see [ai-task.md](../in-depth/ai-task.md "mention")).
+
+```sh
+secator install addons ai
+```
+{% endtab %}
+
 {% tab title="dev" %}
 Add development tools like `coverage` and `flake8` required for running tests.
 
@@ -143,7 +174,43 @@ Add tracing tools like `memray` and `pyinstrument` required for tracing function
 secator install addons trace
 ```
 {% endtab %}
+
+{% tab title="build" %}
+Add the packaging tools needed by `secator u build` and `secator u publish`.
+
+```sh
+secator install addons build
+```
+{% endtab %}
 {% endtabs %}
+
+{% hint style="info" %}
+The SQLite driver does not need an addon: it uses Python's built-in `sqlite3` module.
+{% endhint %}
+
+***
+
+## Updating secator
+
+To update `secator` to the latest version:
+
+```bash
+secator update      # update secator
+secator update -a   # also update addons, tools, ...
+```
+
+***
+
+## Shell completion (optional)
+
+`secator` supports shell completion for `bash`, `zsh` and `fish` (task, workflow, scan and profile names, and options such as `--workspace`, `--driver` or `--output`):
+
+```bash
+secator util completion --shell zsh --install  # install completion in ~/.zshrc
+source ~/.zshrc
+```
+
+Run `secator util completion --shell <SHELL>` without `--install` to print the completion script instead.
 
 ***
 
@@ -152,7 +219,9 @@ secator install addons trace
 To figure out which languages or tools are installed on your system (along with their version):
 
 ```bash
-secator health
+secator health            # show installed languages and tools with their version
+secator health --strict   # exit with an error if a tool is missing (useful in CI)
+secator health --json     # JSON lines output
 ```
 
 <div align="left"><figure><img src="../.gitbook/assets/2025-04-29 15_55_22-Debian 10.x 64-bit - VMware Workstation.png" alt=""><figcaption><p>Secator Health CLI Output</p></figcaption></figure></div>

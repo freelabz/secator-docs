@@ -7,6 +7,8 @@
 * [CLI Usage](getting-started/cli-usage.md)
 * [Library usage](getting-started/library-usage.md)
 * [Configuration](getting-started/configuration.md)
+  * [Configuration reference](getting-started/configuration-reference.md)
+* [Querying results & reports](getting-started/querying-results.md)
 * [Examples](getting-started/examples/README.md)
   * [5 minutes secator session](getting-started/examples/5-minutes-secator-session.md)
 
@@ -29,6 +31,7 @@
   * [Runners](in-depth/concepts/runners.md)
   * [Drivers](in-depth/concepts/drivers.md)
   * [Profiles](in-depth/concepts/profiles.md)
+  * [Workspaces](in-depth/concepts/workspaces.md)
 * [Deployment](in-depth/deployment.md)
 
 ## For developers

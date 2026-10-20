@@ -55,7 +55,7 @@ tasks:
 {% hint style="info" %}
 The dynamic format keys are:
 
-* `type` is the output type, lower-case (see [Broken link](broken-reference "mention") for the whole list)
+* `type` is the output type, lower-case (see [output-types.md](../in-depth/concepts/output-types.md "mention") for the whole list)
 * `field` is the JSON field to use as target
 * `condition` is the filtering condition.
 {% endhint %}

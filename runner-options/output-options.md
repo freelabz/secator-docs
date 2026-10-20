@@ -26,6 +26,7 @@ Unicode icons are printed before each result to distinguish each output type:
 * [#record](../in-depth/concepts/output-types.md#record "mention")
 * [#subdomain](../in-depth/concepts/output-types.md#subdomain "mention")
 * [#tag](../in-depth/concepts/output-types.md#tag "mention")
+* [#technology](../in-depth/concepts/output-types.md#technology "mention")
 * [#url](../in-depth/concepts/output-types.md#url "mention")
 * [#useraccount](../in-depth/concepts/output-types.md#useraccount "mention")
 * [#vulnerability](../in-depth/concepts/output-types.md#vulnerability "mention")

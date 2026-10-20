@@ -67,8 +67,7 @@ katana -silent -jc -js-crawl -known-files all -u http://testphp.vulnweb.com -jso
 🔗 http://testphp.vulnweb.com/listproducts.php?cat=4
 🔗 http://testphp.vulnweb.com/listproducts.php?cat=1 [200] [Nginx:1.19.0, PHP:5.6.40, Ubuntu, DreamWeaver]
 🗄 Saved TXT reports to 
-   • /home/vagrant/.secator/reports/default/tasks/task_katana_target_2023_07_04-01_33_13_152782_PM.txt
-   • /home/vagrant/.secator/reports/default/tasks/task_katana_url_2023_07_04-01_33_13_152782_PM.txt
+   • ~/.secator/reports/default/tasks/0/report_url.txt
 </code></pre>
 
 `katana` found some pretty interesting results, including some PHP files that could potentially be vulnerable.
@@ -88,7 +87,7 @@ We'll add some rate limiting (`-rl`) in order to respect the server and not DDoS
 We want to keep only some HTTP codes (`-mc`) for instance `200`, `301`, and `500` in case we have there are errors we can take advantage of:&#x20;
 
 ```bash
-secator x httpx /home/vagrant/.secator/reports/default/tasks/task_katana_target_2023_07_04-01_33_13_152782_PM.txt -rl 10 -mc 200,301,500
+secator x httpx ~/.secator/reports/default/tasks/0/report_url.txt -rl 10 -mc 200,301,500
 
                          __            
    ________  _________ _/ /_____  _____
@@ -132,8 +131,7 @@ httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-01_19_35_686343_PM.txt -jso
 🔗 http://testphp.vulnweb.com [200] [Home of Acunetix Art] [nginx/1.19.0] [DreamWeaver, Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [4958]
 🔗 http://testphp.vulnweb.com/index.php [200] [Home of Acunetix Art] [nginx/1.19.0] [DreamWeaver, Nginx:1.19.0, PHP:5.6.40, Ubuntu] [text/html] [4958]
 🗄 Saved TXT reports to 
-   • /home/vagrant/.secator/reports/default/tasks/task_httpx_target_2023_07_04-01_34_22_081275_PM.txt
-   • /home/vagrant/.secator/reports/default/tasks/task_httpx_url_2023_07_04-01_34_22_081275_PM.txt
+   • ~/.secator/reports/default/tasks/1/report_url.txt
 ```
 
 </details>
@@ -145,7 +143,7 @@ httpx -silent -td -asn -cdn -l /tmp/httpx_2023_07_04-01_19_35_686343_PM.txt -jso
 `gf` allows to run patterns on URLs, we can use it to quickly detect potential interesting URLs including XSS, LFIs, SSRFs, RCEs, Interesting params, or Insecure Direct Object references.\
 Let's hunt for potential XSS:
 
-<pre><code>secator x gf --pattern xss /home/vagrant/.secator/reports/default/tasks/task_httpx_target_2023_07_04-01_34_22_081275_PM.tx
+<pre><code>secator x gf --pattern xss ~/.secator/reports/default/tasks/1/report_url.txt
 <strong>🏷️ [xss] http://testphp.vulnweb.com/comment.php?aid=1 []
 </strong>🏷️ [xss] http://testphp.vulnweb.com/comment.php?aid=2 []
 🏷️ [xss] http://testphp.vulnweb.com/comment.php?aid=3 []

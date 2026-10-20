@@ -220,6 +220,21 @@ url_crawl_cariddi_juicy_extensions: 3
 
 **Use case**: Comprehensive security assessments where you want to enable all available features including headless browsing, screenshots, vulnerability scanning, secret hunting, and SSL testing.
 
+#### Hunt secrets (`hunt_secrets`)
+
+Hunt for secrets and other interesting content in HTTP responses, in every workflow that supports it.
+
+```yaml
+hunt_secrets: true
+subdomain_recon_hunt_secrets: true
+url_crawl_hunt_secrets: true
+url_dirsearch_hunt_secrets: true
+url_fuzz_hunt_secrets: true
+url_params_fuzz_hunt_secrets: true
+```
+
+**Use case**: Looking for leaked API keys, tokens and credentials in crawled or fuzzed responses.
+
 ***
 
 ### Network profiles
@@ -272,6 +287,7 @@ Some profiles have the `enforce: true` setting, which means they override any co
 - `passive`
 - `full`
 - `all_ports`
+- `hunt_secrets`
 
 When using enforced profiles, the profile options take precedence over command-line options.
 
@@ -304,7 +320,13 @@ You can set default profiles in your configuration that will be applied automati
 secator config set profiles.defaults aggressive,polite
 ```
 
-Default profiles are automatically applied to all runs unless you explicitly override them with the `-pf` flag.
+Default profiles are added to every run, together with the profiles passed with `-pf`.
+
+You can also set default profiles for a single workspace (see [workspaces.md](workspaces.md "mention")):
+
+```bash
+secator config set workspaces.profiles.acme passive,polite
+```
 
 ***
 
@@ -325,5 +347,50 @@ opts:
 ```
 
 After creating the profile file, it will be automatically available for use with the `-pf` flag.
+
+***
+
+### Workspace, drivers and exporters
+
+Besides `opts`, a profile can set the workspace, drivers and exporters of the runs it is applied to:
+
+```yaml
+type: profile
+name: acme
+description: "ACME engagement defaults"
+workspace: acme          # run in the 'acme' workspace (unless -ws is passed, see Workspaces)
+drivers: [sqlite]        # also send results to the sqlite driver
+exporters: [csv, json]   # also export csv and json reports
+opts:
+    rate_limit: 50
+```
+
+```bash
+secator s host www.acme.com -pf acme
+```
+
+How these keys merge with your own options:
+
+| Key         | Non-enforced profile                                    | Enforced profile (`enforce: true`)     |
+| ----------- | ------------------------------------------------------- | -------------------------------------- |
+| `opts`      | Options you pass explicitly win.                        | Profile options win.                   |
+| `workspace` | Used only if you did not pass `-ws`.                    | Always used.                           |
+| `drivers`   | Added to your drivers.                                  | Added to your drivers.                 |
+| `exporters` | Added to your exporters.                                | Replace your exporters.                |
+
+***
+
+## Using profiles from Python
+
+Pass profile names, or `TemplateLoader` objects for profiles defined on the fly, with the `profiles` kwarg:
+
+```python
+from secator.template import TemplateLoader
+from secator.workflows import host_recon
+
+quick = TemplateLoader(input={'type': 'profile', 'name': 'quick', 'opts': {'rate_limit': 1000, 'timeout': 2}})
+workflow = host_recon('example.com', profiles=['polite', quick])
+workflow.run()
+```
 
 ***
