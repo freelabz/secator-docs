@@ -66,6 +66,18 @@ secator x mytool TARGET    # will run mytool -u TARGET
 secator x mytool TXT_FILE  # will run mytool -l TXT_FILE
 ```
 
+{% hint style="warning" %}
+The external command you integrate must be callable on your system's `PATH`. A file located at `/opt/tools/testssl.sh/testssl.sh`, for instance, **will not** work unless its directory is on your `PATH`.
+
+Verify that a command is callable with:
+
+```bash
+which <command>
+```
+
+If it returns a path, the command is available to `secator`. If not, add its directory to your `PATH` (or move the binary to a directory already on it).
+{% endhint %}
+
 ### Parsing a command's output
 
 Now that you have a basic implementation working, you need to convert your command's output into structured output (JSON).
@@ -115,6 +127,22 @@ secator x mytool -t tag1,tag2 -dbg -d 5 TARGET              # short option forma
 ```bash
 mytool --include-tags tag1,tag2 --debug --delay 5000 -u TARGET
 ```
+
+{% hint style="warning" %}
+All keys in `opts` must be **lowercase**. To expose a CLI flag that is uppercase on the underlying command, define a lowercase key in `opts` and map it to the real flag via `opt_key_map`:
+
+```python
+@task()
+class mytool(Command):
+    # ...
+    opts = {
+        'products': {'type': str, 'short': 'p', 'help': 'Products'},
+    }
+    opt_key_map = {
+        'products': 'P',  # maps the lowercase `products` key to the `-P` flag
+    }
+```
+{% endhint %}
 
 ***
 

@@ -101,6 +101,10 @@ Requests are JSON, authenticated with an `Authorization: <header_name> <key>` he
 
 See the `addons.api` section of the [configuration-reference.md](../../getting-started/configuration-reference.md "mention") for all routes and options.
 
+{% hint style="info" %}
+A common use of the `api` driver is to run `secator` on a client that can reach an internal target and have it POST runners/findings to a `secator-api` endpoint, so an externally-run scan still shows up on the platform. See [Running internal scans and getting results on the platform](../running-internal-scans-on-the-platform.md) for the full walkthrough.
+{% endhint %}
+
 ***
 
 ## GCS driver
