@@ -81,11 +81,20 @@ Findings and runners must be attached to a real workspace — the special
 secator ws use my-internal-scans -driver api
 ```
 
+`ws use` sets this as the **current workspace** (persisted to your config), so
+every subsequent run and query uses it automatically — you don't need to pass
+`-ws` each time. Pass `-ws <name>` on a single command only to override the
+current workspace for that run.
+
 ### Step 3: run with `-driver api`
 
 ```bash
-secator w host_recon 10.10.0.0/24 -driver api -ws my-internal-scans
+secator w host_recon 10.10.0.0/24 -driver api
 ```
+
+Since `my-internal-scans` is already the current workspace from Step 2, no
+`-ws` is needed here. If you skipped Step 2 (or want a different workspace for
+this run), add it explicitly: `secator w host_recon 10.10.0.0/24 -driver api -ws my-internal-scans`.
 
 `-driver` is comma-separated, so you can combine it with another driver, e.g.
 also keep a local MongoDB copy: `-driver api,mongodb`.
