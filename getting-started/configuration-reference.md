@@ -275,15 +275,18 @@ Addon settings. Install addons with `secator install addons <name>`.
 | `addons.ai.custom_disallow_config_token` | `bool` | `false` | `SECATOR_ADDONS_AI_CUSTOM_DISALLOW_CONFIG_TOKEN` | When a caller sets a custom `api_base`, require it to also pass its own API key instead of reusing `api_key`. |
 | `addons.ai.default_model` | `str` | `claude-sonnet-4-6` | `SECATOR_ADDONS_AI_DEFAULT_MODEL` | Default model. |
 | `addons.ai.intent_model` | `str` | `claude-haiku-4-5` | `SECATOR_ADDONS_AI_INTENT_MODEL` | Lightweight model used for intent detection. |
+| `addons.ai.extra_tools` | `list[str]` | `[]` | `SECATOR_ADDONS_AI_EXTRA_TOOLS` | Custom AI tools added to every run on top of the mode's built-in tools, see [Writing AI tools](../for-developers/writing-ai-tools.md). |
 | `addons.ai.temperature` | `float` | `0.7` | `SECATOR_ADDONS_AI_TEMPERATURE` | Sampling temperature. |
 | `addons.ai.max_tokens` | `int` | `30000` | `SECATOR_ADDONS_AI_MAX_TOKENS` | Max tokens per response. |
 | `addons.ai.max_tokens_total` | `int` | `100000` | `SECATOR_ADDONS_AI_MAX_TOKENS_TOTAL` | Max tokens kept in the conversation (oldest messages are truncated). |
 | `addons.ai.max_results` | `int` | `500` | `SECATOR_ADDONS_AI_MAX_RESULTS` | Max results passed to the model. |
-| `addons.ai.max_iterations` | `int` | `25` | `SECATOR_ADDONS_AI_MAX_ITERATIONS` | Max agent iterations per run; `-1` (or `<= 0`) disables the cap. |
+| `addons.ai.max_iterations` | `int` | `100` | `SECATOR_ADDONS_AI_MAX_ITERATIONS` | Max agent iterations per run; `-1` (or `<= 0`) disables the cap. |
 | `addons.ai.context_window` | `int` | `128000` | `SECATOR_ADDONS_AI_CONTEXT_WINDOW` | Model context window used when the provider does not report one. |
 | `addons.ai.user_response_timeout` | `int` | `600` | `SECATOR_ADDONS_AI_USER_RESPONSE_TIMEOUT` | Time to wait for a user answer (seconds). |
 | `addons.ai.encrypt_pii` | `bool` | `true` | `SECATOR_ADDONS_AI_ENCRYPT_PII` | Encrypt sensitive data before sending it to the model. |
+| `addons.ai.isolated_container_image` | `str` | `freelabz/secator:{version}-lite` | `SECATOR_ADDONS_AI_ISOLATED_CONTAINER_IMAGE` | Docker image for the `ai` task `--isolated` sandbox; `{version}` is replaced with the running secator version. |
 | `addons.ai.permissions` | `dict` | see [AI task](../in-depth/ai-task.md#permission-engine) | `SECATOR_ADDONS_AI_PERMISSIONS` | Permission rules (`allow` / `deny` / `ask`), see [AI task](../in-depth/ai-task.md). |
+| `addons.ai.web_search.tavily_api_key` | `str` | `""` | `SECATOR_ADDONS_AI_WEB_SEARCH_TAVILY_API_KEY` | Optional Tavily API key for the AI `web_search` tool. When empty, `web_search` uses keyless search engines only. |
 
 ***
 
@@ -299,6 +302,7 @@ Security controls.
 | `security.prompt_sudo_password` | `bool` | `true` | `SECATOR_SECURITY_PROMPT_SUDO_PASSWORD` | Prompt for the sudo password when a task needs it. |
 | `security.sudo_password` | `str` | `""` | `SECATOR_SECURITY_SUDO_PASSWORD` | Non-interactive sudo password, for headless workers (prefer the env var). |
 | `security.shell_isolated` | `bool` | `false` | `SECATOR_SECURITY_SHELL_ISOLATED` | Default for the `ai` task `--isolated` flag (run shell commands in a Docker sandbox). |
+| `security.shell_default_timeout` | `int` | `30` | `SECATOR_SECURITY_SHELL_DEFAULT_TIMEOUT` | Default timeout (seconds) for an AI `run_shell` command; the model can raise it per command up to `celery.task_max_timeout`. |
 | `security.scope_hard_deny` | `bool` | `false` | `SECATOR_SECURITY_SCOPE_HARD_DENY` | Deny out-of-scope AI targets outright instead of asking for approval. |
 
 ***

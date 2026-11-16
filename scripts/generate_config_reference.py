@@ -172,6 +172,7 @@ DESCRIPTIONS = {
 	'addons.ai.custom_disallow_config_token': 'When a caller sets a custom `api_base`, require it to also pass its own API key instead of reusing `api_key`.',  # noqa: E501
 	'addons.ai.default_model': 'Default model.',
 	'addons.ai.intent_model': 'Lightweight model used for intent detection.',
+	'addons.ai.extra_tools': 'Custom AI tools added to every run on top of the mode\'s built-in tools, see [Writing AI tools](../for-developers/writing-ai-tools.md).',  # noqa: E501
 	'addons.ai.temperature': 'Sampling temperature.',
 	'addons.ai.max_tokens': 'Max tokens per response.',
 	'addons.ai.max_tokens_total': 'Max tokens kept in the conversation (oldest messages are truncated).',
@@ -180,6 +181,8 @@ DESCRIPTIONS = {
 	'addons.ai.context_window': 'Model context window used when the provider does not report one.',
 	'addons.ai.user_response_timeout': 'Time to wait for a user answer (seconds).',
 	'addons.ai.encrypt_pii': 'Encrypt sensitive data before sending it to the model.',
+	'addons.ai.isolated_container_image': 'Docker image for the `ai` task `--isolated` sandbox; `{version}` is replaced with the running secator version.',  # noqa: E501
+	'addons.ai.web_search.tavily_api_key': 'Optional Tavily API key for the AI `web_search` tool. When empty, `web_search` uses keyless search engines only.',  # noqa: E501
 	'addons.ai.permissions': 'Permission rules (`allow` / `deny` / `ask`), see [AI task](../in-depth/ai-task.md).',
 	'security.allow_local_file_access': 'Allow wordlists / payloads to be loaded from local files outside `dirs.data`.',
 	'security.auto_install_commands': 'Install missing tools automatically on first use.',
@@ -187,6 +190,7 @@ DESCRIPTIONS = {
 	'security.prompt_sudo_password': 'Prompt for the sudo password when a task needs it.',
 	'security.sudo_password': 'Non-interactive sudo password, for headless workers (prefer the env var).',
 	'security.shell_isolated': 'Default for the `ai` task `--isolated` flag (run shell commands in a Docker sandbox).',
+	'security.shell_default_timeout': 'Default timeout (seconds) for an AI `run_shell` command; the model can raise it per command up to `celery.task_max_timeout`.',  # noqa: E501
 	'security.scope_hard_deny': 'Deny out-of-scope AI targets outright instead of asking for approval.',
 	'providers.defaults': 'Default provider per data type (`cve`: `circl` or `vulners`, `exploit`: `exploitdb`, `ghsa`: `ghsa`).',  # noqa: E501
 	'queries': 'Saved queries: name -> query expression.',
