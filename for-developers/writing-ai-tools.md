@@ -160,7 +160,105 @@ listing the known tools.
 The permission engine **auto-allows** custom tools: calling one never prompts.
 So a tool must not reach your targets or touch the filesystem on its own - keep
 it to work like formatting, lookups in data you already have, or recording
-results. Anything that touches a target belongs in a `secator` task or workflow,
-which the agent runs through `run_task` / `run_workflow` under the
+results. Anything that touches a target belongs in a `secator` task or workflow:
+either the agent runs it through `run_task` / `run_workflow`, or your tool runs
+it with `run_task_from_tool` (below). Both go through the
 [permission engine](../in-depth/ai-task.md#permission-engine) and the run's
 scope.
+
+***
+
+## Running a task from a tool
+
+`run_task_from_tool` runs a `secator` task or workflow from inside your tool,
+through the **same** path as a `run_task` call from the model:
+
+- the same permission check: the same deny rules, the same target approval and
+  the same prompt (skipped only when the run uses `--dangerous`);
+- the run's `--in-scope` / `--out-of-scope` boundary.
+
+If the check denies the task, `run_task_from_tool` yields a `Warning` and nothing
+runs. Calling it from an auto-allowed tool grants nothing: the task is checked
+on its own.
+
+```python
+from secator.ai.actions import run_task_from_tool
+
+# inside run(self, action, ctx):
+yield from run_task_from_tool(ctx, "httpx", targets=["example.com"], description="Probe the web server")
+```
+
+Pass `runner_type="workflow"` to run a workflow instead.
+
+{% hint style="warning" %}
+Requires a `secator` version that includes
+[secator#1662](https://github.com/freelabz/secator/pull/1662). In earlier
+versions, the results of a task started this way are not matched to the model's
+tool call and the agent's turn fails.
+{% endhint %}
+
+***
+
+## Reusing your custom tasks and drivers
+
+Custom tasks and drivers are loaded **before** custom tools, so a tool can use
+them through two lookups in `secator.loader`:
+
+- `get_task_class(name)` - the task class for a built-in or custom task, or
+  `None`;
+- `get_driver_hooks(name)` - the `HOOKS` mapping of a custom
+  [driver](../in-depth/concepts/drivers.md) loaded from your templates
+  directory (`{runner class: {hook name: [functions]}}`), or `None`.
+
+For example, with a custom task `mytask` and a custom reporting driver
+`reporting` in your templates directory:
+
+```python
+# ~/.secator/templates/tools/run_and_report.py
+from secator.ai.actions import _get_result_context, run_task_from_tool
+from secator.ai.tools.base import BaseTool
+from secator.loader import get_driver_hooks, get_task_class
+from secator.output_types import Ai, Error
+from secator.runners import Task
+
+
+class RunAndReport(BaseTool):
+	name = "run_and_report"
+	schema = {
+		"type": "function",
+		"function": {
+			"name": "run_and_report",
+			"description": "Run mytask against targets, then call the reporting driver's on_end hook.",
+			"parameters": {
+				"type": "object",
+				"properties": {"targets": {"type": "array", "items": {"type": "string"}}},
+				"required": ["targets"],
+			},
+		},
+	}
+
+	def run(self, action, ctx):
+		context = _get_result_context(action, ctx)
+		if get_task_class("mytask") is None:
+			yield Error(message="run_and_report needs the custom task `mytask`.", _context=context)
+			return
+		# Same permission check and scope as a model-issued run_task.
+		yield from run_task_from_tool(ctx, "mytask", targets=action.get("targets"),
+		                              description="Collect data with mytask")
+		# Reuse a hook of the custom `reporting` driver.
+		hooks = (get_driver_hooks("reporting") or {}).get(Task, {})
+		for fn in hooks.get("on_end", []):
+			fn(None, None)  # this hook takes (runner, item) but uses neither
+		yield Ai(content="run_and_report: done", ai_type="run_and_report", _context=context)
+```
+
+The task's own results (findings, errors) reach the model as the tool result,
+like a `run_task` call. This example also needs
+[secator#1662](https://github.com/freelabz/secator/pull/1662).
+
+{% hint style="warning" %}
+Driver hook functions are written for a runner: they receive `(runner, item)`
+and often read the runner's context. Only call a hook from a tool when you know
+what it uses; otherwise put the shared logic in a plain function the hook and
+the tool both call.
+{% endhint %}
