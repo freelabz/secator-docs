@@ -96,16 +96,17 @@ secator config set addons.ai.api_key sk-...
 | `max_tokens` | `30000` | Per-response token cap. |
 | `max_tokens_total` | `100000` | Hard conversation cap; the oldest messages are truncated beyond this. |
 | `max_results` | `500` | Max workspace results returned to the agent per query. |
-| `max_iterations` | `25` | Max agent-loop iterations. Set to `-1` (or any value `<= 0`) to **disable the cap** - the run continues until the model stops on its own (bounded by a high internal ceiling). |
+| `max_iterations` | `100` | Max agent-loop iterations. Set to `-1` (or any value `<= 0`) to **disable the cap** - the run continues until the model stops on its own (bounded by a high internal ceiling). |
 | `context_window` | `128000` | Fallback context-window size for a model litellm doesn't know about. |
 | `user_response_timeout` | `600` | Seconds the agent waits for an interactive answer before giving up. |
 | `encrypt_pii` | `true` | Redact detected PII (emails, IPs, hostnames) before sending text to the LLM. |
 | `custom_disallow_config_token` | `false` | When on, a caller-overridden `api_base` must come with its own `api_key` - the configured key is never reused on a different endpoint. |
+| `extra_tools` | `[]` | Names of [custom tools](#custom-tools) added to **every** run on top of the mode's built-in tools. Env: `SECATOR_ADDONS_AI_EXTRA_TOOLS` (comma-separated). |
 | `permissions` | *(see [Permission engine](#permission-engine))* | The allow/deny/ask rules the agent runs under. |
 
 Most of these have a matching run option so you can override them per run - e.g.
 `--model`, `--api-base`, `--api-key`, `--temperature`, `--max-iterations`,
-`--max-tokens-total`, `--intent-model`.
+`--max-tokens-total`, `--intent-model`, `--extra-tools`.
 
 ***
 
@@ -136,20 +137,26 @@ context-window size. Set that config key to your model's real window.
 
 ## Modes
 
-The agent operates in one of three modes. Each mode controls which actions the
-agent is even allowed to attempt:
+The agent operates in one of six modes. Each mode controls which actions the
+agent is even allowed to attempt (see [Tools per mode](#tools-per-mode)):
 
 | Mode | What it can do |
 | --- | --- |
-| `chat` | **Read-only.** Read and explain workspace data (`query_workspace`), ask follow-ups, delegate a read-only subagent, and stop. It cannot run shell, tasks/workflows, or write findings. |
+| `chat` | **Read-only.** Read and explain workspace data, look up run history, fetch a known page or search the web, delegate a subagent, and stop. It cannot run shell, tasks/workflows, or write findings. |
 | `scan` | Actively scan: run tasks/workflows and shell commands, exploit, and write or curate findings. |
 | `exploit` | Verify a single vulnerability by actually exploiting it and record a proof-of-concept. |
+| `research` | Research a vulnerability (CVE or 0-day): find or craft a working PoC in a sandbox lab, using adversarial subagents, and record it. |
+| `monitor` | Re-verify the **existing** findings against their targets and record what changed. It cannot scan for or add new findings, run tasks/workflows, or spawn subagents. |
+| `contribute` | Author new `secator` tasks / workflows / scans (or framework code) and prove them with real, reproducible tests. It runs runners to exercise its code but does not write findings. |
 
 Select a mode explicitly with `--mode`:
 
 ```bash
 secator x ai testphp.vulnweb.com -p "Enumerate the web app" --mode scan
 ```
+
+`research`, `monitor` and `contribute` are only used when you select them with
+`--mode`; auto mode (below) picks between `chat`, `scan` and `exploit`.
 
 In the TUI you can change mode live with **ctrl+t**.
 
@@ -179,6 +186,47 @@ apply:
 
 A concrete `--mode` you pass is **pinned**: it sticks for the whole session and
 the agent will not silently escalate out of it.
+
+### Tools per mode
+
+Each mode's built-in system prompt is a Markdown file under
+`secator/ai/prompts/modes/` whose YAML frontmatter declares the tools that mode
+exposes, in a `tools:` key. Entries are shell-style globs over tool names:
+`*` matches every tool, `run_*` matches every `run_...` tool, and a leading `!`
+excludes a tool:
+
+| Mode | `tools:` |
+| --- | --- |
+| `scan` | `["*"]` |
+| `exploit` | `["*"]` |
+| `research` | `["*", "!change_mode"]` |
+| `chat` | `["query_workspace", "fetch_url", "list_runners", "update_plan", "web_search", "run_subagent", "change_mode", "stop"]` |
+| `monitor` | `["query_workspace", "run_shell", "mark_vuln_false_positive", "mark_vuln_fixed", "update_finding", "add_note", "stop"]` |
+| `contribute` | `["run_*", "query_workspace", "fetch_url", "update_plan", "web_search", "list_runners", "stop"]` |
+
+These globs only ever match the **built-in** tools. A [custom tool](#custom-tools)
+is never picked up by a mode's globs - not even by `*` - so installing one can't
+silently widen what a mode can do. Custom tools are added per run (or per
+installation) with `extra_tools`; a mode's `!name` exclusion still removes one.
+
+The frontmatter of a prompt file looks like this:
+
+```markdown
+---
+name: research
+type: mode
+modes: [research]
+description: "System prompt for RESEARCH mode: ..."
+tools: ["*", "!change_mode"]
+---
+<prompt body>
+```
+
+`name` matches the file name, `type` is one of `mode` (a full per-mode prompt),
+`partial` (a fragment included into a mode prompt), `injected` (appended at
+build time, e.g. the end-of-turn rules) or `utility` (a standalone prompt such
+as the mode classifier). The frontmatter is metadata only and is never sent to
+the model.
 
 ***
 
@@ -239,29 +287,56 @@ iteration budget. Subagents run non-interactively and do not self-escalate.
 
 ## Tools and actions
 
-Depending on the mode, the agent can call the following actions:
+Depending on the mode (see [Tools per mode](#tools-per-mode)), the agent can
+call the following built-in tools:
 
-| Action | Purpose |
+| Tool | Purpose |
 | --- | --- |
 | `run_task` | Run a single `secator` task (e.g. `nmap`, `httpx`, `nuclei`, `ffuf`) against targets. |
 | `run_workflow` | Run a `secator` workflow (a composed sequence of tasks). |
 | `run_shell` | Run an arbitrary shell command for exploration, exploitation, or data analysis. |
-| `query_workspace` | Query stored findings with MongoDB-style queries (every query must be targeted). |
 | `run_subagent` | Spawn an autonomous subagent for a sub-objective. |
-| `follow_up` | Ask you a clarifying question or present options. |
+| `query_workspace` | Query stored findings with MongoDB-style queries (every query must be targeted). |
+| `list_runners` | List this workspace's run history (scans / workflows / tasks, newest first). |
+| `fetch_url` | Fetch a single public web page and return its readable text. |
+| `web_search` | Search the public web (CVE write-ups, PoC repos, tool docs). |
+| `update_plan` | Maintain a short, user-visible to-do list for a multi-step task. |
 | `add_finding` | Record a new finding (vulnerability, exploit, URL, ...) in the workspace. |
+| `update_finding` | Update fields (severity, tags, CVEs, extra data) on an existing finding. |
+| `add_note` | Attach an append-only note to an existing finding. |
 | `mark_vuln_exploited` | Mark an existing vulnerability as exploited and attach a proof-of-concept. |
 | `mark_vuln_exploit_failed` | Mark a real vulnerability it could not exploit this attempt. |
 | `mark_vuln_false_positive` | Mark an existing vulnerability as a false positive. |
-| `update_finding` | Update fields (severity, tags, CVEs, extra data) on an existing finding. |
+| `mark_vuln_fixed` | Mark a previously confirmed vulnerability that no longer reproduces as fixed. |
 | `change_mode` | Switch its own operating mode (auto / pinned-action sessions only). |
 | `stop` | End the turn when the request is fulfilled or blocked. |
 
-`chat` mode is restricted to `query_workspace`, `follow_up`, `run_subagent`,
-`change_mode`, and `stop`.
-
 Run tasks/workflows through the worker instead of inline with `--async-tasks`,
 and tune batch concurrency with `--max-workers`.
+
+### Custom tools
+
+You can give the agent your own tools - for example one that formats findings
+for your ticketing system. A custom tool is a Python file that defines one
+`BaseTool` subclass; see [Writing AI tools](../for-developers/writing-ai-tools.md).
+
+Custom tools are loaded from your templates directory (`~/.secator/templates`
+by default), plus any directories listed in the `SECATOR_AI_TOOLS_DIRS`
+environment variable (`:`-separated). A loaded tool is **not** active until you
+name it, either for one run with `--extra-tools` or for every run with the
+`addons.ai.extra_tools` config key. Both lists are merged:
+
+```bash
+# one run
+secator x ai example.com -p "Summarize the open ports" --extra-tools word_count
+
+# every run
+secator config set addons.ai.extra_tools word_count
+```
+
+An `--extra-tools` / `addons.ai.extra_tools` name that doesn't match a loaded
+tool makes the run fail with an error listing the known tools, so a typo or a
+missing tools directory never fails silently.
 
 ***
 
@@ -330,6 +405,24 @@ The agent is also told in its system prompt never to touch host secrets,
 environment variables, the `secator` config, or the workspace database -
 exploiting the *target* is in scope; exploiting the host running `secator` is
 not, and such actions are blocked regardless of what the prompt says.
+
+### How shell arguments are classified
+
+For a `run_shell` command, the engine decides for each argument whether it is a
+**network target** (checked against `target(...)` rules and the scope) or a
+**path** (checked against `read(...)` / `write(...)` rules):
+
+- UNC forms (`//host`, `//host/share`, `\\host\share`) and non-HTTP scheme URLs
+  (`smb://user@host:445/share`) are targets, normalized to `host` or
+  `host:port`. For `smbclient -L //10.0.0.5` you are asked to approve the target
+  `10.0.0.5`, not a read of a path.
+- `http(s)://` URLs, dotted hostnames (`example.com`) and IP addresses are
+  targets.
+- Plain paths stay paths: `cat //etc/passwd` is a read of `/etc/passwd`.
+
+The value you approve is exactly the value that gets checked, so approving a
+target (or a broad "allow all" on a top-level path such as `/foo`) lets the
+command run instead of prompting again.
 
 ### Guardrail levels at a glance
 
@@ -435,7 +528,7 @@ the transcript (for example when the model must reason about exact hostnames).
 
 Several limits keep a run bounded and observable:
 
-- **Iteration cap** - `--max-iterations` (default `25`). `-1` disables the user
+- **Iteration cap** - `--max-iterations` (default `100`). `-1` disables the user
   cap but a high internal ceiling still bounds a runaway loop. Each mode also
   imposes a floor.
 - **Token caps** - `max_tokens` per response and `max_tokens_total` for the

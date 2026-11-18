@@ -47,5 +47,6 @@
     * [Example: cat hunters](for-developers/writing-tasks/integrating-an-external-command/example-cat-hunters.md)
   * [Integrate custom Python code \[WIP\]](for-developers/writing-tasks/integrate-custom-python-code-wip.md)
   * [Advanced options](for-developers/writing-tasks/advanced-options.md)
+* [Writing AI tools](for-developers/writing-ai-tools.md)
 * [Writing workflows](for-developers/writing-workflows.md)
 * [Writing scans \[WIP\]](for-developers/writing-scans-wip.md)
