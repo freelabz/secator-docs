@@ -85,7 +85,7 @@ The `api` driver sends runners and findings to an HTTP API as they are produced,
 ```bash
 secator config set addons.api.url https://myapp.example.com/api
 secator config set addons.api.key <API_KEY>
-secator w host_recon example.com -driver api
+secator w host_recon example.com --driver api
 ```
 
 Requests are JSON, authenticated with an `Authorization: <header_name> <key>` header (`Bearer` by default). The driver uses the following routes, relative to `addons.api.url` (each one configurable with the matching `addons.api.*_endpoint` key):
