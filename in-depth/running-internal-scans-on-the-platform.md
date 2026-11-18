@@ -54,9 +54,17 @@ is a standard `requests` session, so it honors the usual `HTTPS_PROXY` /
 # Only needed for a self-hosted deployment — Secator Cloud is the default.
 secator config set addons.api.url https://<your-secator-api-host>/api
 
-# API token (Workspace or account settings on the platform -> API tokens).
+# API token: avatar menu (top right) -> API tokens -> New token, with Write Access.
 secator config set addons.api.key <API_TOKEN>
 ```
+
+{% hint style="warning" %}
+Create the token with **Write Access** (`api:write`). The token form defaults to
+**Read Access**, which can view the platform but can't create a workspace, a runner
+or a finding: `secator` then fails with a 403 such as
+`This API token is not scoped for 'workspaces.create'`. Also pick an expiration
+that fits how long you'll keep the scanning box (the default is 24 hours).
+{% endhint %}
 
 Both can also be set via environment variables, which is usually more
 convenient on a disposable scanning box:
@@ -78,7 +86,7 @@ Findings and runners must be attached to a real workspace — the special
 (this calls the platform API and is idempotent, so it's safe to re-run):
 
 ```bash
-secator ws use my-internal-scans -driver api
+secator ws use my-internal-scans --driver api
 ```
 
 `ws use` sets this as the **current workspace** (persisted to your config), so
@@ -86,23 +94,43 @@ every subsequent run and query uses it automatically — you don't need to pass
 `-ws` each time. Pass `-ws <name>` on a single command only to override the
 current workspace for that run.
 
-### Step 3: run with `-driver api`
+### Step 3: run with `--driver api`
 
 ```bash
-secator w host_recon 10.10.0.0/24 -driver api
+secator x nmap 10.10.0.5 --driver api
 ```
 
 Since `my-internal-scans` is already the current workspace from Step 2, no
 `-ws` is needed here. If you skipped Step 2 (or want a different workspace for
-this run), add it explicitly: `secator w host_recon 10.10.0.0/24 -driver api -ws my-internal-scans`.
+this run), add it explicitly: `secator x nmap 10.10.0.5 --driver api -ws my-internal-scans`.
 
-`-driver` is comma-separated, so you can combine it with another driver, e.g.
-also keep a local MongoDB copy: `-driver api,mongodb`.
+`--driver` is comma-separated, so you can combine it with another driver, e.g.
+also keep a local MongoDB copy: `--driver api,mongodb`. Runs also accept the
+short form `-driver`.
 
-As the scan runs, `secator` POSTs the runner (on start, on each progress
+{% hint style="warning" %}
+**Single tasks only, for now.** With the current `secator` release, only single
+tasks (`secator x <task> ...`) report correctly through the `api` driver.
+Workflows and scans (`secator w ...`, `secator s ...`) are supported starting
+with the next `secator` release.
+{% endhint %}
+
+As the task runs, `secator` POSTs the runner (on start, on each progress
 update, on completion) and every finding to the platform's API — the run
-shows up live on the platform under the workspace you picked, exactly like a
-scan dispatched from the platform itself.
+shows up live on the platform under the workspace you picked, labelled
+**Ran locally via CLI**.
+
+### What to expect on the platform
+
+* **Findings** show up on the run's page as they're sent. The workspace
+  **Findings** view lists them once the platform has processed (deduplicated)
+  them, usually right after the run ends (within the hour at the latest);
+  until then it shows them as *being processed*.
+* **Command output** stays on the machine that ran `secator`: the run's page
+  only gets the runner status and findings.
+* **Re-run** isn't offered for these runs, since the platform's workers can't
+  reach the target. Use **Copy CLI command** on the run's page and run it again
+  from your machine.
 
 ***
 
@@ -150,6 +178,12 @@ ALLOW_CUSTOM_QUEUE_PREFIX=1
 
 Once set, `GET /capabilities` reports `{"custom_queue_prefix": true}`, and the
 platform's UI shows a "Queue prefix" field on the run-creation form.
+
+{% hint style="info" %}
+This step (`ALLOW_CUSTOM_QUEUE_PREFIX`, `GET /capabilities` and the "Queue
+prefix" field) needs a `secator-api` release that includes custom queue-prefix
+support. Check your deployment's `secator-api` release notes before relying on it.
+{% endhint %}
 
 ### Step 3: run a scan on that pool
 
